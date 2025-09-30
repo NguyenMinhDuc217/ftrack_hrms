@@ -12,11 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->id('user_id');
+            $table->string('username',100);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password',255);
+            $table->string('phone_number',11)->unique()->nullable();
+            $table->string('first_name',50)->nullable();
+            $table->string('last_name',50)->nullable();
+            $table->enum('gender', ['Male', 'Female', 'Other']);
+            $table->dateTime('date_of_birth')->nullable();
+            $table->date('hire_date')->nullable(); // Ngày bắt đầu làm việc
+            $table->bigInteger('department_id')->nullable();
+            $table->bigInteger('manager_id')->nullable();
+            $table->bigInteger('document_id')->nullable();
+            $table->enum('employment_type', ['Full-time', 'Part-time', 'Contract', 'Intern']);
+            $table->boolean('aplicant')->default(0);
+            $table->enum('status', ['active', 'expired', 'superseded', 'archived', 'deleted']);
             $table->rememberToken();
             $table->timestamps();
         });

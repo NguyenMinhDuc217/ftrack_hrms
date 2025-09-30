@@ -1,6 +1,6 @@
 ## Installation
 ```sh
-php artisan miration:fresh
+php artisan migrate:fresh
 
 php artisan db:seed
 ```
