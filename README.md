@@ -1,29 +1,20 @@
-# README #
+## Installation
+```sh
+php artisan miration:fresh
 
-This README would normally document whatever steps are necessary to get your application up and running.
+php artisan db:seed
+```
+### Login account:
+  - test@example.com | password
+  - admin@example.com | password
 
-### What is this repository for? ###
+## Template Information
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Client template (EnNo)
+Location: `public/enno`
 
-### How do I get set up? ###
+Preview Url: [http://localhost/enno](http://localhost/enno)
+### Admin Dashboard template (mantis)
+Location: `public/mantis`
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+Preview Url: [http://localhost/mantis](http://localhost/mantis)
