@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('min_salary', 12, 2)->nullable();
             $table->decimal('max_salary', 12, 2)->nullable();
             $table->string('currency')->nullable();
-            $table->enum('status', ['Open', 'Closed']);
+            $table->string('status',50)->nullable();
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClientController;
@@ -37,5 +38,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     // Add more admin-specific routes here (e.g., users, products, settings)
-    // Route::get('/users', [AdminDashboardController::class, 'users'])->name('users.index');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users');
+    Route::get('/users/{user_id}', [AdminUserController::class, 'show'])->name('users.show');
+
 });
