@@ -15,8 +15,14 @@
             <span class="pc-mtext">Dashboard</span>
           </a>
         </li>
+        <li class="pc-item">
+          <a href="{{ route('admin.users') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-users"></i></span>
+            <span class="pc-mtext">Users</span>
+          </a>
+        </li>
 
-        <li class="pc-item pc-caption">
+        <!-- <li class="pc-item pc-caption">
           <label>UI Components</label>
           <i class="ti ti-dashboard"></i>
         </li>
@@ -100,9 +106,9 @@
             <span class="pc-micon"><i class="ti ti-brand-chrome"></i></span>
             <span class="pc-mtext">Sample page</span>
           </a>
-        </li>
+        </li> -->
       </ul>
-      <div class="card text-center">
+      <!-- <div class="card text-center">
         <div class="card-body">
           <img src="{{ asset('admin/assets/images/img-navbar-card.png') }}" alt="images" class="img-fluid mb-2">
           <h5>Upgrade To Pro</h5>
@@ -110,7 +116,7 @@
           <a href="https://codedthemes.com/item/berry-bootstrap-5-admin-template/" target="_blank"
           class="btn btn-success">Buy Now</a>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </nav>
