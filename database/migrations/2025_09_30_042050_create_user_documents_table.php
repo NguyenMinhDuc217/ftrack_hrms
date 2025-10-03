@@ -18,12 +18,12 @@ return new class extends Migration
             $table->id('document_id');
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('uploaded_by')->nullable();
-            $table->enum('document_type', ['ID_CARD','LABOR_CONTRACT','APPENDIX','CERTIFICATE','OFFER_LETTER']);
+            $table->string('document_type', 255)->nullable();
             $table->string('document_title', 255)->nullable();
             $table->boolean('confidential')->default(0);
             $table->string('file_url', 255)->nullable();
             $table->bigInteger('file_name_original')->nullable();
-            $table->enum('status', ['active', 'expired', 'superseded', 'archived', 'deleted']);
+            $table->string('status',100)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('department_id');
             $table->string('department_name')->nullable();
             $table->string('description')->nullable();
-            $table->enum('status', ['active', 'expired', 'superseded', 'archived', 'deleted']);
+            $table->string('status',50)->nullable();
             $table->timestamps();
         });
     }
