@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -25,6 +26,12 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            if ($user->hasRole('super-admin') || $user->hasRole('admin')) {
+                return redirect()->intended(route('admin.dashboard'));
+            }
 
             // Redirect to the client dashboard after successful login
             return redirect()->intended(route('client.dashboard'));

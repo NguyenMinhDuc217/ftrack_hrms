@@ -27,7 +27,7 @@ return new class extends Migration
             $table->bigInteger('manager_id')->nullable();
             $table->bigInteger('document_id')->nullable();
             $table->string('employment_type', 255)->nullable();
-            $table->boolean('aplicant')->default(0);
+            $table->boolean('applicant')->default(0);
             $table->string('status', 100)->nullable();
             $table->rememberToken();
             $table->timestamps();

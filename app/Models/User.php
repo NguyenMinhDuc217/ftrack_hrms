@@ -21,12 +21,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $guard_name = 'web';
+
     protected $fillable = [
         'username',
         'email',
         'email_verified_at',
         'password',
-        'is_admin',
         'phone_number',
         'first_name',
         'last_name',
@@ -37,7 +38,7 @@ class User extends Authenticatable
         'manager_id',
         'document_id',
         'employment_type',
-        'aplicant',
+        'applicant',
         'status',
     ];
 
