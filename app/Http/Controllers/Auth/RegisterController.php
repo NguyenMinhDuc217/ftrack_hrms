@@ -35,7 +35,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user->user_id); // Log the user in immediately after registration
+        Auth::loginUsingId($user->user_id); // Log the user in immediately after registration
 
         return redirect(route('client.dashboard')); // Redirect to client dashboard
     }

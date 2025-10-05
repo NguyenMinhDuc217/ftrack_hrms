@@ -24,7 +24,6 @@ class UserSeeder extends Seeder
                'username' => $faker->userName,
                'first_name' => $faker->firstName,
                'last_name' => $faker->lastName,
-               'is_admin' => 0,
                'email' => $faker->unique()->email,
                'password' => Hash::make('password'),
                'phone_number' => rand(1000000000, 9999999999),
@@ -35,7 +34,7 @@ class UserSeeder extends Seeder
                'manager_id' => rand(1,10),
                'document_id' => rand(1,10),
                'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
-               'aplicant' => rand(0,1),
+               'applicant' => rand(0,1),
                'status' => $faker->randomElement(UserStatus::cases())->value,
            ]);
         }

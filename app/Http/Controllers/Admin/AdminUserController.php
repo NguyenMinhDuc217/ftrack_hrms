@@ -13,7 +13,7 @@ class AdminUserController extends Controller
 {
     public function index()
     {
-        $users = User::with('department')->where('is_admin', 0)->paginate(5);
+        $users = User::with('department')->paginate(5);
 
         return view('admin.user.index', ['users' => $users]);
     }
@@ -25,8 +25,6 @@ class AdminUserController extends Controller
         $employment_types = array_column(EmploymentType::cases(), 'value');
         $statuses = array_column(UserStatus::cases(), 'value');
         $genders = Gender::cases();
-        // dd($user, $statuses);
-
         return view(
             'admin.user.edit',
             [

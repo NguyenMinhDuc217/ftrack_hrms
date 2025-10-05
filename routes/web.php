@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
 // These routes should be protected. 'auth' middleware checks if user is logged in.
 // 'can:access-admin' would be a custom authorization gate/policy you define
 // to check if the logged-in user *is an admin*.
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     // Add more admin-specific routes here (e.g., users, products, settings)
     Route::get('/users', [AdminUserController::class, 'index'])->name('users');
