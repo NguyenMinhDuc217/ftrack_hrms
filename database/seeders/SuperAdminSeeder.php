@@ -35,7 +35,7 @@ class SuperAdminSeeder extends Seeder
                 'document_id' => rand(1, 10),
                 'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
                 'applicant' => rand(0, 1),
-                'status' => $faker->randomElement(UserStatus::cases())->value,
+                'status' => 'Active',
             ]
         );
 

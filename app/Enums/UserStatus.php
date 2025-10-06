@@ -6,7 +6,7 @@ enum UserStatus: string
 {
     case ACTIVE = 'Active';
     case EXPIRED = 'Expired';
-    case SUPERSEDED = 'Superseded';
+    case UNVERIFIED = 'unverified';
 
     public function getLabelData(): array
     {
@@ -21,9 +21,9 @@ enum UserStatus: string
                 'label' => 'Expired',
                 'color' => 'bg-light-secondary'
             ],
-            self::SUPERSEDED => [
+            self::UNVERIFIED => [
                 'id' => '3',
-                'label' => 'Superseded',
+                'label' => 'unverified',
                 'color' => 'bg-light-warning'
             ]
         };
