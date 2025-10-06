@@ -105,11 +105,11 @@
                   <label class="form-label">Status</label>
                   <select name="status" class="form-control">
                     <option value="*">--Status--</option>
-                    @foreach($statuses as $status)         <?php 
+                    @foreach($statuses as $status)         <?php
                          var_dump($user->status->value , $status,$user->status->value == $status);
                         ?>
                       <option value="{{ $status }}" @selected($user->status->value == $status)>
-               
+
                           {{ $status }}
                       </option>
                     @endforeach
@@ -122,7 +122,7 @@
               </div>
             </form>
           </div>
-              
+
         </div>
         <!-- [ sample-page ] end -->
       </div>
