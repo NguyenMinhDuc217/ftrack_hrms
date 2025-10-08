@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Admin Dashboard - Users')
-@section('page_title', 'Users')
+@section('page_title', 'Edit Users')
 
 @section('content')
  <!-- [ Main Content ] start -->
@@ -12,7 +12,17 @@
             <div class="card-header">
               <h3>Edit User</h3>
             </div>
-            <form>
+            <form action="{{ route('admin.users.update', ['user_id' => $user->user_id]) }}" method="POST" class="form-horizontal">
+              @csrf
+              @if ($errors->any())
+                  <div class="alert alert-danger">
+                      <ul>
+                          @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                          @endforeach
+                      </ul>
+                  </div>
+              @endif
               <div class="card-body">
                 <div class="form-group">
                   <label class="form-label" for="example-max-length">Username</label>
@@ -35,7 +45,7 @@
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="example-max-length">Phone number</label>
-                  <input type="text" class="form-control error" name="phone_number" id="tel" pattern="^(?:\d{3}[\-]\d{3}[\-]\d{4})$" required="" aria-describedby="bouncer-error_tel" aria-invalid="true" value="{{$user->phone_number}}">
+                  <input type="text" class="form-control error" name="phone_number" id="tel" pattern="^(?:\d{3}\d{3}\d{4})$" required="" aria-describedby="bouncer-error_tel" aria-invalid="true" value="{{$user->phone_number}}">
                   <small class="form-text text-muted">123-456-7890</small>
                 </div>
                 <div class="form-group d-flex gap-2">
@@ -61,7 +71,7 @@
                 </div>
                 <div class="form-group">
                   <label class="form-label">Derpartment</label>
-                  <select class="form-control" name="derpartment_id" id="select" required>
+                  <select class="form-control" name="derpartment_id" id="select" onchange="changeDepartment(this.value)" required>
                     <option label="--Department--"></option>
                     @foreach ($departments as $department)
                     <option value="{{$department->department_id}}" @selected($user->department_id == $department->department_id)>{{$department->department_name}}</option>
@@ -72,8 +82,8 @@
                   <label class="form-label">Manager</label>
                   <select class="form-control" name="manager_id" id="select" required>
                     <option label="--Manager--"></option>
-                    @foreach ($departments as $department)
-                    <option value="{{$department->department_id}}">{{$department->department_name}}</option>
+                    @foreach($users as $usera)
+                    <option value="{{$user->user_id}}">{{$usera->username}}</option>
                     @endforeach
                   </select>
                 </div>
@@ -105,11 +115,8 @@
                   <label class="form-label">Status</label>
                   <select name="status" class="form-control">
                     <option value="*">--Status--</option>
-                    @foreach($statuses as $status)         <?php 
-                         var_dump($user->status->value , $status,$user->status->value == $status);
-                        ?>
+                    @foreach($statuses as $status)         
                       <option value="{{ $status }}" @selected($user->status->value == $status)>
-               
                           {{ $status }}
                       </option>
                     @endforeach
@@ -127,4 +134,22 @@
         <!-- [ sample-page ] end -->
       </div>
       <!-- [ Main Content ] end -->
+
+<script>
+  function changeDepartment(department_id) {
+    $.ajax({
+      url: "{{ route('admin.users.changeDepartment', ['department_id' => '']) }}/" + department_id,
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        var managerSelect = $('select[name="manager_id"]');
+        managerSelect.empty();
+        managerSelect.append('<option label="--Manager--"></option>');
+        $.each(response, function(index, manager) {
+          managerSelect.append('<option value="' + manager.user_id + '">' + manager.username + '</option>');
+        });
+      }
+    })
+  }
+</script>
 @endsection

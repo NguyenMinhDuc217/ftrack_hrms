@@ -13,6 +13,7 @@
 
   @include('admin.partials._head')
   @stack('styles') {{-- For page-specific CSS --}}
+  <script src="{{ asset('admin/assets/js/jquery.min.js') }}"></script>
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
@@ -29,15 +30,15 @@
         <div class="page-block">
           <div class="row align-items-center">
             <div class="col-md-12">
-              <div class="page-header-title">
+              <!-- <div class="page-header-title">
                 <h5 class="m-b-10">@yield('page_title', 'Home')</h5>
-              </div>
+              </div> -->
               <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
                 @hasSection('breadcrumb_items')
                     @yield('breadcrumb_items')
                 @else
-                    <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li>
+                    <!-- <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li> -->
                     <li class="breadcrumb-item" aria-current="page">@yield('page_title', 'Home')</li>
                 @endif
               </ul>

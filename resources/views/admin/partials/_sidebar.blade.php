@@ -21,6 +21,12 @@
             <span class="pc-mtext">Users</span>
           </a>
         </li>
+        <li class="pc-item">
+          <a href="{{ route('admin.departments') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-building-skyscraper"></i></span>
+            <span class="pc-mtext">Departments</span>
+          </a>
+        </li>
 
         <!-- <li class="pc-item pc-caption">
           <label>UI Components</label>

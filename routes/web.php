@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminDepartmentController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -40,5 +41,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super-admin'])
     // Add more admin-specific routes here (e.g., users, products, settings)
     Route::get('/users', [AdminUserController::class, 'index'])->name('users');
     Route::get('/users/{user_id}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::post('/users/{user_id}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::get('/changeDepartment/{department_id?}', [AdminUserController::class, 'changeDepartment'])->name('users.changeDepartment');
+
+    Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('departments');
+
 
 });

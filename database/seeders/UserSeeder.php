@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $faker = app(\Faker\Generator::class);
+        $department_ids = DB::table('departments')->pluck('department_id')->toArray() ?? [1,2];
 
         for ($i = 2; $i < 10; $i++) {
             DB::table('users')->insert([
@@ -30,7 +31,7 @@ class UserSeeder extends Seeder
                'gender' => $faker->randomElement(['Male', 'Female']),
                'date_of_birth' => $faker->dateTimeBetween('-50 years', '-18 years'),
                'hire_date' => $faker->dateTimeBetween('-10 years', 'now'),
-               'department_id' => rand(1,2),
+               'department_id' => $faker->randomElement($department_ids),
                'manager_id' => rand(1,10),
                'document_id' => rand(1,10),
                'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
