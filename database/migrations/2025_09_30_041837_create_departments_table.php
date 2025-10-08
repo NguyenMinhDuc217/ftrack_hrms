@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('department_id');
             $table->string('department_name')->nullable();
             $table->string('description')->nullable();
+            $table->string('type',50)->nullable();
             $table->string('status',50)->nullable();
             $table->timestamps();
         });
