@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\EmploymentType;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -16,68 +18,249 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
-         $permissions = [
-            'articles.view',
-            'articles.create',
-            'articles.edit',
-            'articles.publish',
-            'articles.delete',
+        /** @var Faker $faker */
+        $faker = app(Faker::class);
+
+
+        // Xóa cache permission/role trước khi seed
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
+        $guard = 'web';
+
+        /**
+         * ===========================================================
+         * 1) KHAI BÁO PERMISSIONS
+         * ===========================================================
+         */
+
+        // Domain permissions
+        $domainPermissions = [
+            // Users
             'users.view',
-            'users.manage',
+            'users.create',
+            'users.edit',
+            'users.delete',
+            'users.manage_status',
+            'users.reset_password',
+            'users.assign_role',
+
+            // Departments
+            'departments.view',
+            'departments.create',
+            'departments.edit',
+            'departments.delete',
+
+            // User Documents
+            'user_documents.view',
+            'user_documents.upload',
+            'user_documents.edit',
+            'user_documents.delete',
+            'user_documents.approve',
+            'user_documents.download',
+
+            // Job Management
+            'jobs.view',
+            'jobs.create',
+            'jobs.edit',
+            'jobs.delete',
+            'jobs.publish',
+            'jobs.archive',
+
+            // Applications
+            'applications.view',
+            'applications.manage',
+            'applications.approve',
+            'applications.reject',
+            'applications.delete',
+
+            // Area Applications
+            'area_applications.view',
+            'area_applications.create',
+            'area_applications.edit',
+            'area_applications.delete',
+
+            // System & Settings
+            'system.view_logs',
+            'system.manage_settings',
+            'system.manage_permissions',
+            'system.backup',
+            'system.restore',
+
+
+            // Menu permissions (để điều khiển hiển thị menu)
+            'menu.dashboard',
+            'menu.users',
+            'menu.departments',
+            'menu.jobs',
+            'menu.applications',
+            'menu.user_documents',
+            'menu.area_applications',
+            'menu.reports',
+            'menu.settings',
         ];
 
-        foreach ($permissions as $p) {
-            Permission::firstOrCreate(['name' => $p, 'guard_name' => 'web']);
+
+
+        // Tạo tất cả permissions (domain + menu)
+        $allPermissions = array_values(array_unique($domainPermissions));
+        foreach ($allPermissions as $perm) {
+            Permission::firstOrCreate(['name' => $perm, 'guard_name' => $guard]);
         }
 
-        // 2) Tạo roles và gán permissions cho role
-        $writer = Role::firstOrCreate(['name' => 'writer']);
-        $writer->syncPermissions([
-            'articles.view',
-            'articles.create',
-            'articles.edit',
-        ]);
+        /**
+         * ===========================================================
+         * 2) KHAI BÁO ROLE & GÁN PERMISSIONS
+         * ===========================================================
+         */
 
-        $editor = Role::firstOrCreate(['name' => 'editor']);
-        $editor->syncPermissions([
-            'articles.view',
-            'articles.edit',
-            'articles.publish',
-        ]);
+        // a) super-admin: full quyền (domain + menu)
+        $superAdminRole = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => $guard]);
+        $superAdminRole->syncPermissions($allPermissions);
 
-        $admin = Role::firstOrCreate(['name' => 'admin']);
-        $admin->syncPermissions($permissions); // full quyền ở trên
+        // b) admin: giống super-admin (tuỳ bạn có thể thu hẹp sau)
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => $guard]);
+        $adminRole->syncPermissions($allPermissions);
 
-        $superAdmin = Role::firstOrCreate(['name' => 'super-admin']);
-        // super-admin có thể được handle qua Gate::before (tuỳ bạn, ví dụ dưới)
+        // c) HR Manager: quyền quản lý tuyển dụng (không có system.* & menu.settings)
+        $hrManagerPermissions = [
+            // Users
+            'users.view',
+            'users.create',
+            'users.edit',
+            'users.manage_status',
 
-        // 3) (Tuỳ chọn) Tạo vài user mẫu & gán role
-        // Giả sử bạn có UserFactory đã hoạt động
-        if (User::count() === 0) {
-            $u1 = User::factory()->create([
-                'name' => 'Alice Writer',
-                'email' => 'writer@example.com',
-            ]);
-            $u1->assignRole('writer');
+            // Departments
+            'departments.view',
+            'departments.create',
+            'departments.edit',
 
-            $u2 = User::factory()->create([
-                'name' => 'Evan Editor',
-                'email' => 'editor@example.com',
-            ]);
-            $u2->assignRole('editor');
+            // User Documents
+            'user_documents.view',
+            'user_documents.upload',
+            'user_documents.edit',
+            'user_documents.delete',
+            'user_documents.approve',
+            'user_documents.download',
 
-            $u3 = User::factory()->create([
-                'name' => 'Andy Admin',
-                'email' => 'admin@example.com',
-            ]);
-            $u3->assignRole('admin');
+            // Job
+            'jobs.view',
+            'jobs.create',
+            'jobs.edit',
+            'jobs.delete',
+            'jobs.publish',
+            'jobs.archive',
 
-            $u4 = User::factory()->create([
-                'name' => 'Sam Super',
-                'email' => 'super@example.com',
-            ]);
-            $u4->assignRole('super-admin');
+            // Applications
+            'applications.view',
+            'applications.manage',
+            'applications.approve',
+            'applications.reject',
+            'applications.delete',
+
+            // Area Applications
+            'area_applications.view',
+            'area_applications.create',
+            'area_applications.edit',
+
+            // Menu
+            'menu.dashboard',
+            'menu.jobs',
+            'menu.applications',
+            'menu.user_documents',
+            'menu.departments',
+            'menu.reports',
+        ];
+        $hrManager = Role::firstOrCreate(['name' => 'hr_manager', 'guard_name' => $guard]);
+        $hrManagerUser = User::firstOrCreate(
+            ['email' => 'hr@example.com'],
+            [
+                'username'       => 'hr_management',
+                'first_name'     => 'HR',
+                'last_name'      => '(test)',
+                'password'       => Hash::make('password'),
+                'phone_number'   => $faker->numerify('09########'),
+                'gender'         => 'Female',
+                'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
+                'department_id'  => 1,
+                'manager_id'     => 1,
+                'document_id'    => 1,
+                'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
+                'applicant'      => 0,
+                'status'         => 'Active',
+            ]
+        );
+
+        if (!$hrManagerUser->hasRole($hrManager->name)) {
+            $hrManagerUser->assignRole($hrManager);
+        }
+
+        $hrManager->syncPermissions($hrManagerPermissions);
+
+        // d) user: quyền cơ bản (own-data) + menu tối thiểu
+        $userPermissions = [
+            // Users (own)
+            'users.view',
+            'users.edit',
+
+            // Departments
+            'departments.view',
+
+            // User Documents (own)
+            'user_documents.view',
+            'user_documents.upload',
+            'user_documents.edit',
+            'user_documents.delete',
+            'user_documents.download',
+
+            // Jobs & Applications (own)
+            'jobs.view',
+            'applications.view',
+
+            // Area Applications
+            'area_applications.view',
+
+            // Menu
+            'menu.dashboard',
+            'menu.jobs',
+            'menu.applications',
+            'menu.user_documents',
+            'menu.departments',
+        ];
+        $userRole = Role::firstOrCreate(['name' => 'user', 'guard_name' => $guard]);
+        $userRole->syncPermissions($userPermissions);
+
+        /**
+         * ===========================================================
+         * 3) TẠO SUPER ADMIN USER MẶC ĐỊNH & GÁN ROLE
+         * ===========================================================
+         */
+
+        $superAdminUser = User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'username'       => 'admin',
+                'first_name'     => 'Admin',
+                'last_name'      => 'Super',
+                'password'       => Hash::make('password'),
+                'phone_number'   => $faker->numerify('09########'),
+                'gender'         => 'Female',
+                'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
+                'department_id'  => 1,
+                'manager_id'     => 1,
+                'document_id'    => 1,
+                'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
+                'applicant'      => 0,
+                'status'         => 'Active',
+            ]
+        );
+
+        if (!$superAdminUser->hasRole($superAdminRole->name)) {
+            $superAdminUser->assignRole($superAdminRole);
+        }
+
+        // Clear cache lần cuối để chắc chắn ghi nhận thay đổi
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
-}
 }

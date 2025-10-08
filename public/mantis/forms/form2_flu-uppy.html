@@ -722,11 +722,7 @@
     <footer class="pc-footer">
       <div class="footer-wrapper container-fluid">
         <div class="row">
-          <div class="col-sm my-1">
-            <p class="m-0"
-              >Mantis &#9829; crafted by Team <a href="https://themeforest.net/user/codedthemes" target="_blank">Codedthemes</a> Distributed by <a href="https://themewagon.com/">ThemeWagon</a>.</p
-            >
-          </div>
+
           <div class="col-auto my-1">
             <ul class="list-inline footer-link mb-0">
               <li class="list-inline-item"><a href="../index.html">Home</a></li>
@@ -765,7 +761,7 @@
 
 <script>font_change("Public-Sans");</script>
 
-    
+
  <div class="offcanvas pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">
   <div class="offcanvas-header bg-primary">
     <h5 class="offcanvas-title text-white">Mantis Customizer</h5>
@@ -963,14 +959,14 @@
           (file, response) => {
               const url = response.uploadURL
               const fileName = file.name
-  
+
               const li = document.createElement('li')
               const a = document.createElement('a')
               a.href = url
               a.target = '_blank'
               a.appendChild(document.createTextNode(fileName))
               li.appendChild(a)
-  
+
               document.querySelector(elForUploadedFiles).appendChild(li)
           }
       (function () {
@@ -1024,7 +1020,7 @@
               target: Dashboard
           });
       })();
-  
+
       (function () {
           var id = '#pc-uppy-6';
           var options = {
@@ -1077,7 +1073,7 @@
               target: Dashboard
           });
       })();
-  
+
       (function () {
           const pc_uppy_3 = new Uppy.Uppy({ debug: true, autoProceed: true })
           pc_uppy_3
@@ -1086,7 +1082,7 @@
               .use(ProgressBar, { target: '.pc-uppy-3 .for-ProgressBar', hideAfterFinish: false })
               .on('upload-success', onUploadSuccess('.pc-uppy-3 .uploaded-files ol'))
       })();
-  
+
       (function () {
           const pc_uppy_4 = new Uppy.Uppy({ debug: true, autoProceed: false })
           pc_uppy_4
@@ -1094,7 +1090,7 @@
               .use(Tus, { endpoint: 'https://tusd.tusdemo.net/files/' })
               .use(ProgressBar, { target: '.pc-uppy-4 .for-ProgressBar', hideAfterFinish: false })
               .on('upload-success', onUploadSuccess('.pc-uppy-4 .uploaded-files ol'))
-  
+
           const uploadBtn = document.querySelector('.pc-uppy-4 button.upload-button')
           uploadBtn.addEventListener('click', function () {
               pc_uppy_4.upload()

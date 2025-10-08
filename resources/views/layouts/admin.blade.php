@@ -19,7 +19,7 @@
 <!-- [Body] Start -->
 <body data-pc-preset="preset-1" data-pc-direction="ltr" data-pc-theme="light">
   @include('admin.partials._preloader')
-  @include('admin.partials._sidebar')
+ <x-admin.sidebar />
   @include('admin.partials._header')
 
   <!-- [ Main Content ] start -->

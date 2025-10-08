@@ -115,7 +115,7 @@
                   <label class="form-label">Status</label>
                   <select name="status" class="form-control">
                     <option value="*">--Status--</option>
-                    @foreach($statuses as $status)         
+                    @foreach($statuses as $status)
                       <option value="{{ $status }}" @selected($user->status->value == $status)>
                           {{ $status }}
                       </option>
@@ -129,7 +129,7 @@
               </div>
             </form>
           </div>
-              
+
         </div>
         <!-- [ sample-page ] end -->
       </div>
