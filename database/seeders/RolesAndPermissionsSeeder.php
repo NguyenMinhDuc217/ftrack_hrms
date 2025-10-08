@@ -18,6 +18,10 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
+        /** @var Faker $faker */
+        $faker = app(Faker::class);
+
+
         // Xóa cache permission/role trước khi seed
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
@@ -167,6 +171,30 @@ class RolesAndPermissionsSeeder extends Seeder
             'menu.reports',
         ];
         $hrManager = Role::firstOrCreate(['name' => 'hr_manager', 'guard_name' => $guard]);
+        $hrManagerUser = User::firstOrCreate(
+            ['email' => 'hr@example.com'],
+            [
+                'username'       => 'hr_management',
+                'first_name'     => 'HR',
+                'last_name'      => '(test)',
+                'password'       => Hash::make('password'),
+                'phone_number'   => $faker->numerify('09########'),
+                'gender'         => 'Female',
+                'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
+                'department_id'  => 1,
+                'manager_id'     => 1,
+                'document_id'    => 1,
+                'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
+                'applicant'      => 0,
+                'status'         => 'Active',
+            ]
+        );
+
+        if (!$hrManagerUser->hasRole($hrManager->name)) {
+            $hrManagerUser->assignRole($hrManager);
+        }
+
         $hrManager->syncPermissions($hrManagerPermissions);
 
         // d) user: quyền cơ bản (own-data) + menu tối thiểu
@@ -207,8 +235,6 @@ class RolesAndPermissionsSeeder extends Seeder
          * 3) TẠO SUPER ADMIN USER MẶC ĐỊNH & GÁN ROLE
          * ===========================================================
          */
-        /** @var Faker $faker */
-        $faker = app(Faker::class);
 
         $superAdminUser = User::firstOrCreate(
             ['email' => 'admin@example.com'],

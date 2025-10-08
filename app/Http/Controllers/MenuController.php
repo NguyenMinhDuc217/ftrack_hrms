@@ -9,7 +9,7 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menus = Menu::whereNull('parent_id')->with('children')->orderBy('order')->get();
-        return view('layouts.menu', compact('menus'));
+        $menus = Menu::whereNull('parent_id')->with('children')->orderBy('id')->get();
+        return view('layouts.admin', ['menus' => $menus]);
     }
 }
