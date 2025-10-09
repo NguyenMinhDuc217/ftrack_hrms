@@ -28,8 +28,11 @@ class RolesAndPermissionsSeeder extends Seeder
         $guard = 'web';
 
         $menu_permission = [
-            'admin.dashboard',
-            'admin.user',
+            'dashboard.index',
+            'user.index',
+            'role.index',
+            'permission.index',
+            'menu.index',
         ];
 
         foreach ($menu_permission as $p) {
@@ -39,8 +42,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $super_admin        = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => $guard]);
         $hr_manager         = Role::firstOrCreate(['name' => 'hr_manager', 'guard_name' => $guard]);
 
-        $super_admin->syncPermissions(['admin.dashboard', 'admin.user']);
-        $hr_manager->syncPermissions(['admin.user']);
+        $super_admin->syncPermissions(['dashboard.index', 'user.index', 'role.index','permission.index','menu.index']);
+        $hr_manager->syncPermissions(['user.index']);
 
 
         $superAdminUser = User::firstOrCreate(

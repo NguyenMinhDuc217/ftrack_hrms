@@ -69,29 +69,4 @@ class Menu extends Model
     {
         return $query->whereNull('parent_id');
     }
-
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('position')->orderBy('id');
-    }
-
-    public function getLinkAttribute(): ?string
-    {
-        if ($this->type === 'route' && $this->route_name) {
-            try {
-                return route($this->route_name);
-            } catch (\Throwable $e) {
-                return null; // route chưa tồn tại
-            }
-        }
-        if ($this->type === 'url') {
-            return $this->url;
-        }
-        return null;
-    }
-
-    public function isClickable(): bool
-    {
-        return in_array($this->type, ['route', 'url'], true);
-    }
 }

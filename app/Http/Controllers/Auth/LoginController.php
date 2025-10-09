@@ -29,7 +29,7 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            if ($user->hasRole('super-admin') || $user->hasRole('admin')) {
+            if ($user->hasRole('super_admin') || $user->hasRole('hr_manager')) {
                 return redirect()->intended(route('admin.dashboard'));
             }
 
