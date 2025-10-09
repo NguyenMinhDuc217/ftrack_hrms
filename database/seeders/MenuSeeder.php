@@ -62,10 +62,10 @@ class MenuSeeder extends Seeder
 
             // Menus
             [
-                'label'      => 'Permission',
-                'slug'       => 'permission',
+                'label'      => 'Menus',
+                'slug'       => 'menus',
                 'type'       => 'route',
-                'route_name' => 'admin.permission.index',
+                'route_name' => 'admin.menu.index',
                 'icon'       => 'ti ti-key',
                 'position'   => 4,
                 'created_at' => now(),
