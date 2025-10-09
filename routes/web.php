@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
+use App\Http\Controllers\Admin\AdminMennuController;
+use App\Http\Controllers\Admin\AdminPermissionController;
+use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -28,14 +31,20 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin Routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super-admin|hr_manager'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|hr_manager'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/users', [AdminUserController::class, 'index'])->name('users');
     Route::get('/users/{user_id}', [AdminUserController::class, 'show'])->name('users.show');
     Route::post('/users/{user_id}', [AdminUserController::class, 'update'])->name('users.update');
     Route::get('/changeDepartment/{department_id?}', [AdminUserController::class, 'changeDepartment'])->name('users.changeDepartment');
-
     Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('departments');
 
+    //route roles
+    Route::get('/roles', [AdminRoleController::class, 'index'])->name('role.index');
 
+    //route permissions
+    Route::get('/permissions', [AdminPermissionController::class, 'index'])->name('permission.index');
+
+    //Route Menu
+    Route::get('/menus', [AdminMennuController::class, 'index'])->name('menu.index');
 });
