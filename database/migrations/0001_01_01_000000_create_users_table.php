@@ -26,6 +26,7 @@ return new class extends Migration
             $table->bigInteger('department_id')->nullable();
             $table->bigInteger('manager_id')->nullable();
             $table->bigInteger('document_id')->nullable();
+            $table->bigInteger('role_id')->default(3);
             $table->string('employment_type', 255)->nullable();
             $table->boolean('applicant')->default(0);
             $table->string('status', 100)->default('Unverified');
