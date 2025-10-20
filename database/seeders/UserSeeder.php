@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\EmploymentType;
+use App\Enums\Gender;
 use App\Enums\UserStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -25,10 +26,10 @@ class UserSeeder extends Seeder
                'username' => $faker->userName,
                'first_name' => $faker->firstName,
                'last_name' => $faker->lastName,
-               'email' => $faker->unique()->email,
+               'email' => $faker->unique()->safeEmail(),
                'password' => Hash::make('password'),
-               'phone_number' => rand(1000000000, 9999999999),
-               'gender' => $faker->randomElement(['Male', 'Female']),
+               'phone_number' => $faker->numerify('09########'),
+               'gender' => $faker->randomElement(Gender::cases())->value,
                'date_of_birth' => $faker->dateTimeBetween('-50 years', '-18 years'),
                'hire_date' => $faker->dateTimeBetween('-10 years', 'now'),
                'department_id' => $faker->randomElement($department_ids),

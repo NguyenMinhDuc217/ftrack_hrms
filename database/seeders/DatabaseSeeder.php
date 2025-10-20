@@ -15,8 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartmentSeeder::class,
             RolesAndPermissionsSeeder::class,
-            MenuSeeder::class
+            MenuSeeder::class,
+            UserSeeder::class
         ]);
-        User::factory(100)->create();
+        // User::factory(100)->create();
     }
 }

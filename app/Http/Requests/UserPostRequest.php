@@ -2,9 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\EmploymentType;
+use App\Enums\UserStatus;
+use App\Enums\Gender;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class UserPostRequest extends FormRequest
 {
@@ -22,7 +26,7 @@ class UserPostRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
 
-    protected $stopOnFirstFailure = true; // Dừng validation sau lỗi đầu tiên
+    // protected $stopOnFirstFailure = true; // Dừng validation sau lỗi đầu tiên
 
     protected function failedValidation(Validator $validator)
     {
@@ -33,6 +37,8 @@ class UserPostRequest extends FormRequest
     {
         return [
             'username' => 'required|string|max:255',
+            'first_name' => 'string|max:255',
+            'last_name' => 'string|max:255',
             'email' => [ 
                 'required',
                 'email',
@@ -42,20 +48,19 @@ class UserPostRequest extends FormRequest
             '' => 'numeric|digits:11|unique:users',
             'phone_number' => [ 
                 'numeric',
-                'digits:11',
+                'digits:10',
                 Rule::unique('users', 'phone_number')->ignore(request()->route('user_id'), 'user_id'), 
             ],
-            'first_name' => 'string|max:255',
-            'last_name' => 'string|max:255',
-            'gender' => 'string|max:100',
+            'gender' => ['string','max:100', new Enum(Gender::class)],
             'date_of_birth' => 'date|before:today',
             'hire_date' => 'date|before_or_equal:today',
             'department_id' => 'exists:departments,department_id',
             'manager_id' => 'exists:users,user_id',
-            'document_id' => 'exists:documents,document_id',
-            'employment_type' => 'string|max:255|enums:EmploymentType::cases()->values()',
+            // 'document_id' => 'exists:documents,document_id',
+            'document_id' => 'integer',
+            'employment_type' => ['string','max:255',new Enum(EmploymentType::class)],
             'applicant' => 'boolean',
-            'status' => 'string|max:100|enums:UserStatus::cases()->values()',
+            'status' => ['string','max:100', new Enum(UserStatus::class)],
         ];
     }
 
@@ -64,12 +69,21 @@ class UserPostRequest extends FormRequest
 
         return [
             'username.required' => 'The username field is required.',
+            'username.string' => 'The username must be a string.',
+            'username.max' => 'The username may not be greater than 255 characters.',
             'email.required' => 'The email field is required.',
             'email.email' => 'The email must be a valid email address.',
             'email.unique' => 'The email has already been taken.',
             'phone_number.numeric' => 'The phone number must be a number.',
             'phone_number.digits' => 'The phone number must be exactly 11 digits.',
             'phone_number.unique' => 'The phone number has already been taken.',
+            'first_name.string' => 'The first name must be a string.',
+            'first_name.max' => 'The first name may not be greater than 255 characters.',
+            'last_name.string' => 'The last name must be a string.',
+            'last_name.max' => 'The last name may not be greater than 255 characters.',
+            'gender.string' => 'The gender must be a string.',
+            'gender.max' => 'The gender may not be greater than 100 characters.',
+            'gender.enum' => 'The gender is invalid.',
             'date_of_birth.date' => 'The date of birth must be a valid date.',
             'date_of_birth.before' => 'The date of birth must be a date before today.',
             'hire_date.date' => 'The hire date must be a valid date.',

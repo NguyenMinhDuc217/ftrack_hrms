@@ -11,7 +11,7 @@
           <div class="card table-card">
             <div class="card-body">
               <div class="text-end p-4 pb-0">
-                <a href="#" class="btn btn-success d-inline-flex align-item-center" data-bs-toggle="modal" data-bs-target="#user-edit_add-modal">
+                <a href="{{ route('admin.users.create') }}" class="btn btn-success d-inline-flex align-item-center">
                   <i class="ti ti-plus f-18"></i> Add User
                 </a>
               </div>
@@ -82,16 +82,23 @@
 
                   {{ $users->links('vendor.pagination.bootstrap-5') }}
 
-            <!-- <div class="card-footer">
-              <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                  {{ $users->links() }}
-                </ul>
-              </nav>
-            </div> -->
           </div>
         </div>
         <!-- [ sample-page ] end -->
       </div>
       <!-- [ Main Content ] end -->
+      <script>
+        @if(session('success'))
+        Toast.fire({
+          icon: "success",
+          title: "{{ session('success') }}"
+        });
+        @endif
+        @if(session('error'))
+          Toast.fire({
+            icon: 'error',
+            title: "{{ session('error') }}"
+          });
+        @endif
+      </script>
 @endsection

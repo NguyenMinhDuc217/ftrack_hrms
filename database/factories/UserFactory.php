@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use App\Enums\EmploymentType;
+use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -24,6 +26,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $department_ids = DB::table('departments')->pluck('department_id')->toArray() ?? [1,2];
         return [
             'username' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),

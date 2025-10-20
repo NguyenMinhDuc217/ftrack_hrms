@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum UserStatus: string
 {
-    case ACTIVE = 'Active';
-    case EXPIRED = 'Expired';
-    case UNVERIFIED = 'Unverified';
+    case ACTIVE = 'active';
+    case EXPIRED = 'expired';
+    case UNVERIFIED = 'unverified';
 
     public function getLabelData(): array
     {

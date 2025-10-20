@@ -13,3 +13,5 @@
 <!-- [Template CSS Files] -->
 <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}" id="main-style-link">
 <link rel="stylesheet" href="{{ asset('admin/assets/css/style-preset.css') }}">
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="{{ asset('admin/assets/css/plugins/sweetalert2.css') }}">

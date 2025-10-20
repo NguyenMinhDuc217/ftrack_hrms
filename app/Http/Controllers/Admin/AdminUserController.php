@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\EmploymentType;
 use App\Enums\Gender;
 use App\Enums\UserStatus;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use App\Http\Requests\UserPostRequest;
 use App\Models\Department;
 use App\Models\User;
@@ -19,6 +19,34 @@ class AdminUserController extends Controller
         return view('admin.user.index', ['users' => $users]);
     }
 
+    public function create()
+    {
+        $users = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value)->get();
+        $departments = Department::where('status', 'active')->get();
+        $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
+            return [$type->value => $type->getLabelData()['label']];
+        })->toArray();
+        $statuses = collect(UserStatus::cases())->mapWithKeys(function ($status) {
+            return [$status->value => $status->getLabelData()['label']];
+        })->toArray();
+        $genders = Gender::cases();
+        return view(
+            'admin.user.add',
+            [
+                'users' => $users,
+                'departments' => $departments,
+                'employment_types' => $employment_types,
+                'statuses' => $statuses,
+                'genders' => $genders,
+            ]
+        );
+    }
+    public function store(UserPostRequest $request)
+    {
+        $data = $request->validated();
+        dd($data);
+    }
+
     public function show($user_id)
     {
         $user = User::with('department')->where('user_id', $user_id)->first();
@@ -26,8 +54,15 @@ class AdminUserController extends Controller
         ->where('user_id', '!=', $user_id)->get();
 
         $departments = Department::where('status', 'active')->get();
-        $employment_types = array_column(EmploymentType::cases(), 'value');
-        $statuses = array_column(UserStatus::cases(), 'value');
+
+        $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
+            return [$type->value => $type->getLabelData()['label']];
+        })->toArray();
+
+        $statuses = collect(UserStatus::cases())->mapWithKeys(function ($status) {
+            return [$status->value => $status->getLabelData()['label']];
+        })->toArray();
+
         $genders = Gender::cases();
 
         return view(
@@ -45,16 +80,14 @@ class AdminUserController extends Controller
 
     public function update(UserPostRequest $request, $user_id): RedirectResponse
     {
-        dd($request->validated());
         $user = User::where('user_id', $user_id)->first();
-        dd($user);
 
         if (!$user) {
-            return redirect()->back()->with('error', 'User not found.');
+            return redirect()->route('admin.users.update', ['user_id' => $user_id])->with('error', 'User not found.');
         }
 
         $data = $request->validated();
-
+            
         // Cập nhật các trường của user
         $user->username = $data['username'];
         $user->email = $data['email'];

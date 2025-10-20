@@ -13,7 +13,10 @@
 
   @include('admin.partials._head')
   @stack('styles') {{-- For page-specific CSS --}}
+  @include('admin.partials._scripts')
+
   <script src="{{ asset('admin/assets/js/jquery.min.js') }}"></script>
+  <!-- @vite(['resources/js/app.js']) -->
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
@@ -55,7 +58,6 @@
   <!-- [ Main Content ] end -->
 
   @include('admin.partials._footer')
-  @include('admin.partials._scripts')
   @stack('scripts') {{-- For page-specific JavaScript --}}
 
 </body>
