@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
         // Define a gate for admin access
 
         Gate::before(function ($user, $ability) {
-            return ($user->hasRole('super-admin') || $user->hasRole('hr_manager')) ? true : null;
+            return ($user->hasRole('super_admin')) ? true : null;
         });
     }
 }

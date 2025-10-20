@@ -30,6 +30,11 @@ class AdminUserController extends Controller
         $statuses = array_column(UserStatus::cases(), 'value');
         $genders = Gender::cases();
 
+        $breadcrumbs = [
+            ['label' => 'Users', 'url' => route("admin.users")],
+            ['label' => 'Edit User: ' ."{$user->user_id} - {$user->username}", 'url' => route("admin.users.show", $user_id)],
+        ];
+
         return view(
             'admin.user.edit',
             [
@@ -38,7 +43,8 @@ class AdminUserController extends Controller
                 'departments' => $departments,
                 'employment_types' => $employment_types,
                 'statuses' => $statuses,
-                'genders' => $genders
+                'genders' => $genders,
+                'breadcrumbs' => $breadcrumbs,
             ]
         );
     }

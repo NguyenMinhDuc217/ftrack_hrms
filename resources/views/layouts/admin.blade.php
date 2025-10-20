@@ -35,12 +35,22 @@
               </div> -->
               <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                @hasSection('breadcrumb_items')
-                    @yield('breadcrumb_items')
+                @isset($breadcrumbs)
+                  @foreach ($breadcrumbs as $breadcrumb)
+                    {{-- Check if it's the last item --}}
+                    @if ($loop->last)
+                        <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb['label'] }}</li>
+                    @else
+                        <li class="breadcrumb-item"><a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a></li>
+                    @endif
+                  @endforeach
                 @else
-                    <!-- <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li> -->
-                    <li class="breadcrumb-item" aria-current="page">@yield('page_title', 'Home')</li>
-                @endif
+                  {{-- Fallback if no specific breadcrumbs are provided --}}
+                  {{-- This will show just 'Home' and the page title as the last item --}}
+                  @hasSection('page_title')
+                    <li class="breadcrumb-item active" aria-current="page">@yield('page_title')</li>
+                  @endif
+                @endisset
               </ul>
             </div>
           </div>
