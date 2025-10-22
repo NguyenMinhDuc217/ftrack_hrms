@@ -16,3 +16,50 @@
 <script>layout_rtl_change('false');</script>
 <script>preset_change("preset-1");</script>
 <script>font_change("Public-Sans");</script>
+
+<script>
+// using swal2 to show confirmation dialog and ajax to delete entity
+// url is the delete url
+// entity_name is the name of the entity to be deleted (for display purpose)
+function ajaxDelete(url, entity_name) {
+    const delete_confirm = `{{ __('common.delete_confirm_title') }}`;
+    const delete_confirm_text = `{{ __('common.delete_confirm_text') }}`;
+	Swal.fire({
+		title: delete_confirm,
+		text: delete_confirm_text,
+		icon: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#d33",
+		cancelButtonColor: "#3085d6",
+		confirmButtonText: `{{ __('common.button_confirm') }}`,
+		cancelButtonText: `{{ __('common.button_cancel') }}`,
+		showLoaderOnConfirm: true, // 
+	}).then((result) => {
+		// reload page if deleted
+		if (result.isConfirmed) {
+			$.ajax({
+				url: url,
+				type: "POST",
+				data: {},
+				success: function (response) {
+					Swal.fire(
+						"Deleted!",
+						`{{ __('common.delete_success_text') }}`,
+						"success"
+					).then(() => {
+						location.reload();
+					});
+				},
+				error: function (xhr) {
+					Swal.fire(
+						"Error!",
+						`{{ __('common.delete_error_text') }}`,
+						"error"
+					);
+				},
+			});
+		}
+	});
+}
+
+</script>

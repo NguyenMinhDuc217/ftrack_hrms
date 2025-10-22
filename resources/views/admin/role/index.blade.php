@@ -11,7 +11,7 @@
           <div class="card table-card">
             <div class="card-body">
               <div class="text-end p-4 pb-0">
-                <a href="#" class="btn btn-success d-inline-flex align-item-center" data-bs-toggle="modal" data-bs-target="#user-edit_add-modal">
+                <a href="{{ route('admin.role.create') }}" class="btn btn-success d-inline-flex align-item-center" >
                   <i class="ti ti-plus f-18"></i> Add Role
                 </a>
               </div>
@@ -24,6 +24,7 @@
                       <th>Role Name</th>
                       <th>Created Time</th>
                       <th>Updated Time</th>
+                      <th class="text-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -38,6 +39,20 @@
                       <td>{{ $role->name }}</td>
                       <td>{{ $role->created_at }}</td>
                       <td>{{ $role->updated_at }}</td>
+                      <td class="text-center">
+                        <ul class="list-inline me-auto mb-0">
+                          <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Edit">
+                            <a href="{{ route('admin.role.edit', $role->id) }}" class="avtar avtar-xs btn-link-primary">
+                              <i class="ti ti-edit-circle f-18"></i>
+                            </a>
+                          </li>
+                          <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
+                            <a href="" class="avtar avtar-xs btn-link-danger">
+                              <i class="ti ti-trash f-18"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -49,4 +64,8 @@
         <!-- [ sample-page ] end -->
       </div>
       <!-- [ Main Content ] end -->
+
+<script>
+
+</script>
 @endsection

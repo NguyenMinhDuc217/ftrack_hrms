@@ -9,11 +9,14 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
 
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
+
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -40,7 +43,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('departments');
 
     //route roles
-    Route::get('/roles', [AdminRoleController::class, 'index'])->name('role.index');
+    Route::get('/roles',                    [AdminRoleController::class, 'index' ])->name('role.index');
+    Route::get('/roles/create',             [AdminRoleController::class, 'create'])->name('role.create');
+    Route::post('/roles/create',            [AdminRoleController::class, 'store' ])->name('role.store');
+    Route::get('/roles/edit/{id}',          [AdminRoleController::class, 'edit'  ])->name('role.edit');
+    Route::post('/roles/edit/{id}',         [AdminRoleController::class, 'update'])->name('role.update');
+    Route::post('/roles/delete/{id}',       [AdminRoleController::class, 'delete'])->name('role.delete');
 
     //route permissions
     Route::get('/permissions', [AdminPermissionController::class, 'index'])->name('permission.index');

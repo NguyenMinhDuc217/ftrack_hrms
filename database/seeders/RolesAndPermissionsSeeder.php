@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\EmploymentType;
 use App\Models\User;
+use Artisan;
 use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -37,6 +38,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.role.index',
             'admin.permission.index',
             'admin.menu.index',
+            'access-admin',
         ];
 
         foreach ($menu_permission as $p) {
@@ -57,6 +59,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.role.index',
             'admin.permission.index',
             'admin.menu.index',
+            'access-admin',
         ];
         $super_admin->syncPermissions($permissionAdmin);
         $admin->syncPermissions($permissionAdmin);
@@ -65,6 +68,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.users.update',
             'admin.users.changeDepartment',
             'admin.users',
+            'access-admin',
         ]);
 
 
@@ -136,6 +140,8 @@ class RolesAndPermissionsSeeder extends Seeder
         );
 
         $hrManager->assignRole('hr_manager');
+
+        Artisan::call('permissions:sync-routes --assign-to-admin --middleware=check.permission');
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
