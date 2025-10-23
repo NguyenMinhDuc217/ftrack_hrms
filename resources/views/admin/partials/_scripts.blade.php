@@ -10,6 +10,7 @@
 <script src="{{ asset('admin/assets/js/pcoded.js') }}"></script>
 <script src="{{ asset('admin/assets/js/plugins/feather.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/jquery.min.js') }}"></script>
+<script src="{{ asset('admin/assets/js/plugins/sweetalert2.all.min.js') }}"></script>
 
 <script>layout_change('light');</script>
 <script>change_box_container('false');</script>
@@ -22,8 +23,8 @@
 // url is the delete url
 // entity_name is the name of the entity to be deleted (for display purpose)
 function ajaxDelete(url, entity_name) {
-    const delete_confirm = `{{ __('common.delete_confirm_title') }}`;
-    const delete_confirm_text = `{{ __('common.delete_confirm_text') }}`;
+    const delete_confirm = `{!! __('default.delete_confirm_title') !!}`;
+    const delete_confirm_text = `{!! __('default.delete_confirm_text') !!}`;
 	Swal.fire({
 		title: delete_confirm,
 		text: delete_confirm_text,
@@ -31,9 +32,10 @@ function ajaxDelete(url, entity_name) {
 		showCancelButton: true,
 		confirmButtonColor: "#d33",
 		cancelButtonColor: "#3085d6",
-		confirmButtonText: `{{ __('common.button_confirm') }}`,
-		cancelButtonText: `{{ __('common.button_cancel') }}`,
+		confirmButtonText: `{!! __('default.button_confirm') !!}`,
+		cancelButtonText: `{!! __('default.button_cancel') !!}`,
 		showLoaderOnConfirm: true, // 
+		reverseButtons: true,
 	}).then((result) => {
 		// reload page if deleted
 		if (result.isConfirmed) {
@@ -44,7 +46,7 @@ function ajaxDelete(url, entity_name) {
 				success: function (response) {
 					Swal.fire(
 						"Deleted!",
-						`{{ __('common.delete_success_text') }}`,
+						`{!! __('default.delete_success_text') !!}`,
 						"success"
 					).then(() => {
 						location.reload();
@@ -53,7 +55,7 @@ function ajaxDelete(url, entity_name) {
 				error: function (xhr) {
 					Swal.fire(
 						"Error!",
-						`{{ __('common.delete_error_text') }}`,
+						`{!! __('default.delete_error_text') !!}`,
 						"error"
 					);
 				},

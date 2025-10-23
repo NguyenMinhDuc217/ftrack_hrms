@@ -49,7 +49,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     Route::get('/roles/edit/{id}',          [AdminRoleController::class, 'edit'  ])->name('role.edit');
     Route::post('/roles/edit/{id}',         [AdminRoleController::class, 'update'])->name('role.update');
     Route::post('/roles/delete/{id}',       [AdminRoleController::class, 'delete'])->name('role.delete');
-
+    Route::put('roles/{role}/permissions',  [AdminRoleController::class, 'updatePermissions'])->name('role.permissions.update');
     //route permissions
     Route::get('/permissions', [AdminPermissionController::class, 'index'])->name('permission.index');
 

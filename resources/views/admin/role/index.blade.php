@@ -47,7 +47,7 @@
                             </a>
                           </li>
                           <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
-                            <a href="" class="avtar avtar-xs btn-link-danger">
+                            <a href="javascript:void(0);" onclick="ajaxDelete(`{{ route('admin.role.delete', $role->id) }}`, `{{ $role->name }}`); return 0;" class="avtar avtar-xs btn-link-danger">
                               <i class="ti ti-trash f-18"></i>
                             </a>
                           </li>

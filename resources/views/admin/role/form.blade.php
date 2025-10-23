@@ -36,6 +36,14 @@
             </form>
         </div>
     </div>
+    @if($action === 'edit' && isset($role) && !empty($can_edit_permission))
+        <hr>
+        <x-admin.permission-assign 
+            :role="$role" 
+            :allPermissions="$all_permissions" 
+            :assignedPermissions="$assigned_permissions" 
+        />
+    @endif
     <!-- [ sample-page ] end -->
 	</div>
 @endsection

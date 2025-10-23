@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class AdminRoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::all();
+        $user = auth()->guard()->user();
+        $user_role = $user->roles()->first();
+
+        $roles = Role::where('id', '>=', $user_role['id'])->get();
         return view('admin.role.index', ['roles' => $roles]);
     }
 
@@ -57,6 +61,23 @@ class AdminRoleController extends Controller
             return abort('404', $message);
         }
 
+        $user = auth()->guard()->user();
+        $user_role = $user->roles()->first();
+        $has_permision = auth()->guard()->user()->hasPermissionTo('admin.role.permissions.update');
+        $can_edit_current_role = $user_role['id'] < $role_id;
+
+        if (empty($can_edit_current_role)) {
+            return abort('403');
+        }
+
+        $data['can_edit_permission'] = $has_permision && $can_edit_current_role;
+
+        $data['all_permissions'] = Permission::all()->pluck('name'); 
+        
+        $data['assigned_permissions'] = $role->permissions->pluck('name')->toArray();
+
+
+
         $data['role'] = $role;
         $data['action'] = 'edit';
 
@@ -77,6 +98,26 @@ class AdminRoleController extends Controller
 
         return redirect(route('admin.role.index'))->with('success', __('role.updated_success'));
         // NOTE: A new key 'updated_success' should be added to the translation files for a success message after update.
+    }
+
+        /**
+     * Update the permissions for a specific role.
+     */
+    public function updatePermissions(Request $request, Role $role)
+    {
+        $validated = $request->validate([
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'string', // You might add |exists:permissions,name for strict validation
+        ]);
+
+        $role->syncPermissions($validated['permissions'] ?? []);
+
+        app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+        return response()->json([
+            'message' => __('role.permissions_updated_success'),
+            'permissions' => $role->permissions->pluck('name'),
+        ], 200);
     }
 
     public function delete(string $role_id, Request $request)
