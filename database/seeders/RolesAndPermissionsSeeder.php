@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\EmploymentType;
 use App\Models\User;
+use Artisan;
 use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -28,11 +29,16 @@ class RolesAndPermissionsSeeder extends Seeder
         $guard = 'web';
 
         $menu_permission = [
-            'dashboard.index',
-            'user.index',
-            'role.index',
-            'permission.index',
-            'menu.index',
+            'admin.dashboard',
+            'admin.users',
+            'admin.users.show',
+            'admin.users.update',
+            'admin.users.changeDepartment',
+            'admin.departments',
+            'admin.role.index',
+            'admin.permission.index',
+            'admin.menu.index',
+            'access-admin',
         ];
 
         foreach ($menu_permission as $p) {
@@ -40,13 +46,55 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         $super_admin        = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => $guard]);
+        $admin              = Role::firstOrCreate(['name' => 'admin', 'guard_name' => $guard]);
         $hr_manager         = Role::firstOrCreate(['name' => 'hr_manager', 'guard_name' => $guard]);
 
-        $super_admin->syncPermissions(['dashboard.index', 'user.index', 'role.index','permission.index','menu.index']);
-        $hr_manager->syncPermissions(['user.index']);
+        $permissionAdmin = [
+            'admin.dashboard',
+            'admin.users.show',
+            'admin.users.update',
+            'admin.users.changeDepartment',
+            'admin.users',
+            'admin.departments',
+            'admin.role.index',
+            'admin.permission.index',
+            'admin.menu.index',
+            'access-admin',
+        ];
+        $super_admin->syncPermissions($permissionAdmin);
+        $admin->syncPermissions($permissionAdmin);
+        $hr_manager->syncPermissions([
+            'admin.users.show',
+            'admin.users.update',
+            'admin.users.changeDepartment',
+            'admin.users',
+            'access-admin',
+        ]);
 
 
         $superAdminUser = User::firstOrCreate(
+            ['email' => 'superadmin@example.com'],
+            [
+                'username'       => 'admin',
+                'first_name'     => 'Admin',
+                'last_name'      => 'Super',
+                'password'       => Hash::make('password'),
+                'phone_number'   => $faker->numerify('09########'),
+                'gender'         => 'Female',
+                'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
+                'department_id'  => 1,
+                'manager_id'     => 1,
+                'document_id'    => 1,
+                'role_id'        => 1,
+                'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
+                'applicant'      => 0,
+                'status'         => 'Active',
+            ]
+        );
+        $superAdminUser->assignRole('super_admin');
+
+        $adminUser = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'username'       => 'admin',
@@ -67,7 +115,7 @@ class RolesAndPermissionsSeeder extends Seeder
             ]
         );
 
-        $superAdminUser->assignRole('super_admin');
+        $adminUser->assignRole('admin');
 
 
         $hrManager = User::firstOrCreate(
@@ -92,6 +140,8 @@ class RolesAndPermissionsSeeder extends Seeder
         );
 
         $hrManager->assignRole('hr_manager');
+
+        Artisan::call('permissions:sync-routes --assign-to-admin --middleware=check.permission');
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
     }

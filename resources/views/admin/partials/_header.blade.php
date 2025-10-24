@@ -55,6 +55,32 @@
             aria-haspopup="false"
             aria-expanded="false"
           >
+            <i class="ti ti-language"></i>
+            <img src="{{ asset('files/flags/'.(app()->getLocale()).'.svg') }}" alt="{{ app()->getLocale() }} icon" style="width:20px;">
+
+          </a>
+          <div class="dropdown-menu dropdown-menu-end pc-h-dropdown" style="max-width:50px;">
+            <div class="text-left ps-3">
+              <img src="{{ asset('files/flags/vi.svg') }}" alt="vi icon" style="width:20px;">
+              <a href="{{ route('language.switch',["locale"=>"vi"]) }}" class="link-primary">@lang('default.vi')</a>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="text-left ps-3">
+              <img src="{{ asset('files/flags/en.svg') }}" alt="en icon" style="width:20px;">
+              <a href="{{ route('language.switch',["locale"=>"en"]) }}" class="link-primary">@lang('default.en')</a>
+            </div>
+          
+          </div>
+        </li>
+        <li class="dropdown pc-h-item">
+          <a
+            class="pc-head-link dropdown-toggle arrow-none me-0"
+            data-bs-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-haspopup="false"
+            aria-expanded="false"
+          >
             <i class="ti ti-mail"></i>
           </a>
           <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">

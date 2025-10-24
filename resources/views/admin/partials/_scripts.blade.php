@@ -31,4 +31,49 @@
         toast.onmouseleave = Swal.resumeTimer;
         }
     });
+// using swal2 to show confirmation dialog and ajax to delete entity
+// url is the delete url
+// entity_name is the name of the entity to be deleted (for display purpose)
+function ajaxDelete(url, entity_name) {
+    const delete_confirm = `{!! __('default.delete_confirm_title') !!}`;
+    const delete_confirm_text = `{!! __('default.delete_confirm_text') !!}`;
+	Swal.fire({
+		title: delete_confirm,
+		text: delete_confirm_text,
+		icon: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#d33",
+		cancelButtonColor: "#3085d6",
+		confirmButtonText: `{!! __('default.button_confirm') !!}`,
+		cancelButtonText: `{!! __('default.button_cancel') !!}`,
+		showLoaderOnConfirm: true, // 
+		reverseButtons: true,
+	}).then((result) => {
+		// reload page if deleted
+		if (result.isConfirmed) {
+			$.ajax({
+				url: url,
+				type: "POST",
+				data: {},
+				success: function (response) {
+					Swal.fire(
+						"Deleted!",
+						`{!! __('default.delete_success_text') !!}`,
+						"success"
+					).then(() => {
+						location.reload();
+					});
+				},
+				error: function (xhr) {
+					Swal.fire(
+						"Error!",
+						`{!! __('default.delete_error_text') !!}`,
+						"error"
+					);
+				},
+			});
+		}
+	});
+}
+
 </script>
