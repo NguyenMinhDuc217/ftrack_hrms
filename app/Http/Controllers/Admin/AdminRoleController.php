@@ -28,6 +28,8 @@ class AdminRoleController extends Controller
         $data['page_title'] = __('role.page_title_create');
         $data['heading_title'] = __('role.heading_title_create');
 
+        $data['form_url'] = route('admin.role.store');
+
         $data['breadcrumbs'] = [
             // Note: The original code used 'role.heading_title_create' here, which now works
             ['label' => __('role.heading_title_create'), 'url' => route("admin.role.index")],
@@ -64,7 +66,7 @@ class AdminRoleController extends Controller
         $user = auth()->guard()->user();
         $user_role = $user->roles()->first();
         $has_permision = auth()->guard()->user()->hasPermissionTo('admin.role.permissions.update');
-        $can_edit_current_role = $user_role['id'] < $role_id;
+        $can_edit_current_role = $user_role['id'] <= $role_id;
 
         if (empty($can_edit_current_role)) {
             return abort('403');
@@ -84,16 +86,23 @@ class AdminRoleController extends Controller
         // Use translation keys
         $data['page_title'] = __('role.page_title_edit');
         $data['heading_title'] = __('role.heading_title_edit');
+        $data['form_url'] = route('admin.role.update', $role_id);
 
         return view('admin.role.form', $data);
     }
 
-    public function update(Request $request)
+    public function update(string $role_id, RoleRequest $request)
     {
-        $role = new Role();
-        $role->guard_name = 'web';
-        $role->name = $request->name;
+        $role = Role::findById($role_id);
 
+        if (empty($role)) {
+            // Use translation key, appending the ID for context
+            $message = __('role.not_found_id') . ' ' . $role_id;
+            return abort('404', $message);
+        }
+
+        $data = $request->safe();
+        $role->name = $data['name'];
         $role->save();
 
         return redirect(route('admin.role.index'))->with('success', __('role.updated_success'));

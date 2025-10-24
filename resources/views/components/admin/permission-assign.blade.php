@@ -1,5 +1,7 @@
 @props(['role', 'allPermissions', 'assignedPermissions'])
 
+<div class="col-12">
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">
@@ -34,7 +36,7 @@
 
                 @foreach($groupedPermissions as $group => $permissions)
                     <div class="col-md-4 mb-3">
-                        <div class="p-2 border rounded">
+                        <div class="p-2 border border-2 rounded h-100">
                             <div class="d-flex justify-content-between align-items-center pb-1">
                                 <h5 class="mb-2 text-capitalize">{{ $group }}</h5>
                                 <button type="button" 
@@ -72,6 +74,7 @@
         </form>
         <div class="permission-form-messages"></div>
     </div>
+</div>
 </div>
 
 {{-- JavaScript for AJAX submission --}}

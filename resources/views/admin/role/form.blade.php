@@ -11,7 +11,7 @@
             <div class="card-header">
                 <h3>{{ $heading_title }}</h3>
             </div>
-            <form action="{{ route('admin.role.store') }}" method="POST" class="form-horizontal">
+            <form action="{{ $form_url }}" method="POST" class="form-horizontal">
                 @csrf
                 @if ($errors->any())
                     <div class="alert alert-danger">
