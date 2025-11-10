@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,7 +17,7 @@ return new class extends Migration
             $table->string('username',100);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password',255);
+            $table->string('password',255)->default(Hash::make('password'));
             $table->string('phone_number',11)->unique()->nullable();
             $table->string('first_name',50)->nullable();
             $table->string('last_name',50)->nullable();
@@ -29,9 +30,11 @@ return new class extends Migration
             $table->bigInteger('role_id')->default(3);
             $table->string('employment_type', 255)->nullable();
             $table->boolean('applicant')->default(0);
+            $table->bigInteger('org_id')->default(0);
             $table->string('status', 100)->default('Unverified');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

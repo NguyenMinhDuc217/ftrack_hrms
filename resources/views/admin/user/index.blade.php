@@ -10,10 +10,93 @@
         <div class="col-sm-12">
           <div class="card table-card">
             <div class="card-body">
-              <div class="text-end p-4 pb-0">
+              <div class="text-end px-4 py-2">
                 <a href="{{ route('admin.users.create') }}" class="btn btn-success d-inline-flex align-item-center">
                   <i class="ti ti-plus f-18"></i> Add User
                 </a>
+              </div>
+              <div class="card pb-0">
+                <div class="card-header px-4 py-2">
+                  <form action="{{ route('admin.users') }}" method="GET" class="" id="filter-area">
+                    <div class="card border-0 mb-0">
+                      <div class="card-body pb-0">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <input type="text" name="search" class="form-control form-control-sm" placeholder="Search" value="{{ request('search') }}">
+                            </div>
+                          </div>
+                        
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <input type="date" name="hire_date" class="form-control form-control-sm" value="{{ request('hire_date') }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <select name="department_id" class="form-control form-control-sm" onchange="changeDepartment(this.value)">
+                                <option value="">--Department--</option>
+                                @foreach ($departments as $department)
+                                <option value="{{$department->department_id}}" @selected(request('department_id') == $department->department_id)>
+                                  {{ $department->department_name }}
+                                </option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <select name="manager_id" class="form-control form-control-sm">
+                                <option label="--Manager--"></option>
+                                @foreach($managers as $manager)
+                                <option value="{{$manager->user_id}}" @selected(request('manager_id') == $manager->user_id)>
+                                  {{$manager->username}}
+                                </option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <select name="employment_type" class="form-control form-control-sm @error('employment_type') is-invalid @enderror">
+                                <option value="">--Employment Type--</option>
+                                @foreach($employment_types as $key => $value)
+                                  <option value="{{ $key }}" @selected(request('employment_type') == $key)>
+                                      {{ $value }}
+                                  </option>
+                                @endforeach`
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <select name="status" class="form-control form-control-sm">
+                                <option value="">--Status--</option>
+                                @foreach($statuses as $key => $value)
+                                <option value="{{ $key }}" @selected(request('status') == $key)>
+                                  {{ $value }}
+                                </option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <button type="submit" onclick="filter()" class="btn btn-sm btn-success w-100">Filter</button>
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <a href="{{ route('admin.users') }}" class="btn btn-sm btn-secondary w-100 align-content-center">Reset</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
               <div class="table-responsive">
                 <table class="table table-hover" id="pc-dt-simple">
@@ -36,7 +119,7 @@
                           <input class="form-check-input" type="checkbox">
                         </div>
                       </td>
-                      <td>{{ $user->user_id }}</td>
+                      <td class="text-center">{{ $user->user_id }}</td>
                       <td>
                         <div class="row">
                           <!-- <div class="col-auto pe-0">
@@ -65,9 +148,11 @@
                             </a>
                           </li>
                           <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
-                            <a href="#" class="avtar avtar-xs btn-link-danger">
+                            <form action="{{ route('admin.users.delete', $user->user_id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này không?');" style="display: inline;">
+                              @csrf
+                            <button type="submit" class="avtar avtar-xs btn-link-danger">
                               <i class="ti ti-trash f-18"></i>
-                            </a>
+                            </button>
                           </li>
                         </ul>
                       </td>

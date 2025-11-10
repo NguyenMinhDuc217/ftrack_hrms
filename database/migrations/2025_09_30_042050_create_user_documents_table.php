@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('confidential')->default(0);
             $table->string('file_url', 255)->nullable();
             $table->bigInteger('file_name_original')->nullable();
+            $table->bigInteger('org_id')->default(0);
             $table->string('status',100)->nullable();
             $table->timestamps();
             $table->softDeletes();

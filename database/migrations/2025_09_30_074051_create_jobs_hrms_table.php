@@ -23,8 +23,10 @@ return new class extends Migration
             $table->decimal('min_salary', 12, 2)->nullable();
             $table->decimal('max_salary', 12, 2)->nullable();
             $table->string('currency')->nullable();
+            $table->bigInteger('org_id')->default(0);
             $table->string('status',50)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

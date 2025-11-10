@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\EmploymentType;
+use App\Enums\Gender;
 use App\Models\User;
 use Artisan;
 use Faker\Generator as Faker;
@@ -80,7 +81,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'last_name'      => 'Super',
                 'password'       => Hash::make('password'),
                 'phone_number'   => $faker->numerify('09########'),
-                'gender'         => 'Female',
+                'gender'         => $faker->randomElement(Gender::cases())->value,
                 'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
                 'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
                 'department_id'  => 1,
@@ -89,7 +90,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'role_id'        => 1,
                 'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
                 'applicant'      => 0,
-                'status'         => 'Active',
+                'status'         => 'active',
             ]
         );
         $superAdminUser->assignRole('super_admin');
@@ -102,7 +103,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'last_name'      => 'Super',
                 'password'       => Hash::make('password'),
                 'phone_number'   => $faker->numerify('09########'),
-                'gender'         => 'female',
+                'gender'         => $faker->randomElement(Gender::cases())->value,
                 'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
                 'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
                 'department_id'  => 1,
@@ -126,7 +127,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'last_name'      => '(test)',
                 'password'       => Hash::make('password'),
                 'phone_number'   => $faker->numerify('09########'),
-                'gender'         => 'female',
+                'gender'         => $faker->randomElement(Gender::cases())->value,
                 'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
                 'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
                 'department_id'  => 1,

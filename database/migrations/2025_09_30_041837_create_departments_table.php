@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('department_name')->nullable();
             $table->string('description')->nullable();
             $table->string('type',50)->nullable();
+            $table->bigInteger('org_id')->default(0);
             $table->string('status',50)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

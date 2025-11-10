@@ -70,6 +70,43 @@
   @include('admin.partials._footer')
   @stack('scripts') {{-- For page-specific JavaScript --}}
 
+  <script>
+    $('#filter-area').on('submit', function(e) {
+      e.preventDefault();
+    })
+
+    function filter() {
+      var form = $('#filter-area')[0];
+      $(form).find('input, select, textarea, date, checkbox, radio').each(function() {
+        if (!this.value || this.value.trim() === '') {
+          $(this).removeAttr('name');
+        }
+      })
+
+      var formData = new FormData(form);
+      console.log(formData)
+
+      var url = $(form).attr('action') + '?' + new URLSearchParams(formData).toString();
+      window.location.href = url;
+    }
+
+    function changeDepartment(department_id) {
+      $.ajax({
+        url: "{{ route('admin.users.changeDepartment', ['department_id' => '']) }}/" + department_id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          var managerSelect = $('select[name="manager_id"]');
+          managerSelect.empty();
+          managerSelect.append('<option label="--Manager--"></option>');
+          $.each(response, function(index, manager) {
+            managerSelect.append('<option value="' + manager.user_id + '">' + manager.username + '</option>');
+          });
+        }
+      })
+    }
+  </script>
+
 </body>
 <!-- [Body] end -->
 </html>

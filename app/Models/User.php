@@ -6,7 +6,15 @@ namespace App\Models;
 
 use App\Enums\Gender;
 use App\Enums\UserStatus;
+use App\Filters\ColumnFilter;
+use App\Filters\DepartmentFilter;
+use App\Filters\Keyword;
+use App\Filters\LikeFilter;
+use App\Filters\Search;
+use App\Filters\Status;
+use App\Traits\Filter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -75,6 +83,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -101,6 +110,23 @@ class User extends Authenticatable
         'applicant',
         'status',
     ];
+
+    public function searchable(): array {
+        return [
+            'search',
+            'username',
+            'email',
+            'phone_number',
+            'first_name',
+            'last_name',
+            'gender',
+            'hire_date',
+            'department_id',
+            'manager_id',
+            'employment_type',
+            'status',
+        ];
+    }
 
      protected $primaryKey = 'user_id';
 

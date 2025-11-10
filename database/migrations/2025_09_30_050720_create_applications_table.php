@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('application_position')->nullable();
             $table->dateTime('date_apply')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

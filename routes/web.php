@@ -36,11 +36,14 @@ Route::middleware('auth')->group(function () {
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|admin|hr_manager', 'check.permission'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/users', [AdminUserController::class, 'index'])->name('users');
     Route::get('/add', [AdminUserController::class, 'create'])->name('users.create');
-    Route::post('/add', [AdminUserController::class, 'store'])->name('users.store');
+    Route::post('/add', [AdminUserController::class, 'update'])->name('users.store');
     Route::get('/users/{user_id}', [AdminUserController::class, 'show'])->name('users.show');
-    Route::post('/users/{user_id}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::patch('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::post('/users/delete/{user_id}', [AdminUserController::class, 'delete'])->name('users.delete');
+
     Route::get('/changeDepartment/{department_id?}', [AdminUserController::class, 'changeDepartment'])->name('users.changeDepartment');
     Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('departments');
 

@@ -5,18 +5,37 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\EmploymentType;
 use App\Enums\Gender;
 use App\Enums\UserStatus;
+use App\Filters\UserFilter;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\UserPostRequest;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AdminUserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('department')->paginate(10);
-        return view('admin.user.index', ['users' => $users]);
+        $users = User::query()->filter(new UserFilter($request))->with('department')->paginate(10);
+        // dd(getFullSql(User::query()->filter(new UserFilter($request))->with('department')));
+
+        $departments = Department::where('status', 'active')->get();
+        $statuses = collect(UserStatus::cases())->mapWithKeys(function ($status) {
+            return [$status->value => $status->getLabelData()['label']];
+        })->toArray();
+        $managers = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value)->get();
+        $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
+            return [$type->value => $type->getLabelData()['label']];
+        })->toArray();
+
+        return view('admin.user.index', [
+            'users' => $users,
+            'departments' => $departments,
+            'statuses' => $statuses,
+            'managers' => $managers,
+            'employment_types' => $employment_types,
+        ]);
     }
 
     public function create()
@@ -40,11 +59,6 @@ class AdminUserController extends Controller
                 'genders' => $genders,
             ]
         );
-    }
-    public function store(UserPostRequest $request)
-    {
-        $data = $request->validated();
-        dd($data);
     }
 
     public function show($user_id)
@@ -84,33 +98,28 @@ class AdminUserController extends Controller
         );
     }
 
-    public function update(UserPostRequest $request, $user_id): RedirectResponse
+    public function update(UserPostRequest $request, ?User $user = null): RedirectResponse
     {
-        $user = User::where('user_id', $user_id)->first();
-
-        if (!$user) {
-            return redirect()->route('admin.users.update', ['user_id' => $user_id])->with('error', 'User not found.');
-        }
-
         $data = $request->validated();
-            
-        // Cập nhật các trường của user
-        $user->username = $data['username'];
-        $user->email = $data['email'];
-        $user->phone_number = $data['phone_number'] ?? null;
-        $user->first_name = $data['first_name'] ?? null;
-        $user->last_name = $data['last_name'] ?? null;
-        $user->gender = $data['gender'] ?? null;
-        $user->date_of_birth = $data['date_of_birth'] ?? null;
-        $user->hire_date = $data['hire_date'] ?? null;
-        $user->department_id = $data['department_id'] ?? null;
-        $user->manager_id = $data['manager_id'] ?? null;
-        $user->document_id = $data['document_id'] ?? null;
-        $user->employment_type = $data['employment_type'] ?? null;
-        $user->applicant = $data['applicant'] ?? 0;
-        $user->status = $data['status'] ?? 'Unverified';
-        $user->save();
-        return redirect()->route('admin.users')->with('success', 'User updated successfully.');
+
+        if ($user) {
+            $user->update($data);
+            return redirect()->route('admin.users')->with('success', "User updated successfully.");
+        } else {
+            $user = User::create($data);
+            return redirect()->route('admin.users')->with('success', "User added successfully.");
+        }
+    }
+
+    public function delete($user_id): RedirectResponse
+    {
+        $user = User::find($user_id);
+        if (!$user) {
+            return redirect()->route('admin.users')->with('error', "User not found.");
+        }
+        $user->delete();
+        // $users_deleted = User::onlyTrashed()->get(); // Get all deleted users
+        return redirect()->route('admin.users')->with('success', "User deleted successfully.");
     }
 
     public function changeDepartment($department_id)
