@@ -1,7 +1,9 @@
 @extends('layouts.admin')
 
 @section('title', 'Admin Dashboard - Users')
-@section('page_title', 'Users')
+@section('page_title')
+    {{ __("default.txt_users") }}
+@endsection
 
 @section('content')
  <!-- [ Main Content ] start -->
@@ -11,10 +13,12 @@
           <div class="card table-card">
             <div class="card-body">
               <div class="text-end px-4 py-2">
-                <a href="{{ route('admin.users.create') }}" class="btn btn-success d-inline-flex align-item-center">
-                  <i class="ti ti-plus f-18"></i> Add User
+                <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-success d-inline-flex align-item-center">
+                  <i class="ti ti-plus f-18"></i> {{ __('user.txt_add_user') }}
                 </a>
               </div>
+
+              <!-- FILTER -->
               <div class="card pb-0">
                 <div class="card-header px-4 py-2">
                   <form action="{{ route('admin.users') }}" method="GET" class="" id="filter-area">
@@ -23,7 +27,7 @@
                         <div class="row">
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <input type="text" name="search" class="form-control form-control-sm" placeholder="Search" value="{{ request('search') }}">
+                              <input type="text" name="search" class="form-control form-control-sm" placeholder="{{ __('default.txt_search') }}">
                             </div>
                           </div>
                         
@@ -35,7 +39,7 @@
                           <div class="col-sm-3">
                             <div class="form-group">
                               <select name="department_id" class="form-control form-control-sm" onchange="changeDepartment(this.value)">
-                                <option value="">--Department--</option>
+                                <option value="">-{{ __('user.txt_department') }}-</option>
                                 @foreach ($departments as $department)
                                 <option value="{{$department->department_id}}" @selected(request('department_id') == $department->department_id)>
                                   {{ $department->department_name }}
@@ -47,7 +51,7 @@
                           <div class="col-sm-3">
                             <div class="form-group">
                               <select name="manager_id" class="form-control form-control-sm">
-                                <option label="--Manager--"></option>
+                                <option label="-{{ __('user.txt_manager') }}-"></option>
                                 @foreach($managers as $manager)
                                 <option value="{{$manager->user_id}}" @selected(request('manager_id') == $manager->user_id)>
                                   {{$manager->username}}
@@ -61,10 +65,10 @@
                           <div class="col-sm-3">
                             <div class="form-group">
                               <select name="employment_type" class="form-control form-control-sm @error('employment_type') is-invalid @enderror">
-                                <option value="">--Employment Type--</option>
+                                <option value="">-{{ __('user.txt_employment_type') }}-</option>
                                 @foreach($employment_types as $key => $value)
                                   <option value="{{ $key }}" @selected(request('employment_type') == $key)>
-                                      {{ $value }}
+                                      {{ $value['lang'] }}
                                   </option>
                                 @endforeach`
                               </select>
@@ -73,10 +77,10 @@
                           <div class="col-sm-3">
                             <div class="form-group">
                               <select name="status" class="form-control form-control-sm">
-                                <option value="">--Status--</option>
+                                <option value="">-{{ __('user.txt_status') }}-</option>
                                 @foreach($statuses as $key => $value)
                                 <option value="{{ $key }}" @selected(request('status') == $key)>
-                                  {{ $value }}
+                                  {{ $value['lang'] }}
                                 </option>
                                 @endforeach
                               </select>
@@ -84,12 +88,12 @@
                           </div>
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <button type="submit" onclick="filter()" class="btn btn-sm btn-success w-100">Filter</button>
+                              <button type="submit" onclick="filter()" class="btn btn-sm btn-success w-100">{{ __('default.button_filter') }}</button>
                             </div>
                           </div>
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <a href="{{ route('admin.users') }}" class="btn btn-sm btn-secondary w-100 align-content-center">Reset</a>
+                              <a href="{{ route('admin.users') }}" class="btn btn-sm btn-secondary w-100 align-content-center">{{ __('default.button_reset') }}</a>
                             </div>
                           </div>
                         </div>
@@ -98,17 +102,19 @@
                   </form>
                 </div>
               </div>
+              <!-- FILTER -->
+
               <div class="table-responsive">
                 <table class="table table-hover" id="pc-dt-simple">
                   <thead>
                     <tr>
                       <th></th>
-                      <th>User ID</th>
-                      <th>Username</th>
-                      <th>Phone number</th>
-                      <th>Department</th>
-                      <th>Status</th>
-                      <th class="text-center">Actions</th>
+                      <th>{{ __('user.txt_user_id') }}</th>
+                      <th>{{ __('user.txt_username') }}</th>
+                      <th>{{ __('user.txt_phone_number') }}</th>
+                      <th>{{ __('user.txt_department') }}</th>
+                      <th>{{ __('user.txt_status') }}</th>
+                      <th class="text-center">{{ __('user.txt_actions') }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -138,7 +144,7 @@
                         @php
                           $status = $user->status->getLabelData();
                         @endphp
-                        <span class="badge {{$status['color']}} rounded-pill f-12">{{ $status['label'] }}</span>
+                        <span class="badge {{$status['color']}} rounded-pill f-12">{{ $status['lang'] }}</span>
                       </td>
                       <td class="text-center">
                         <ul class="list-inline me-auto mb-0">
