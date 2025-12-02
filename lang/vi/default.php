@@ -16,5 +16,27 @@ return [
     'delete_success_text' => 'Thành công',
     'delete_error_text' => 'Lỗi',
 
-    'toggle_all' => 'Chọn/Bỏ chọn'
+    'toggle_all' => 'Chọn/Bỏ chọn',
+
+    'button_filter' => 'Lọc',
+    'button_reset' => 'Làm mới',
+    'button_add' => 'Thêm',
+
+    'txt_search' => 'Tìm kiếm',
+    'txt_users' => 'Người dùng',
+    'txt_home' => 'Trang chủ',
+
+    // Pagination
+    'showing' => 'Hiển thị',
+    'to' => 'đến',
+    'of' => 'trên',
+    'results' => 'kết quả',
+
+    // Validation
+    'maxlength_set_to_characters' => 'Độ dài tối đa :length ký tự',
+    'maxlength_set_to_numbers' => 'Độ dài tối đa :length số',
+    'number' => 'số',
+    'enter_a_date_after' => 'Vui lòng chọn ngày sau :date',
+    'enter_a_date_before' => 'Vui lòng chọn ngày trước :data',
+    'enter_a' => 'Vui lòng nhập',
 ];

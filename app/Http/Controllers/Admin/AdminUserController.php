@@ -18,15 +18,20 @@ class AdminUserController extends Controller
     public function index(Request $request)
     {
         $users = User::query()->filter(new UserFilter($request))->with('department')->paginate(10);
+        $users->appends($request->all());
         // dd(getFullSql(User::query()->filter(new UserFilter($request))->with('department')));
 
         $departments = Department::where('status', 'active')->get();
         $statuses = collect(UserStatus::cases())->mapWithKeys(function ($status) {
-            return [$status->value => $status->getLabelData()['label']];
+            return [
+                $status->value => $status->getLabelData(),
+            ];
         })->toArray();
         $managers = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value)->get();
         $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
-            return [$type->value => $type->getLabelData()['label']];
+            return [
+                $type->value => $type->getLabelData(),
+            ];
         })->toArray();
 
         return view('admin.user.index', [

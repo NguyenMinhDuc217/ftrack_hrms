@@ -12,13 +12,16 @@ enum Gender: string
     {
         return match($this) {
              self::MALE => [
-                'label' => 'Male'
+                'label' => 'Male',
+                'lang' => __('user.txt_male')
             ],
             self::FEMALE => [
-                'label' => 'Female'
+                'label' => 'Female',
+                'lang' => __('user.txt_female')
             ],
             self::OTHER => [
-                'label' => 'Other'
+                'label' => 'Other',
+                'lang' => __('user.txt_other')
             ]
         };
     }

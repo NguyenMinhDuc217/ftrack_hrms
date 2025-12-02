@@ -37,7 +37,7 @@
                 <h5 class="m-b-10">@yield('page_title', 'Home')</h5>
               </div> -->
               <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('default.txt_home') }}</a></li>
                 @isset($breadcrumbs)
                   @foreach ($breadcrumbs as $breadcrumb)
                     {{-- Check if it's the last item --}}

@@ -28,7 +28,6 @@ abstract class BaseFilter
         $this->builder = $builder;
 
         $filters = $this->filters();
-        var_dump($filters);
 
         foreach ($filters as $key => $value) {
             if (filled($value)) {

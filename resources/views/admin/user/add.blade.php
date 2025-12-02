@@ -1,7 +1,9 @@
 @extends('layouts.admin')
 
 @section('title', 'Admin Dashboard - Users')
-@section('page_title', 'Edit Users')
+@section('page_title') 
+  {{ __('user.txt_add_user') }}
+@endsection
 
 @section('content')
   <!-- [ Main Content ] start -->
@@ -10,19 +12,18 @@
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
-          <h3>Add User</h3>
+          <h3>{{ __('user.txt_add_user') }}</h3>
         </div>
         <form action="{{ route('admin.users.store') }}" method="POST" class="form-horizontal">
           @csrf
-
           <div class="card-body">
             <div class="form-group">
-              <label class="form-label" for="username">Username</label>
+              <label class="form-label" for="username">{{ __('user.txt_username') }}</label>
               <input 
                 type="text" 
                 class="form-control @error('username') is-invalid @enderror" 
                 name="username" 
-                placeholder="Enter username" 
+                placeholder="{{ __('user.txt_username') }}" 
                 id="username"
                 value="{{ old('username') }}"
               >
@@ -31,15 +32,15 @@
                   <strong>{{ $message }}</strong>
                 </div>
               @enderror
-              <small>maxlength set to 100 characters</small>
+              <small>{{ __('default.maxlength_set_to_characters', ['length' => 100]) }}</small>
             </div>
             
             <div class="form-group">
-              <label class="form-label" for="example-max-length">Firstname</label>
+              <label class="form-label" for="example-max-length">{{ __('user.txt_firstname') }}</label>
               <input 
                 type="text" 
                 class="form-control @error('first_name') is-invalid @enderror" name="first_name" 
-                placeholder="Enter firstname" 
+                placeholder="{{ __('user.txt_firstname') }}" 
                 id="first_name"
                 value="{{ old('first_name') }}"
               >
@@ -48,16 +49,16 @@
                   <strong>{{ $message }}</strong>
                 </div>
               @enderror
-              <small>maxlength set to 50 characters</small>
+              <small>{{ __('default.maxlength_set_to_characters', ['length' => 50]) }}</small>
             </div>
 
               <div class="form-group">
-              <label class="form-label" for="last_name">Lastname</label>
+              <label class="form-label" for="last_name">{{ __('user.txt_lastname') }}</label>
               <input 
                 type="text" 
                 class="form-control @error('last_name') is-invalid @enderror" 
                 name="last_name" 
-                placeholder="Enter lastname" 
+                placeholder="{{ __('user.txt_lastname') }}" 
                 id="last_name"
                 value="{{ old('last_name') }}"
               >
@@ -66,12 +67,12 @@
                   <strong>{{ $message }}</strong>
                 </div>
               @enderror
-              <small>maxlength set to 50 characters</small>
+              <small>{{ __('default.maxlength_set_to_characters', ['length' => 50]) }}</small>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="email">Email</label>
-              <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Enter Email" id="email" value="{{ old('email') }}">
+              <label class="form-label" for="email">{{ __('user.txt_email') }}</label>
+              <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('user.txt_email') }}" id="email" value="{{ old('email') }}">
               @error('email')
                 <div class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -81,24 +82,24 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="example-max-length">Phone number</label>
-              <input type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" id="tel" pattern="^(?:\d{3}\d{3}\d{4})$" aria-describedby="bouncer-error_tel" aria-invalid="true" value="{{ old('phone_number') }}">
+              <label class="form-label" for="example-max-length">{{ __('user.txt_phone_number') }}</label>
+              <input type="text" class="form-control @error('phone_number') is-invalid @enderror" placeholder="{{ __('user.txt_phone_number') }}" name="phone_number" id="tel" pattern="^(?:\d{3}\d{3}\d{4})$" aria-describedby="bouncer-error_tel" aria-invalid="true" value="{{ old('phone_number') }}">
               @error('phone_number')
                 <div class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </div>
               @enderror
               <small class="form-text text-muted">09xxxxxxxx</small>
-              <small>maxlength set to 10 numbers</small>
+              <small>{{ __('default.maxlength_set_to_numbers', ['length' => 10]) }}</small>
             </div>
 
             <div class="form-group d-flex gap-2">
-              <label class="col-form-label text-lg-end">Gender</label>
+              <label class="col-form-label text-lg-end">{{ __('user.txt_gender') }}</label>
               <div class="">
                 @foreach ($genders as $gender)
                 <div class="form-check">
-                  <input class="form-check-input @error('gender') is-invalid @enderror" type="radio" name="gender" id="{{$gender}}" value="{{ $gender }}" @checked(old('gender') == $gender)>
-                  <label class="form-check-label" for="{{$gender}}"> {{ $gender->getLabel()['label'] }} </label>
+                  <input class="form-check-input @error('gender') is-invalid @enderror" type="radio" name="gender" id="gender_{{$gender}}" value="{{ $gender}}" @checked(old('gender') == $gender->value)>
+                  <label class="form-check-label" for="gender_{{$gender->value}}"> {{ $gender->getLabel()['lang'] }} </label>
                 </div>
                 @endforeach
                 @error('gender')
@@ -110,31 +111,31 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="date_of_birth">Date of birth</label>
+              <label class="form-label" for="date_of_birth">{{ __('user.txt_date_of_birth') }}</label>
               <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror" id="date_of_birth" name="date_of_birth" min="1950-01-02" value="{{ old('date_of_birth') }}">
               @error('date_of_birth')
                 <div class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </div>
               @enderror
-              <small>Enter a date after 1950-01-01</small>
+              <small>{{ __('default.enter_a_date_after', ['date' => '1950-01-01']) }}</small>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="hire_date">Hire date</label>
+              <label class="form-label" for="hire_date">{{ __('user.txt_hire_date') }}</label>
               <input type="date" class="form-control @error('hire_date') is-invalid @enderror" id="hire_date" name="hire_date" min="2000-01-02" value="{{ old('hire_date') }}">
               @error('hire_date')
                 <div class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </div>
               @enderror
-              <small>Enter a date after 2000-01-01</small>
+              <small>{{ __('default.enter_a_date_after', ['date' => '2000-01-01']) }}</small>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Department</label>
+              <label class="form-label">{{ __('user.txt_department') }}</label>
               <select class="form-control @error('department_id') is-invalid @enderror" name="department_id" onchange="changeDepartment(this.value)">
-                <option label="--Department--"></option>
+                <option label="-{{ __('user.txt_department') }}-"></option>
                 @foreach ($departments as $department)
                 <option value="{{$department->department_id}}" @selected(old('department_id') == $department->department_id)>
                   {{$department->department_name}}
@@ -149,9 +150,9 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Manager</label>
+              <label class="form-label">{{ __('user.txt_manager') }}</label>
               <select class="form-control @error('manager_id') is-invalid @enderror" name="manager_id">
-                <option label="--Manager--"></option>
+                <option label="-{{ __('user.txt_manager') }}-"></option>
                 @foreach($users as $usera)
                 <option value="{{$usera->user_id}}" @selected(old('manager_id') == $usera->user_id)>
                   {{$usera->username}}
@@ -166,9 +167,9 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Document</label>
+              <label class="form-label">{{ __('user.txt_document') }}</label>
               <select class="form-control @error('document_id') is-invalid @enderror" name="document_id">
-                <option label="--Document--"></option>
+                <option label="-{{ __('user.txt_document') }}-"></option>
                 @for($i=1; $i<=10; $i++)
                 <option value="{{$i}}" @selected(old('document_id') == $i)>{{$i}}</option>
                 @endfor
@@ -181,9 +182,9 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Employment Type</label>
+              <label class="form-label">{{ __('user.txt_employment_type') }}</label>
               <select name="employment_type" class="form-control @error('employment_type') is-invalid @enderror">
-                <option value="*">--Employment Type--</option>
+                <option value="">-{{ __('user.txt_employment_type') }}-</option>
                 @foreach($employment_types as $key => $value)
                   <option value="{{ $key }}" @selected(old('employment_type') == $key)>
                       {{ $value }}
@@ -198,20 +199,20 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Applicant</label>
-              <input type="number" class="form-control @error('applicant') is-invalid @enderror" name="applicant" placeholder="Enter Aplicant" value ="{{ old('applicant') }}">
+              <label class="form-label">{{ __('user.txt_applicant') }}</label>
+              <input type="number" class="form-control @error('applicant') is-invalid @enderror" name="applicant" placeholder="{{ __('user.txt_applicant') }}" value ="{{ old('applicant') }}">
               @error('applicant')
                 <div class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </div>
               @enderror
-              <small>Enter a number</small>
+              <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Status</label>
+              <label class="form-label">{{ __('user.txt_status') }}</label>
               <select name="status" class="form-control @error('status') is-invalid @enderror">
-                <option value="*">--Status--</option>
+                <option value="">-{{ __('user.txt_status') }}-</option>
                 @foreach($statuses as $key => $value)
                   <option value="{{ $key }}" @selected(old('status') == $key)>
                       {{ $value }}
@@ -226,8 +227,8 @@
             </div>
           </div>
           <div class="card-footer">
-            <button type="submit" class="btn btn-success me-2">Submit</button>
-            <button type="reset" class="btn btn-light">Reset</button>
+            <button type="submit" class="btn btn-success me-2">{{__('default.button_add')}}</button>
+            <button type="reset" class="btn btn-light">{{__('default.button_reset')}}</button>
           </div>
         </form>
       </div>

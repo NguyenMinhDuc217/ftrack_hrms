@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Admin Dashboard - Users')
-@section('page_title', 'Edit Users')
+@section('page_title', __('user.txt_edit_user')) @endsection
 
 @section('content')
   <!-- [ Main Content ] start -->
@@ -20,7 +20,7 @@
 
           <div class="card-body">
             <div class="form-group">
-              <label class="form-label" for="username">Username</label>
+              <label class="form-label" for="username">{{__('user.txt_username')}}</label>
               <input 
                 type="text" 
                 class="form-control @error('username') is-invalid @enderror" 
