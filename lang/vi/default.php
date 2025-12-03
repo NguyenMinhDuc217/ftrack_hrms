@@ -39,4 +39,9 @@ return [
     'enter_a_date_after' => 'Vui lòng chọn ngày sau :date',
     'enter_a_date_before' => 'Vui lòng chọn ngày trước :data',
     'enter_a' => 'Vui lòng nhập',
+
+    // Client
+    'txt_home_search_placeholder' => 'Vị trí tuyển dụng, tên công ty, ...',
+    'txt_location' => 'Địa điểm',
+
 ];

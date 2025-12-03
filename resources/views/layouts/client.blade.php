@@ -24,8 +24,38 @@
   <link href="{{ asset('client/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
   <link href="{{ asset('client/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
+  <!-- [Tabler Icons] https://tablericons.com -->
+  <link rel="stylesheet" href="{{ asset('admin/assets/fonts/tabler-icons.min.css') }}">
+
   <!-- Main CSS File -->
   <link href="{{ asset('client/assets/css/main.css') }}" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#65a30d', // lime-600
+            'primary-hover': '#4d7c0f', // lime-700
+            secondary: '#1e40af', // blue-800
+            footer: '#2f4f18', // custom dark green
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+  </style>
 
   @stack('styles') {{-- For page-specific CSS --}}
 </head>

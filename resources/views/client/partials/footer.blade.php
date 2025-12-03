@@ -1,75 +1,85 @@
-<footer id="footer" class="footer">
-
-  <div class="footer-newsletter">
-    <div class="container">
-      <div class="row justify-content-center text-center">
-        <div class="col-lg-6">
-          <h4>Join Our Newsletter</h4>
-          <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-          <form action="forms/newsletter.php" method="post" class="php-email-form">
-            <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
-            <div class="loading">Loading</div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your subscription request has been sent. Thank you!</div>
-          </form>
+<footer class="bg-footer text-gray-300 pt-16 pb-8 border-t-4 border-primary">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <!-- Column 1: Brand & Address -->
+      <div>
+        <div class="flex items-center gap-2 mb-6">
+          <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center">
+            <span class="text-footer font-bold text-xl">F</span>
+          </div>
+          <span class="text-white text-2xl font-bold">Track</span>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="container footer-top">
-    <div class="row gy-4">
-      <div class="col-lg-4 col-md-6 footer-about">
-        <a href="{{ route('client.home') }}" class="d-flex align-items-center">
-          <span class="sitename">eNno</span>
-        </a>
-        <div class="footer-contact pt-3">
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
-        </div>
-      </div>
-
-      <div class="col-lg-2 col-md-3 footer-links">
-        <h4>Useful Links</h4>
-        <ul>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+        <ul class="space-y-4 text-sm">
+          <li class="flex items-start gap-3">
+            <i data-lucide="map-pin" class="w-5 h-5 text-primary mt-0.5 flex-shrink-0"></i>
+            <span>
+              Công ty TNHH VNMARKETER - Tầng 12, Tòa nhà The Address, 60 Nguyễn Đình Chiểu, phường Đa Kao, Quận 1, TP. Hồ Chí Minh, Việt Nam
+            </span>
+          </li>
+          <li class="flex items-center gap-3">
+            <i data-lucide="phone" class="w-5 h-5 text-primary flex-shrink-0"></i>
+            <span>+84 909 876 543</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <i data-lucide="mail" class="w-5 h-5 text-primary flex-shrink-0"></i>
+            <span>info@ftrack.vn</span>
+          </li>
         </ul>
       </div>
 
-      <div class="col-lg-2 col-md-3 footer-links">
-        <h4>Our Services</h4>
-        <ul>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+      <!-- Column 2: Company -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Công ty</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="hover:text-primary transition-colors">Về Chúng Tôi</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Dịch vụ</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Hướng dẫn sử dụng</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Tin Tức / Blog</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Tuyển dụng</a></li>
         </ul>
       </div>
 
-      <div class="col-lg-4 col-md-12">
-        <h4>Follow Us</h4>
-        <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
-        <div class="social-links d-flex">
-          <a href=""><i class="bi bi-twitter-x"></i></a>
-          <a href=""><i class="bi bi-facebook"></i></a>
-          <a href=""><i class="bi bi-instagram"></i></a>
-          <a href=""><i class="bi bi-linkedin"></i></a>
+      <!-- Column 3: Contact/Newsletter -->
+      <div class="lg:col-span-2">
+        <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Liên lạc với chúng tôi</h3>
+        <p class="text-sm mb-4 text-gray-400">Đăng ký nhận bản tin để không bỏ lỡ cơ hội việc làm hấp dẫn.</p>
+
+        <div class="flex gap-2 mb-8">
+          <div class="relative flex-1">
+            <input
+              type="email"
+              placeholder="Email của bạn..."
+              class="w-full bg-white/10 border border-gray-600 rounded-md py-2.5 px-4 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors" />
+          </div>
+          <button class="bg-white text-footer p-2.5 rounded-md hover:bg-primary hover:text-white transition-colors">
+            <i data-lucide="send" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="flex gap-4">
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+            <i data-lucide="facebook" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+            <i data-lucide="twitter" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+            <i data-lucide="linkedin" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+            <i data-lucide="instagram" class="w-5 h-5"></i>
+          </a>
         </div>
       </div>
+    </div>
 
+    <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+      <p>© 2023 FTrack. All rights reserved.</p>
+      <div class="flex gap-6 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white">Điều khoản bảo mật</a>
+        <a href="#" class="hover:text-white">Quy định sử dụng</a>
+      </div>
     </div>
   </div>
-
-  <div class="container copyright text-center mt-4">
-    <p>© <span>Copyright</span> <strong class="px-1 sitename">eNno</strong> <span>All Rights Reserved</span></p>
-    <div class="credits">
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a>
-    </div>
-  </div>
-
 </footer>

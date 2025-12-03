@@ -39,4 +39,8 @@ return [
     'enter_a_date_after' => 'Enter a date after :date',
     'enter_a_date_before' => 'Enter a date before :date',
     'enter_a' => 'Enter a',
+
+    // Client
+    'txt_home_search_placeholder' => 'Job position, company name, ...',
+    'txt_location' => 'Location',
 ];
