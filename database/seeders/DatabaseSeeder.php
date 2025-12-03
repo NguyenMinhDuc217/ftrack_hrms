@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             MenuSeeder::class,
             UserSeeder::class,
+            BlogSeeder::class,
         ]);
         // User::factory(100)->create();
     }
