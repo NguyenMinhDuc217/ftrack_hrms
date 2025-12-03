@@ -1,8 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Admin Dashboard - Users')
-@section('page_title', __('user.txt_edit_user')) @endsection
-
+@section('page_title', __('user.txt_edit_user'))
 @section('content')
   <!-- [ Main Content ] start -->
   <div class="row">

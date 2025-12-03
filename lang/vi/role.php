@@ -17,4 +17,7 @@ return [
     'permissions_updated_success' => 'Đã cập nhật Quyền của Vai trò thành công.',
     'permissions_update_failed' => 'Cập nhật quyền thất bại. Vui lòng kiểm tra console.',
 
+    'super_admin' => 'F-Super Admin',
+    'admin' => 'F-Admin',
+    'hr_manager' => 'Company Admin',
 ];
