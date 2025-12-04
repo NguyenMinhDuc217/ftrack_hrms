@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             UserSeeder::class,
             BlogSeeder::class,
+            VietnameseProvincesSeeder::class,
         ]);
         // User::factory(100)->create();
     }
 }
+
