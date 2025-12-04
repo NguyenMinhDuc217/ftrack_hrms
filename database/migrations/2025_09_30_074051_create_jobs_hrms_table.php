@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jobs_hrms', function (Blueprint $table) {
-            $table->id();
+            $table->id('job_id');
             $table->string('title', 255)->nullable();
             $table->bigInteger('department_id')->nullable();
             $table->bigInteger('location')->nullable();
