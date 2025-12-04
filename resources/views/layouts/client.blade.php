@@ -7,6 +7,7 @@
   <title>@yield('title', 'eNno Bootstrap Template')</title>
   <meta name="description" content="@yield('description', '')">
   <meta name="keywords" content="@yield('keywords', '')">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Favicons -->
   <link href="{{ asset('client/assets/img/favicon.png') }}" rel="icon">
@@ -78,6 +79,7 @@
 
   <!-- Vendor JS Files -->
   <script src="{{ asset('client/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('client/assets/vendor/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('client/assets/vendor/php-email-form/validate.js') }}"></script>
   <script src="{{ asset('client/assets/vendor/aos/aos.js') }}"></script>
   <script src="{{ asset('client/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>

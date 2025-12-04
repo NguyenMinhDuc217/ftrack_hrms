@@ -31,6 +31,11 @@
         toast.onmouseleave = Swal.resumeTimer;
         }
     });
+
+$(() => {
+	$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+});
+
 // using swal2 to show confirmation dialog and ajax to delete entity
 // url is the delete url
 // entity_name is the name of the entity to be deleted (for display purpose)
