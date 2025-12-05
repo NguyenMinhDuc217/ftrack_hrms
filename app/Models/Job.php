@@ -13,7 +13,7 @@ class Job extends Model
     protected $fillable = [
         'title',
         'department_id',
-        'location',
+        'province_code',
         'employment_type',
         'headcount',
         'description_md',
@@ -30,7 +30,7 @@ class Job extends Model
         return [
             'title',
             'department_id',
-            'location',
+            'province_code',
             'employment_type',
             'headcount',
             'description_md',

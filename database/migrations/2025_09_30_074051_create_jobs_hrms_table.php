@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('job_id');
             $table->string('title', 255)->nullable();
             $table->bigInteger('department_id')->nullable();
-            $table->bigInteger('province_id')->nullable();
+            $table->bigInteger('province_code')->nullable();
             $table->string('employment_type', 255)->nullable();
             $table->bigInteger('headcount')->nullable();
             $table->mediumText('description_md')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('max_salary', 12, 2)->nullable();
             $table->string('currency')->nullable()->comment('Tiền tệ');
             $table->bigInteger('org_id')->default(0);
-            $table->string('status',50)->nullable();
+            $table->string('status', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
