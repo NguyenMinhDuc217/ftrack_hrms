@@ -1,6 +1,7 @@
-<?php 
+<?php
+
 return [
-    "apples"=> "{0} There are none|[1,19] There are some|[20,*] There are many",
+    'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
     'vi' => 'Tiếng Việt',
     'en' => 'Tiếng Anh',
 
@@ -12,7 +13,7 @@ return [
     'button_confirm' => 'Xác nhận',
     'button_cancel' => 'Hủy bỏ',
     'delete_confirm_title' => 'Xác nhận',
-    'delete_confirm_text' => "Dữ liệu sẽ không thể phục hồi sau khi xóa",
+    'delete_confirm_text' => 'Dữ liệu sẽ không thể phục hồi sau khi xóa',
     'delete_success_text' => 'Thành công',
     'delete_error_text' => 'Lỗi',
 
@@ -44,4 +45,6 @@ return [
     'txt_home_search_placeholder' => 'Vị trí tuyển dụng, tên công ty, ...',
     'txt_location' => 'Địa điểm',
 
+    'txt_active' => 'Hoạt động',
+    'txt_inactive' => 'Không hoạt động',
 ];

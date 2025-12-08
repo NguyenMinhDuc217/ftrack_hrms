@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Job extends Model
 {
+    use SoftDeletes;
+
     protected $guard_name = 'web';
 
     protected $table = 'jobs_hrms';
@@ -20,7 +23,7 @@ class Job extends Model
         'requirements_md',
         'min_salary',
         'max_salary',
-        'curency',
+        'currency',
         'org_id',
         'status',
     ];
@@ -37,13 +40,13 @@ class Job extends Model
             'requirements_md',
             'min_salary',
             'max_salary',
-            'curency',
+            'currency',
             'org_id',
             'status',
         ];
     }
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'job_id';
 
     public function department()
     {

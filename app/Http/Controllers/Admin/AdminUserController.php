@@ -6,12 +6,12 @@ use App\Enums\EmploymentType;
 use App\Enums\Gender;
 use App\Enums\UserStatus;
 use App\Filters\UserFilter;
-use Illuminate\Routing\Controller;
 use App\Http\Requests\UserPostRequest;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class AdminUserController extends Controller
 {
@@ -54,6 +54,7 @@ class AdminUserController extends Controller
             return [$status->value => $status->getLabelData()['label']];
         })->toArray();
         $genders = Gender::cases();
+
         return view(
             'admin.user.add',
             [
@@ -70,7 +71,7 @@ class AdminUserController extends Controller
     {
         $user = User::with('department')->where('user_id', $user_id)->first();
         $users = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value)->where('department_id', $user->department_id)
-        ->where('user_id', '!=', $user_id)->get();
+            ->where('user_id', '!=', $user_id)->get();
 
         $departments = Department::where('status', 'active')->get();
 
@@ -85,8 +86,8 @@ class AdminUserController extends Controller
         $genders = Gender::cases();
 
         $breadcrumbs = [
-            ['label' => 'Users', 'url' => route("admin.users")],
-            ['label' => 'Edit User: ' ."{$user->user_id} - {$user->username}", 'url' => route("admin.users.show", $user_id)],
+            ['label' => 'Users', 'url' => route('admin.users')],
+            ['label' => 'Edit User: '."{$user->user_id} - {$user->username}", 'url' => route('admin.users.show', $user_id)],
         ];
 
         return view(
@@ -109,10 +110,12 @@ class AdminUserController extends Controller
 
         if ($user) {
             $user->update($data);
-            return redirect()->route('admin.users')->with('success', "User updated successfully.");
+
+            return redirect()->route('admin.users')->with('success', 'User updated successfully.');
         } else {
             $user = User::create($data);
-            return redirect()->route('admin.users')->with('success', "User added successfully.");
+
+            return redirect()->route('admin.users')->with('success', 'User added successfully.');
         }
     }
 
@@ -120,11 +123,11 @@ class AdminUserController extends Controller
     {
         $user = User::find($user_id);
         if (!$user) {
-            return redirect()->route('admin.users')->with('error', "User not found.");
+            return redirect()->route('admin.users')->with('error', 'User not found.');
         }
         $user->delete();
-        // $users_deleted = User::onlyTrashed()->get(); // Get all deleted users
-        return redirect()->route('admin.users')->with('success', "User deleted successfully.");
+
+        return redirect()->route('admin.users')->with('success', 'User deleted successfully.');
     }
 
     public function changeDepartment($department_id)

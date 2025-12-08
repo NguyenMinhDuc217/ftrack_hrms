@@ -20,8 +20,8 @@ return new class extends Migration
             $table->bigInteger('headcount')->nullable();
             $table->mediumText('description_md')->nullable();
             $table->mediumText('requirements_md')->nullable();
-            $table->decimal('min_salary', 12, 2)->nullable();
-            $table->decimal('max_salary', 12, 2)->nullable();
+            $table->decimal('min_salary', 12, 0)->nullable();
+            $table->decimal('max_salary', 12, 0)->nullable();
             $table->string('currency')->nullable()->comment('Tiền tệ');
             $table->bigInteger('org_id')->default(0);
             $table->string('status', 50)->nullable();

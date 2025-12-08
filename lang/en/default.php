@@ -43,4 +43,7 @@ return [
     // Client
     'txt_home_search_placeholder' => 'Job position, company name, ...',
     'txt_location' => 'Location',
+
+    'txt_active' => 'Active',
+    'txt_inactive' => 'Inactive',
 ];
