@@ -93,6 +93,7 @@ class User extends Authenticatable
     protected $guard_name = 'web';
 
     protected $fillable = [
+        'google_id',
         'username',
         'email',
         'email_verified_at',
@@ -111,10 +112,12 @@ class User extends Authenticatable
         'status',
     ];
 
-    public function searchable(): array {
+    public function searchable(): array
+    {
         return [
             'search',
             'username',
+            'google_id',
             'email',
             'phone_number',
             'first_name',
@@ -128,7 +131,7 @@ class User extends Authenticatable
         ];
     }
 
-     protected $primaryKey = 'user_id';
+    protected $primaryKey = 'user_id';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -158,5 +161,14 @@ class User extends Authenticatable
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        if ($this->first_name || $this->last_name) {
+            return trim(($this->first_name ?? '') . ' ' . ($this->last_name ?? ''));
+        }
+
+        return "";
     }
 }

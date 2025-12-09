@@ -19,7 +19,7 @@
         @auth {{-- Checks if any user is authenticated --}}
           <li><a href="{{ route('client.dashboard') }}" class="{{ request()->routeIs('client.dashboard') ? 'active' : '' }}">Dashboard</a></li>
           <li class="dropdown">
-              <a href="#"><span>Welcome, {{ Auth::user()->name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <a href="#"><span>Welcome, {{ Auth::user()->full_name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
                   <li><a href="{{ route('client.profile') }}">Profile</a></li>
                   <li>
@@ -40,8 +40,6 @@
 
     @guest
       <a class="btn-getstarted" href="{{ route('login') }}">Get Started (Login)</a>
-    @else
-      <a class="btn-getstarted" href="{{ route('client.dashboard') }}">Dashboard</a>
     @endguest
     @can('access-admin')
       <a class="btn-getstarted" href="{{ route('admin.dashboard') }}">Admin</a>

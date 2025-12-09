@@ -24,6 +24,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [RegisterController::class, 'register']);
+
+    Route::get('/auth/google/redirect', [LoginController::class, 'redirect'])->name('google.redirect');
+    Route::get('/auth/google/callback', [LoginController::class, 'callback'])->name('google.callback');
 });
 
 // Authenticated Client Routes
