@@ -22,6 +22,7 @@
               <a href="#"><span>Welcome, {{ Auth::user()->full_name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
                   <li><a href="{{ route('client.profile') }}">Profile</a></li>
+                  <li><a href="{{ route('profile') }}">CV Profile</a></li>
                   <li>
                       <form method="POST" action="{{ route('logout') }}">
                           @csrf
@@ -34,6 +35,16 @@
           <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">Login</a></li>
           <li><a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">Register</a></li>
         @endauth
+        @php
+          $locale = app()->getLocale();
+        @endphp
+        <li class="ipy-5 ipy-xl-0 navbar-nav align-items-center">
+          <div class="switch-language d-inline-flex cursor-pointer" data-controller="language" data-language-locale-value="{{ $locale }}" data-language-localed-path-value="/profile-cv">
+            <a href="{{ route('language.switch', ["locale" => "en"] ) }}" class="bg-transparent border-0 p-0 text-dark-grey {{ $locale == 'en' ? 'active' : '' }}">EN</a>
+            <div class="vr mx-2 align-self-center cursor-pointer"></div>
+            <a href="{{ route('language.switch', ["locale" => "vi"] ) }}" class="bg-transparent border-0 p-0 text-it-white {{ $locale == 'vi' ? 'active' : '' }}">VI</a>
+          </div>
+        </li>
       </ul>
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
     </nav>

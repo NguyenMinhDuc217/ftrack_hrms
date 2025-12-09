@@ -26,6 +26,9 @@
     <link href="{{ asset('client/assets/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('client/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('client/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('client/assets/vendor/datepicker/datepicker-bs5.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('client/assets/vendor/swal2/sweetalert2.css') }}" rel="stylesheet">
+    <link href="{{ asset('client/assets/vendor/swal2/sweetalert2.bootstrap-5.css') }}" rel="stylesheet">
 
     <!-- [Tabler Icons] https://tablericons.com -->
     <link rel="stylesheet" href="{{ asset('admin/assets/fonts/tabler-icons.min.css') }}">
@@ -106,10 +109,13 @@
     <script src="{{ asset('client/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
     <script src="{{ asset('client/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('client/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('client/assets/vendor/datepicker/datepicker-full.min.js') }}"></script>
+    <script src="{{ asset('client/assets/vendor/swal2/sweetalert2.min.js') }}"></script>
 
     <!-- Main JS File -->
     <script src="{{ asset('client/assets/js/main.js') }}"></script>
 
+    @include('client.partials._scripts')
     @stack('scripts') {{-- For page-specific JavaScript --}}
 </body>
 
