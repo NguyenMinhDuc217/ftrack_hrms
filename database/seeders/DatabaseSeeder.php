@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BlogSeeder::class,
             VietnameseProvincesSeeder::class,
+            JobSeeder::class,
         ]);
         // User::factory(100)->create();
     }
 }
-

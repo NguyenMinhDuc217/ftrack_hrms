@@ -45,5 +45,16 @@
       <a class="btn-getstarted" href="{{ route('admin.dashboard') }}">Admin</a>
     @endcan
 
+    <div class="text-left ps-3">
+      @if (!empty($locale) && $locale == 'en')
+      <a href="{{ route('language.switch',["locale"=>"vi"]) }}" class="link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('default.vi')">
+        <img src="{{ asset('files/flags/vi.svg') }}" alt="vi icon" style="width:20px;">
+      </a>
+      @elseif (!empty($locale) && $locale == 'vi')
+      <a href="{{ route('language.switch',["locale"=>"en"]) }}" class="link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title ="@lang('default.en')">
+        <img src="{{ asset('files/flags/en.svg') }}" alt="en icon" style="width:20px;">
+      </a>
+      @endif
+    </div>
   </div>
 </header>
