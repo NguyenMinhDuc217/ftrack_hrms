@@ -41,7 +41,7 @@
     @guest
       <a class="btn-getstarted" href="{{ route('login') }}">Get Started (Login)</a>
     @endguest
-    @can('access-admin')
+    @can('admin.dashboard')
       <a class="btn-getstarted" href="{{ route('admin.dashboard') }}">Admin</a>
     @endcan
 

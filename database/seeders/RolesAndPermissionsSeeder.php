@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\EmploymentType;
 use App\Enums\Gender;
+use App\Enums\UserRoles;
 use App\Models\User;
 use Artisan;
 use Faker\Generator as Faker;
@@ -39,16 +40,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.role.index',
             'admin.permission.index',
             'admin.menu.index',
-            'access-admin',
         ];
 
         foreach ($menu_permission as $p) {
             Permission::firstOrCreate(['name' => $p, 'guard_name' => $guard]);
         }
 
-        $super_admin        = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => $guard]);
-        $admin              = Role::firstOrCreate(['name' => 'admin', 'guard_name' => $guard]);
-        $hr_manager         = Role::firstOrCreate(['name' => 'hr_manager', 'guard_name' => $guard]);
+        $super_admin        = Role::firstOrCreate(['name' => UserRoles::SUPER_ADMIN->value, 'guard_name' => $guard]);
+        $admin              = Role::firstOrCreate(['name' => UserRoles::ADMIN->value, 'guard_name' => $guard]);
+        $hr_manager         = Role::firstOrCreate(['name' => UserRoles::HR_MANAGER->value, 'guard_name' => $guard]);
 
         $permissionAdmin = [
             'admin.dashboard',
@@ -60,7 +60,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.role.index',
             'admin.permission.index',
             'admin.menu.index',
-            'access-admin',
         ];
         $super_admin->syncPermissions($permissionAdmin);
         $admin->syncPermissions($permissionAdmin);
@@ -69,7 +68,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.users.update',
             'admin.users.changeDepartment',
             'admin.users',
-            'access-admin',
         ]);
 
 

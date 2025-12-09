@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminBlogController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
+use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminMennuController;
 use App\Http\Controllers\Admin\AdminPermissionController;
 use App\Http\Controllers\Admin\AdminRoleController;
@@ -11,7 +13,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
-
 
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
@@ -40,27 +41,45 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|admin|hr_manager', 'check.permission'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
+    // route users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users');
-    Route::get('/add', [AdminUserController::class, 'create'])->name('users.create');
-    Route::post('/add', [AdminUserController::class, 'update'])->name('users.store');
+    Route::get('/user-add', [AdminUserController::class, 'create'])->name('users.create');
+    Route::post('/user-add', [AdminUserController::class, 'update'])->name('users.store');
     Route::get('/users/{user_id}', [AdminUserController::class, 'show'])->name('users.show');
     Route::patch('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
     Route::post('/users/delete/{user_id}', [AdminUserController::class, 'delete'])->name('users.delete');
 
+    // route departments
     Route::get('/changeDepartment/{department_id?}', [AdminUserController::class, 'changeDepartment'])->name('users.changeDepartment');
     Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('departments');
 
-    //route roles
-    Route::get('/roles',                    [AdminRoleController::class, 'index' ])->name('role.index');
-    Route::get('/roles/create',             [AdminRoleController::class, 'create'])->name('role.create');
-    Route::post('/roles/create',            [AdminRoleController::class, 'store' ])->name('role.store');
-    Route::get('/roles/edit/{id}',          [AdminRoleController::class, 'edit'  ])->name('role.edit');
-    Route::post('/roles/edit/{id}',         [AdminRoleController::class, 'update'])->name('role.update');
-    Route::post('/roles/delete/{id}',       [AdminRoleController::class, 'delete'])->name('role.delete');
-    Route::put('roles/{role}/permissions',  [AdminRoleController::class, 'updatePermissions'])->name('role.permissions.update');
-    //route permissions
+    // route blogs
+    Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs.index');
+    Route::get('/job-add', [AdminJobController::class, 'create'])->name('jobs.create');
+    Route::post('/job-add', [AdminJobController::class, 'update'])->name('jobs.store');
+    Route::get('/jobs/{job_id}', [AdminJobController::class, 'show'])->name('jobs.show');
+    Route::patch('/jobs/{job}', [AdminJobController::class, 'update'])->name('jobs.update');
+    Route::post('/jobs/delete/{job_id}', [AdminJobController::class, 'delete'])->name('jobs.delete');
+
+    // route blogs
+    Route::get('/blogs', [AdminBlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog-add', [AdminBlogController::class, 'create'])->name('blog.create');
+    Route::post('/blog-add', [AdminBlogController::class, 'update'])->name('blog.store');
+    Route::get('/blogs/{blog_id}', [AdminBlogController::class, 'show'])->name('blog.show');
+    Route::patch('/blogs/{blog}', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::post('/blogs/delete/{blog_id}', [AdminBlogController::class, 'delete'])->name('blogs.delete');
+
+    // route roles
+    Route::get('/roles', [AdminRoleController::class, 'index'])->name('role.index');
+    Route::get('/roles/create', [AdminRoleController::class, 'create'])->name('role.create');
+    Route::post('/roles/create', [AdminRoleController::class, 'store'])->name('role.store');
+    Route::get('/roles/edit/{id}', [AdminRoleController::class, 'edit'])->name('role.edit');
+    Route::post('/roles/edit/{id}', [AdminRoleController::class, 'update'])->name('role.update');
+    Route::post('/roles/delete/{id}', [AdminRoleController::class, 'delete'])->name('role.delete');
+    Route::put('roles/{role}/permissions', [AdminRoleController::class, 'updatePermissions'])->name('role.permissions.update');
+    // route permissions
     Route::get('/permissions', [AdminPermissionController::class, 'index'])->name('permission.index');
 
-    //Route Menu
+    // Route Menu
     Route::get('/menus', [AdminMennuController::class, 'index'])->name('menu.index');
 });

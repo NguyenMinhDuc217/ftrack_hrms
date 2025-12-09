@@ -22,6 +22,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereUpdatedAt($value)
+ * @property int $org_id
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereOrgId($value)
  * @mixin \Eloquent
  */
 class Department extends Model

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\UserRoles;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
@@ -48,7 +49,7 @@ class SyncRoutePermissions extends Command
         $this->newLine();
 
         if ($assignToAdmin) {
-            $adminRole = Role::where('name', 'admin')->first();
+            $adminRole = Role::where('name', UserRoles::ADMIN->value)->first();
             if (!$adminRole) {
                 $this->warn('Warning: The "admin" role does not exist. Skipping assignment to admin.');
                 $assignToAdmin = false; // Disable assignment if role not found

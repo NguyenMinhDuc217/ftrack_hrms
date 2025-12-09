@@ -16,4 +16,8 @@ return [
     'save_permissions'          => 'Save Permissions',
     'permissions_updated_success' => 'Role permissions updated successfully.',
     'permissions_update_failed' => 'Failed to update permissions. Please check the console.',
+
+    'super_admin' => 'F-Super Admin',
+    'admin' => 'F-Admin',
+    'hr_manager' => 'Company Admin',
 ];
