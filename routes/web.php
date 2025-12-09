@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CvProfileController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,26 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/client-dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
     Route::get('/client-profile', [ClientController::class, 'profile'])->name('client.profile');
+
+    Route::get('/profile', [CvProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/save-summary', [CvProfileController::class, 'saveSummary'])->name('profile.save.summary');
+    Route::post('/profile/save-experience', [CvProfileController::class, 'saveExperience'])->name('profile.save.experience');
+    Route::delete('/profile/delete-experience/{id}', [CvProfileController::class, 'deleteExperience'])->name('profile.delete.experience');
+    Route::get('/profile/get-education/{id}', [CvProfileController::class, 'getEducation'])->name('profile.get.education');
+    Route::post('/profile/save-education', [CvProfileController::class, 'saveEducation'])->name('profile.save.education');
+    Route::delete('/profile/delete-education/{id}', [CvProfileController::class, 'deleteEducation'])->name('profile.delete.education');
+    Route::post('/profile/save-skill', [CvProfileController::class, 'saveSkill'])->name('profile.save.skill');
+    Route::delete('/profile/delete-skill/{id}', [CvProfileController::class, 'deleteSkill'])->name('profile.delete.skill');
+    Route::post('/profile/save-skill-group', [CvProfileController::class, 'saveSkillGroup'])->name('profile.save.skill-group');
+    Route::delete('/profile/delete-skill-group', [CvProfileController::class, 'deleteSkillGroup'])->name('profile.delete.skill-group');
+    Route::post('/profile/save-language', [CvProfileController::class, 'saveLanguage'])->name('profile.save.language');
+    Route::delete('/profile/delete-language/{id}', [CvProfileController::class, 'deleteLanguage'])->name('profile.delete.language');
+    Route::post('/profile/save-project', [CvProfileController::class, 'saveProject'])->name('profile.save.project');
+    Route::delete('/profile/delete-project/{id}', [CvProfileController::class, 'deleteProject'])->name('profile.delete.project');
+    Route::post('/profile/save-certificate', [CvProfileController::class, 'saveCertificate'])->name('profile.save.certificate');
+    Route::delete('/profile/delete-certificate/{id}', [CvProfileController::class, 'deleteCertificate'])->name('profile.delete.certificate');
+    Route::post('/profile/save-award', [CvProfileController::class, 'saveAward'])->name('profile.save.award');
+    Route::delete('/profile/delete-award/{id}', [CvProfileController::class, 'deleteAward'])->name('profile.delete.award');
 });
 
 // Admin Routes
