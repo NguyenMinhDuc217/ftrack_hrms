@@ -44,11 +44,11 @@
             <div class="col-md-6">
                 <div class="d-flex gap-2 pb-2">
                     <p class="align-items-center"><i class="ti ti-friends text-rich-grey"></i></p>
-                    <p class="text-truncated ims-2 text-rich-grey text-capitalize">{{ $profile->gender->getLabel()['lang'] ?? 'Gender not set' }}</p>
+                    <p class="text-truncated ims-2 text-rich-grey text-capitalize">{{ !empty($profile->gender) ? $profile->gender->getLabel()['lang'] : 'Gender not set' }}</p>
                 </div>
                 <div class="d-flex gap-2 pb-2">
                     <p class="align-items-center"><i class="ti ti-map text-rich-grey"></i></p>
-                    <p class="text-truncated ims-2 text-rich-grey">{{ (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) ?? 'Address not set' }}</p>
+                    <p class="text-truncated ims-2 text-rich-grey">{{ !empty($profile->province_name) ? (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) : 'Address not set' }}</p>
                 </div>
             </div>
         </div>
