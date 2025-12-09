@@ -10,12 +10,6 @@
         <div class="col-sm-12">
             <div class="card table-card">
                 <div class="card-body">
-                    <div class="text-end p-4 pb-0">
-                        <a href="#" class="btn btn-success d-inline-flex align-item-center" data-bs-toggle="modal"
-                            data-bs-target="#user-edit_add-modal">
-                            <i class="ti ti-plus f-18"></i> Add Menu
-                        </a>
-                    </div>
                     <div class="table-responsive">
                         <table class="table table-hover" id="pc-dt-simple">
                             <thead>

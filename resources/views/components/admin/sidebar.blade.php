@@ -9,14 +9,30 @@
         </div>
         <div class="navbar-content">
             <ul class="pc-navbar">
-                @foreach ($menus as $menu)
-                    <li class="pc-item">
-                        <a href="{{ route($menu->route_name) }}" class="pc-link">
-                            <span class="pc-micon"><i class="{{ $menu->icon }}"></i></span>
-                            <span class="pc-mtext">{{ $menu->label }}</span>
-                        </a>
-                    </li>
-                @endforeach
+                <li class="pc-item">
+                    <a href="{{ route("admin.dashboard") }}" class="pc-link">
+                        <span class="pc-micon"><i class="ti ti-home"></i></span>
+                        <span class="pc-mtext">Dashboard</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route("admin.users") }}" class="pc-link">
+                        <span class="pc-micon"><i class="ti ti-users"></i></span>
+                        <span class="pc-mtext">Users</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route("admin.role.index") }}" class="pc-link">
+                        <span class="pc-micon"><i class="ti ti-key"></i></span>
+                        <span class="pc-mtext">Roles</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route("admin.permission.index") }}" class="pc-link">
+                        <span class="pc-micon"><i class="ti ti-key"></i></span>
+                        <span class="pc-mtext">Permission</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
