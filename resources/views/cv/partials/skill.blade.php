@@ -15,7 +15,7 @@
      Let's focus on the LIST here.
 --}}
 
-@if($skills->isEmpty()) <p class="text-muted">No skills added.</p> @endif
+@if($skills->isEmpty()) <p class="text-muted">{{ __('cv.no_skills') }}</p> @endif
 
 <!-- Core Skills Groups -->
 @foreach($coreGroups as $groupName => $groupSkills)
@@ -31,7 +31,7 @@
             @foreach($groupSkills as $skill)
             <span class="badge bg-light text-dark border p-2 rounded-pill">
                 <strong>{{ $skill->name }}</strong>
-                @if($skill->year_of_experience) <span class="text-muted ms-1">({{ $skill->year_of_experience }} years)</span> @endif
+                @if($skill->year_of_experience) <span class="text-muted ms-1">({{ trans_choice('cv.years_count', $skill->year_of_experience) }})</span> @endif
             </span>
             @endforeach
         </div>
@@ -43,7 +43,7 @@
 @if($softSkills->isNotEmpty())
     <div class="mb-3" id="skillGroup-soft">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="fw-bold mb-0">Soft Skills</h6>
+            <h6 class="fw-bold mb-0">{{ __('cv.soft_skills') }}</h6>
             <div class="d-flex gap-2">
                 <i class="ti ti-edit fs-5 action-btn" onclick='openSkillModal("Soft", "Soft Skill", @json($softSkills))'></i>
                 {{-- Soft skills group usually isn't deleted entirely via button if it's "fixed", but we can allow clearing it --}}

@@ -157,7 +157,7 @@ class CvProfileController extends Controller
             'description' => ['nullable','string', 'max:3000'],
         ];
         $validator = Validator::make($request->all(), $rules,[
-            'end_date.required_without' => 'Trường này không được bỏ trống',
+            'end_date.required_without' => __('cv.validation_required'),
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -227,7 +227,7 @@ class CvProfileController extends Controller
             'description' => ['nullable','string', 'max:3000'],
         ];
         $validator = Validator::make($request->all(), $rules, [
-            'end_date.required_without' => 'Trường này không được bỏ trống',
+            'end_date.required_without' => __('cv.validation_required'),
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -376,7 +376,7 @@ class CvProfileController extends Controller
             'description' => ['nullable', 'string', 'max:3000'],
         ];
         $validator = Validator::make($request->all(), $rules, [
-            'end_date.required_without' => 'Trường này không được bỏ trống',
+            'end_date.required_without' => __('cv.validation_required'),
         ]);
         if ($validator->fails()) {
             return response()->json([

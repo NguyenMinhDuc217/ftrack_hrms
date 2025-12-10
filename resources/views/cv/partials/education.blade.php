@@ -1,5 +1,5 @@
 @if($educations->isEmpty())
-    <p class="text-muted fst-italic">No education added.</p>
+    <p class="text-muted fst-italic">{{ __('cv.no_education') }}</p>
 @else
     @foreach($educations as $edu)
     <div class="mb-4 border-bottom pb-3">
@@ -8,7 +8,7 @@
                 <h5 class="fw-bold mb-1">{{ $edu->school }}</h5>
                 <div class="text-muted mb-1">{{ $edu->degree }} - {{ $edu->major }}</div>
                 <div class="text-secondary small">
-                    {{ $edu->start_date ? $edu->start_date->format('Y') : '' }} - {{ $edu->end_date ? $edu->end_date->format('Y') : 'Present' }}
+                    {{ $edu->start_date ? $edu->start_date->format('Y') : '' }} - {{ $edu->end_date ? $edu->end_date->format('Y') : __('cv.present') }}
                 </div>
                 <p class="mt-2">{{ $edu->description }}</p>
             </div>

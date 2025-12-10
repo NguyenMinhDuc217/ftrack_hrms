@@ -1,6 +1,6 @@
 @extends('layouts.client')
 
-@section('title', 'CV Profile')
+@section('title', __('cv.profile'))
 
 @section('content')
 
@@ -82,7 +82,7 @@
             <!-- 2. EDUCATION -->
             <div class="card card-section">
                 <div class="section-header">
-                    <h3 class="section-title">Education</h3>
+                    <h3 class="section-title">{{ __('cv.education') }}</h3>
                     <button class="btn btn-lg btn-add p-0 text-primary border-0" onclick="openModal('educationModal')"><i class="ti ti-circle-plus fs-3"></i></button>
                 </div>
                 <div class="section-body" id="container-education">
@@ -93,7 +93,7 @@
             <!-- 3. WORK EXPERIENCE -->
             <div class="card card-section">
                 <div class="section-header">
-                    <h3 class="section-title">Work Experience</h3>
+                    <h3 class="section-title">{{ __('cv.work_experience') }}</h3>
                     <button class="btn btn-lg btn-add p-0 text-primary border-0" onclick="openModal('experienceModal')"><i class="ti ti-circle-plus fs-3"></i></button>
                 </div>
                 <div class="section-body" id="container-experience">
@@ -104,12 +104,12 @@
             <!-- 4. SKILLS -->
             <div class="card card-section">
                 <div class="section-header">
-                    <h3 class="section-title">Skills</h3>
+                    <h3 class="section-title">{{ __('cv.skills') }}</h3>
                     <div class="dropdown">
                         <button class="btn btn-lg btn-add p-0 text-primary border-0" onclick="checkSkillType()" data-bs-toggle="dropdown"><i class="ti ti-circle-plus fs-3"></i></button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" id="btn-core-skill" href="javascript:0;" onclick="openSkillModal('Core')"><i class="ti ti-code me-2"></i> Core skills</a></li>
-                            <li><a class="dropdown-item" id="btn-soft-skill" href="javascript:0;" onclick="openSkillModal('Soft')"><i class="ti ti-message-2 me-2"></i> Soft skills</a></li>
+                            <li><a class="dropdown-item" id="btn-core-skill" href="javascript:0;" onclick="openSkillModal('Core')"><i class="ti ti-code me-2"></i> {{ __('cv.core_skills') }}</a></li>
+                            <li><a class="dropdown-item" id="btn-soft-skill" href="javascript:0;" onclick="openSkillModal('Soft')"><i class="ti ti-message-2 me-2"></i> {{ __('cv.soft_skills') }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
              <!-- 5. LANGUAGES -->
              <div class="card card-section">
                 <div class="section-header">
-                    <h3 class="section-title">Languages</h3>
+                    <h3 class="section-title">{{ __('cv.languages') }}</h3>
                     <button class="btn btn-lg btn-add p-0 text-primary border-0" onclick="openModal('languageModal')"><i class="ti ti-circle-plus fs-3"></i></button>
                 </div>
                 <div class="section-body" id="container-language">
@@ -132,7 +132,7 @@
             <!-- 6. PROJECTS -->
             <div class="card card-section">
                 <div class="section-header">
-                    <h3 class="section-title">Projects</h3>
+                    <h3 class="section-title">{{ __('cv.projects') }}</h3>
                     <button class="btn btn-lg btn-add p-0 text-primary border-0" onclick="openModal('projectModal')"><i class="ti ti-circle-plus fs-3"></i></button>
                 </div>
                 <div class="section-body" id="container-project">
@@ -143,7 +143,7 @@
             <!-- 7. CERTIFICATES -->
             <div class="card card-section">
                 <div class="section-header">
-                    <h3 class="section-title">Certificates</h3>
+                    <h3 class="section-title">{{ __('cv.certificates') }}</h3>
                     <button class="btn btn-lg btn-add p-0 text-primary border-0" onclick="openModal('certificateModal')"><i class="ti ti-circle-plus fs-3"></i></button>
                 </div>
                 <div class="section-body" id="container-certificate">
@@ -154,7 +154,7 @@
             <!-- 8. AWARDS -->
             <div class="card card-section">
                 <div class="section-header">
-                    <h3 class="section-title">Awards</h3>
+                    <h3 class="section-title">{{ __('cv.awards') }}</h3>
                     <button class="btn btn-lg btn-add p-0 text-primary border-0" onclick="openModal('awardModal')"><i class="ti ti-circle-plus fs-3"></i></button>
                 </div>
                 <div class="section-body" id="container-award">
@@ -317,26 +317,26 @@
                     $(container).html(response); // Update HTML
                     bootstrap.Modal.getInstance(modalEl).hide(); // Hide Modal
                 }
-            }).fail(function() { alert('Error saving data.'); });
+            }).fail(function() { alert('{{ __('cv.save_error') }}'); });
         }
     });
 
     // 3. Generic Delete Handler
     window.deleteItem = async function(url, container) {
         const confirmResult = await Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: '{{ __('cv.confirm_delete_title') }}',
+            text: "{{ __('cv.confirm_delete_text') }}",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: '{{ __('cv.confirm_delete_yes') }}',
+            cancelButtonText: '{{ __('cv.confirm_delete_cancel') }}',
             reverseButtons: true,
         });
         if (!confirmResult.isConfirmed) return;
         $.ajax({
             url: url, type: 'DELETE',
             success: function(response) { $(container).html(response); },
-            error: function() { alert('Error deleting item.'); }
+            error: function() { alert('{{ __('cv.delete_error') }}'); }
         });
     }
 
@@ -392,12 +392,12 @@
         $('#skillOldGroup').val(groupName); // If editing, this is the identifier
         
         if (type === 'Soft') {
-            $('#skillModalTitle').text('Soft Skills');
+            $('#skillModalTitle').text('{{ __('cv.soft_skills') }}');
             $('#skillGroupNameContainer').hide();
             $('#skillGroupName').val('Soft Skill'); // Fixed name
             $('#newSkillExpContainer').hide(); // No exp for soft skills
         } else {
-            $('#skillModalTitle').text(groupName ? 'Edit Core Skills' : 'Add Core Skills Group');
+            $('#skillModalTitle').text(groupName ? '{{ __('cv.edit') }} {{ __('cv.core_skills') }}' : '{{ __('cv.add') }} {{ __('cv.core_skills') }}');
             $('#skillGroupNameContainer').show();
             $('#skillGroupName').val(groupName); 
             $('#newSkillExpContainer').show();
@@ -464,7 +464,7 @@
         
         const groupName = $('#skillGroupName').val().trim();
         if (!groupName) {
-            alert('Group name is required');
+            alert('{{ __('cv.group_name_required') }}');
             return;
         }
 
@@ -477,19 +477,22 @@
             delete skillModal;
             $('#container-skill').html(response);
         }).fail(function() {
-            alert('Error saving skills.');
+            alert('{{ __('cv.error_saving_skills') }}');
         });
     };
 
     // Delete Group Handler
     window.deleteSkillGroup = async function(groupName) {
         const confirmResult = await Swal.fire({
-            title: 'Delete Group?',
-            text: `Delete "${groupName}" and all its skills?`,
+            title: '{{ __('cv.confirm_delete_group_title') }}',
+            text: `{{ __('cv.confirm_delete_group_text', ['name' => '${groupName}']) }}`.replace(':name', groupName), // Client side replace if needed or just use JS template string structure if we change translation to JS safe
+            // Ideally we should handle the dynamic part carefully. Let's use a simple replace approach.
+            // But wait, Blade renders on server. So '${groupName}' is JS.
+            // Better: text: "{{ __('cv.confirm_delete_group_text', ['name' => 'PLACEHOLDER']) }}".replace('PLACEHOLDER', groupName),
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: '{{ __('cv.confirm_delete_yes') }}',
+            cancelButtonText: '{{ __('cv.confirm_delete_cancel') }}',
             reverseButtons: true,
         });
 

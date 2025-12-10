@@ -14,10 +14,10 @@
     <div class="section-body">
         <div class="d-flex justify-content-between pb-2">
             <div class="d-flex align-items-center">
-                <img src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" alt="Profile Image" class="img-fluid">
+                <img src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" alt="{{ __('cv.avatar') }}" class="img-fluid">
                 <div class="ps-4">
-                    <h1 class="text-black fs-3 fw-bold mb-2">{{ $profile->full_name ?? 'User Name' }}</h1>
-                    <h4 class="text-secondary fw-bold mb-3">{{ $profile->title ?? 'Title not set' }}</h4>
+                    <h1 class="text-black fs-3 fw-bold mb-2">{{ $profile->full_name ?? __('cv.user_name_default') }}</h1>
+                    <h4 class="text-secondary fw-bold mb-3">{{ $profile->title ?? __('cv.title_default') }}</h4>
                 </div>
             </div>
             <div class="h-100 d-flex align-items-top">
@@ -30,25 +30,25 @@
             <div class="col-md-6">
                 <div class="d-flex gap-2 pb-2">
                     <p class="align-items-center"><i class="ti ti-mail text-rich-grey"></i></p>
-                    <p class="text-truncated ims-2 text-rich-grey">{{ $user->email ?? 'Email not set' }}</p>
+                    <p class="text-truncated ims-2 text-rich-grey">{{ $user->email ?? __('cv.email_default') }}</p>
                 </div>
                 <div class="d-flex gap-2 pb-2">
                     <p class="align-items-center"><i class="ti ti-phone text-rich-grey"></i></p>
-                    <p class="text-truncated ims-2 text-rich-grey">{{ $profile->phone_number ?? 'Phone not set' }}</p>
+                    <p class="text-truncated ims-2 text-rich-grey">{{ $profile->phone_number ?? __('cv.phone_default') }}</p>
                 </div>
                 <div class="d-flex gap-2 pb-2">
                     <p class="align-items-center"><i class="ti ti-calendar text-rich-grey"></i></p>
-                    <p class="text-truncated ims-2 text-rich-grey">{{ $user->date_of_birth ?? 'Date of birth not set' }}</p>
+                    <p class="text-truncated ims-2 text-rich-grey">{{ $user->date_of_birth ?? __('cv.dob_default') }}</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="d-flex gap-2 pb-2">
                     <p class="align-items-center"><i class="ti ti-friends text-rich-grey"></i></p>
-                    <p class="text-truncated ims-2 text-rich-grey text-capitalize">{{ !empty($profile->gender) ? $profile->gender->getLabel()['lang'] : 'Gender not set' }}</p>
+                    <p class="text-truncated ims-2 text-rich-grey text-capitalize">{{ !empty($profile->gender) ? $profile->gender->getLabel()['lang'] : __('cv.gender_default') }}</p>
                 </div>
                 <div class="d-flex gap-2 pb-2">
                     <p class="align-items-center"><i class="ti ti-map text-rich-grey"></i></p>
-                    <p class="text-truncated ims-2 text-rich-grey">{{ !empty($profile->province_name) ? (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) : 'Address not set' }}</p>
+                    <p class="text-truncated ims-2 text-rich-grey">{{ !empty($profile->province_name) ? (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) : __('cv.address_default') }}</p>
                 </div>
             </div>
         </div>
@@ -56,10 +56,10 @@
 </div>
 <div class="card card-section bg-">
     <div class="section-header">
-        <h3 class="section-title">Summary</h3>
+        <h3 class="section-title">{{ __('cv.summary') }}</h3>
     </div>
     <div class="section-body" id="container-summary">
-        <p class="text-muted">{{ $profile->summary ?? 'No summary added yet.' }}</p>
+        <p class="text-muted">{{ $profile->summary ?? __('cv.summary_default') }}</p>
     </div>
 </div>
 
