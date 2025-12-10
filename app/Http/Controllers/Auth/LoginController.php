@@ -55,7 +55,6 @@ class LoginController extends Controller
         return redirect('/'); // Redirect to the homepage after logout
     }
 
-
     public function redirect()
     {
         return Socialite::driver('google')->redirect();
@@ -76,23 +75,24 @@ class LoginController extends Controller
 
         $user = User::where('email', $googleUser->getEmail())->first();
 
-        if (!$user) {
+        if (! $user) {
 
             $split_name = $this->splitNameVN($googleUser->getName());
             $user = User::create([
-                'username'     => $googleUser->getEmail(),
+                'username' => $googleUser->getEmail(),
                 'first_name' => $split_name['first_name'],
                 'last_name' => $split_name['last_name'],
-                'email'    => $googleUser->getEmail(),
-                'avatar' =>  $googleUser->getAvatar(),
+                'email' => $googleUser->getEmail(),
+                'avatar' => $googleUser->getAvatar(),
                 'password' => bcrypt(Str::random(32)),
-                'role'     => 'user',
+                'role' => 'user',
                 'google_id' => $googleUser->getId(),
                 'login_type' => 'google',
             ]);
         }
 
         Auth::login($user, true);
+
         return redirect('/');
     }
 
@@ -105,16 +105,16 @@ class LoginController extends Controller
         if (count($parts) === 1) {
             return [
                 'first_name' => $parts[0],
-                'last_name'  => '',
+                'last_name' => '',
             ];
         }
 
         $firstName = array_pop($parts);
-        $lastName  = implode(' ', $parts);
+        $lastName = implode(' ', $parts);
 
         return [
             'first_name' => $firstName,
-            'last_name'  => $lastName,
+            'last_name' => $lastName,
         ];
     }
 }

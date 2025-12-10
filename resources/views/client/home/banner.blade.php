@@ -1,9 +1,9 @@
 <div class="relative w-full">
     <!-- Blue Banner -->
-    <div class="bg-gradient-to-r from-blue-600 to-blue-400 h-[270px] sm:h-[270px] relative overflow-hidden flex items-center justify-center">
+    <div class="bg-gradient-to-r from-blue-600 to-blue-400 h-[40px] sm:h-[400px] relative overflow-hidden flex items-center justify-center">
         <img src="{{ asset('client/assets/img/banner.png') }}"
             alt="Professional Woman"
-            class="h-[300px] md:h-[400px] object-contain object-center translate-y-4 md:translate-y-0" />
+            class="h-[400px] object-cover object-center translate-y-4 md:translate-y-0" />
     </div>
 
     <!-- Search Box -->
@@ -17,18 +17,22 @@
                 <input
                     type="text"
                     class="block w-full pl-10 pr-3 py-3 border-none rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm transition-colors"
-                    placeholder="{{__('default.txt_home_search_placeholder')}}" />
+                    placeholder="{{__('default.txt_home_search_placeholder')}}" 
+                    value="{{ $search ?? '' }}"
+                    onchange="filterJobs('search', this.value)"
+                    />
             </div>
 
             <div class="w-full md:w-1/4 relative group">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                     <i data-lucide="map-pin" class="h-5 w-5"></i>
                 </div>
-                <select class="block w-full pl-3 pr-10 py-3 border border-gray-200 rounded-md leading-5 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm appearance-none transition-colors text-gray-700">
+                <select class="block w-full pl-3 pr-10 py-3 border border-gray-200 rounded-md leading-5 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm appearance-none transition-colors text-gray-700"
+                onchange="filterJobs('province_id', this.value)">
                     <option value="">{{__('default.txt_location')}}</option>
-                    <option value="HN">Hà Nội</option>
-                    <option value="HCM">TP. Hồ Chí Minh</option>
-                    <option value="DN">Đà Nẵng</option>
+                    @foreach($provinces  as $province)
+                    <option value="{{ $province->code }}" {{ isset($province_id) && $province->code == $province_id ? 'selected' : '' }}>{{ $province->name }}</option>
+                    @endforeach
                 </select>
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
                     <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">

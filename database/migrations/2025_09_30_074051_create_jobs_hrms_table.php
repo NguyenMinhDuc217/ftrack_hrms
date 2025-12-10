@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jobs_hrms', function (Blueprint $table) {
-            $table->id('id');
-            $table->bigInteger('job_id');
+            $table->id('job_id');
             $table->string('title', 255)->nullable();
             $table->bigInteger('department_id')->nullable();
             $table->bigInteger('province_code')->nullable();
@@ -24,6 +23,7 @@ return new class extends Migration
             $table->decimal('min_salary', 12, 0)->nullable();
             $table->decimal('max_salary', 12, 0)->nullable();
             $table->string('currency')->nullable()->comment('Tiền tệ');
+            $table->string('application_position', 255)->nullable();
             $table->bigInteger('org_id')->default(0);
             $table->string('status', 50)->nullable();
             $table->timestamps();

@@ -34,7 +34,6 @@ class JobSeeder extends Seeder
         //     ]);
         // }
         DB::table('jobs_hrms')->insert([
-            'job_id' => $faker->numberBetween(1, 10),
             'title' => 'NHÂN VIÊN TREO BANNER - HANGER - POSTER TẾT KÊNH TẠP HÓA, QUÁN ĂN',
             'department_id' => $faker->randomElement($department_ids),
             'province_code' => $faker->randomElement($province_ids),
@@ -58,7 +57,6 @@ class JobSeeder extends Seeder
             'status' => $faker->randomElement([0, 1]),
         ]);
         DB::table('jobs_hrms')->insert([
-            'job_id' => $faker->numberBetween(1, 10),
             'title' => 'CHUYÊN VIÊN KHẢO SÁT THỊ TRƯỜNG',
             'department_id' => $faker->randomElement($department_ids),
             'province_code' => $faker->randomElement($province_ids),
@@ -77,7 +75,6 @@ class JobSeeder extends Seeder
             'status' => $faker->randomElement([0, 1]),
         ]);
         DB::table('jobs_hrms')->insert([
-            'job_id' => $faker->numberBetween(1, 10),
             'title' => 'COMMUNITY SPECIALIST (CS) - NGÀNH ĐIỆN TỬ TIÊU DÙNG',
             'department_id' => $faker->randomElement($department_ids),
             'province_code' => $faker->randomElement($province_ids),
@@ -97,7 +94,6 @@ class JobSeeder extends Seeder
             'status' => $faker->randomElement([0, 1]),
         ]);
         DB::table('jobs_hrms')->insert([
-            'job_id' => $faker->numberBetween(1, 10),
             'title' => 'NHÂN VIÊN KINH DOANH THỨC ĂN THÚ CƯNG KÊNH GT',
             'department_id' => $faker->randomElement($department_ids),
             'province_code' => $faker->randomElement($province_ids),

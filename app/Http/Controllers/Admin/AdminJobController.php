@@ -6,7 +6,7 @@ use App\Enums\EmploymentType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPostRequest;
 use App\Models\Department;
-use App\Models\Job;
+use App\Models\JobHrms;
 use App\Models\Province;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -32,7 +32,7 @@ class AdminJobController extends Controller
     {
         $user = auth()->guard()->user();
 
-        $jobs = Job::whereNull('deleted_at')->paginate(10);
+        $jobs = JobHrms::whereNull('deleted_at')->paginate(10);
 
         return view('admin.job.index', ['jobs' => $jobs, 'statuses' => $this->statuses]);
     }
@@ -62,7 +62,7 @@ class AdminJobController extends Controller
 
     public function show($job_id)
     {
-        $job = Job::where('job_id', $job_id)->first();
+        $job = JobHrms::where('job_id', $job_id)->first();
 
         $breadcrumbs = [
             ['label' => __('job.txt_edit_job'), 'url' => route('admin.jobs.index')],
@@ -87,17 +87,17 @@ class AdminJobController extends Controller
         );
     }
 
-    public function update(JobPostRequest $request, ?Job $job = null): RedirectResponse
+    public function update(JobPostRequest $request, ?JobHrms $job = null): RedirectResponse
     {
         $data = $request->validated();
 
         if ($job) {
-            $job = Job::where('job_id', $job->job_id)->first();
+            $job = JobHrms::where('job_id', $job->job_id)->first();
             $job->update($data);
 
             return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
         } else {
-            $job = Job::create($data);
+            $job = JobHrms::create($data);
 
             return redirect()->route('admin.jobs.index')->with('success', 'Job added successfully.');
         }
@@ -105,7 +105,7 @@ class AdminJobController extends Controller
 
     public function delete($job_id): RedirectResponse
     {
-        $job = Job::where('job_id', $job_id)->first();
+        $job = JobHrms::where('job_id', $job_id)->first();
         if (! $job) {
             return redirect()->route('admin.jobs.index')->with('error', 'Job not found.');
         }

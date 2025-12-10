@@ -35,7 +35,7 @@
           <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">Login</a></li>
           <li><a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">Register</a></li>
         @endauth
-        @php
+        <!-- @php
           $locale = app()->getLocale();
         @endphp
         <li class="ipy-5 ipy-xl-0 navbar-nav align-items-center">
@@ -44,6 +44,17 @@
             <div class="vr mx-2 align-self-center cursor-pointer"></div>
             <a href="{{ route('language.switch', ["locale" => "vi"] ) }}" class="bg-transparent border-0 p-0 text-it-white {{ $locale == 'vi' ? 'active' : '' }}">VI</a>
           </div>
+        </li> -->
+        <li class="ipy-5 ipy-xl-0 navbar-nav align-items-center">
+          @if (!empty($locale) && $locale == 'en')
+          <a href="{{ route('language.switch',["locale"=>"vi"]) }}" class="link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('default.vi')">
+            <img src="{{ asset('files/flags/vi.svg') }}" alt="vi icon" style="width:20px;">
+          </a>
+          @elseif (!empty($locale) && $locale == 'vi')
+          <a href="{{ route('language.switch',["locale"=>"en"]) }}" class="link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title ="@lang('default.en')">
+            <img src="{{ asset('files/flags/en.svg') }}" alt="en icon" style="width:20px;">
+          </a>
+          @endif
         </li>
       </ul>
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -56,16 +67,5 @@
       <a class="btn-getstarted" href="{{ route('admin.dashboard') }}">Admin</a>
     @endcan
 
-    <div class="text-left ps-3">
-      @if (!empty($locale) && $locale == 'en')
-      <a href="{{ route('language.switch',["locale"=>"vi"]) }}" class="link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('default.vi')">
-        <img src="{{ asset('files/flags/vi.svg') }}" alt="vi icon" style="width:20px;">
-      </a>
-      @elseif (!empty($locale) && $locale == 'vi')
-      <a href="{{ route('language.switch',["locale"=>"en"]) }}" class="link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title ="@lang('default.en')">
-        <img src="{{ asset('files/flags/en.svg') }}" alt="en icon" style="width:20px;">
-      </a>
-      @endif
-    </div>
   </div>
 </header>
