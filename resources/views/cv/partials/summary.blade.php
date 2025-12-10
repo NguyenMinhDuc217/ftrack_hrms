@@ -14,7 +14,7 @@
     <div class="section-body">
         <div class="d-flex justify-content-between pb-2">
             <div class="d-flex align-items-center">
-                <img src="{{ asset('images/profile/blank-profile.svg') }}" alt="Profile Image" class="img-fluid">
+                <img src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" alt="Profile Image" class="img-fluid">
                 <div class="ps-4">
                     <h1 class="text-black fs-3 fw-bold mb-2">{{ $profile->full_name ?? 'User Name' }}</h1>
                     <h4 class="text-secondary fw-bold mb-3">{{ $profile->title ?? 'Title not set' }}</h4>

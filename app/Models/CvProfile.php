@@ -36,6 +36,11 @@ class CvProfile extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
+    public function avatar()
+    {
+        return $this->belongsTo(UserDocument::class, 'avatar_file_id');
+    }
+
     public function educations()
     {
         return $this->hasMany(CvEducation::class);

@@ -32,9 +32,9 @@ return new class extends Migration
             $table->string('school', 255);
             $table->string('degree', 64);
             $table->string('major', 255);
-            $table->boolean('is_studying')->default(false);
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->boolean('is_current')->default(false);
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -75,6 +75,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->boolean('is_current')->default(false);
             $table->string('url', 1000)->nullable();
             $table->timestamps();
         });

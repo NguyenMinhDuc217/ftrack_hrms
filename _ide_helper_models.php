@@ -109,9 +109,9 @@ namespace App\Models{
  * @property string $school
  * @property string $degree
  * @property string $major
- * @property bool $is_studying
  * @property \Illuminate\Support\Carbon|null $start_date
  * @property \Illuminate\Support\Carbon|null $end_date
+ * @property int $is_current
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -125,7 +125,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereIsStudying($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereIsCurrent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereMajor($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereSchool($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvEducation whereStartDate($value)
@@ -201,6 +201,8 @@ namespace App\Models{
  * @property string|null $summary
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $avatar_file_id
+ * @property-read \App\Models\File|null $avatar
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CvAward> $awards
  * @property-read int|null $awards_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CvCertificate> $certificates
@@ -220,6 +222,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProfile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProfile query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProfile whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProfile whereAvatarFileId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProfile whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProfile whereFullName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProfile whereGender($value)
@@ -244,6 +247,7 @@ namespace App\Models{
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $start_date
  * @property \Illuminate\Support\Carbon|null $end_date
+ * @property int $is_current
  * @property string|null $url
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -256,6 +260,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProject whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProject whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProject whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProject whereIsCurrent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProject whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProject whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CvProject whereUpdatedAt($value)
@@ -317,10 +322,47 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property string|null $uuid
+ * @property string $disk local, public, s3, etc.
+ * @property string $path
+ * @property string|null $name
+ * @property string|null $extension
+ * @property string|null $mime_type
+ * @property int $size
+ * @property int|null $uploaded_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read mixed $url
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereDisk($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereExtension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereMimeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereUploadedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File withoutTrashed()
+ */
+	class File extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * @property int $job_id
  * @property string|null $title
  * @property int|null $department_id
- * @property int|null $province_code
  * @property string|null $employment_type
  * @property int|null $headcount
  * @property string|null $description_md
@@ -328,6 +370,7 @@ namespace App\Models{
  * @property string|null $min_salary
  * @property string|null $max_salary
  * @property string|null $currency Tiền tệ
+ * @property string|null $application_position
  * @property int $org_id
  * @property string|null $status
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -338,6 +381,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereApplicationPosition($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereDeletedAt($value)
@@ -349,7 +393,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereMaxSalary($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereMinSalary($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereOrgId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereProvinceCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereRequirementsMd($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Job whereTitle($value)
@@ -365,7 +408,6 @@ namespace App\Models{
  * @property int $job_id
  * @property string|null $title
  * @property int|null $department_id
- * @property int|null $province_code
  * @property string|null $employment_type
  * @property int|null $headcount
  * @property string|null $description_md
@@ -373,6 +415,7 @@ namespace App\Models{
  * @property string|null $min_salary
  * @property string|null $max_salary
  * @property string|null $currency Tiền tệ
+ * @property string|null $application_position
  * @property int $org_id
  * @property string|null $status
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -384,6 +427,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereApplicationPosition($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereDeletedAt($value)
@@ -395,7 +439,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereMaxSalary($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereMinSalary($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereOrgId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereProvinceCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereRequirementsMd($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHrms whereTitle($value)
@@ -524,6 +567,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property int $id
  * @property string $code
  * @property string $name
  * @property string|null $name_en
@@ -538,6 +582,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereCodeName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereFullName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereFullNameEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereNameEn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereUnitId($value)
@@ -568,6 +613,8 @@ namespace App\Models{
 /**
  * @property int $user_id
  * @property string $username
+ * @property string|null $google_id
+ * @property string $login_type
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
@@ -616,8 +663,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmploymentType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereGoogleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereHireDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLoginType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereManagerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereOrgId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
@@ -634,6 +683,53 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
  */
 	class User extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int|null $uploaded_by
+ * @property string|null $document_type
+ * @property string|null $document_title
+ * @property int $confidential
+ * @property string|null $file_url
+ * @property string|null $file_name_original
+ * @property int|null $size
+ * @property string|null $extension
+ * @property string|null $mime_type
+ * @property string|null $language
+ * @property int $org_id
+ * @property string|null $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read mixed $url
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereConfidential($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereDocumentTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereDocumentType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereExtension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereFileNameOriginal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereFileUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereMimeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereOrgId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereUploadedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument withoutTrashed()
+ */
+	class UserDocument extends \Eloquent {}
 }
 
 namespace App\Services\Translation{

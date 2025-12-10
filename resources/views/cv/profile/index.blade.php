@@ -197,11 +197,12 @@
             this.showPicker();
         });
 
-        $('#exp_current').on('change', function() {
+        $('input[name="is_current"]').on('change', function() {
+            const $form = $(this).closest('form');
             if ($(this).is(':checked')) {
-                $('#experienceModal #exp_end_date').prop('disabled', true).val('');
+                $form.find('input[name="end_date"]').prop('disabled', true).val('');
             } else {
-                $('#experienceModal #exp_end_date').prop('disabled', false);
+                $form.find('input[name="end_date"]').prop('disabled', false);
             }
         });
     });
@@ -278,22 +279,46 @@
         let url = $form.data('route');
         let container = $form.data('container');
         let modalEl = $form.closest('.modal')[0];
-
+        const checkFormMultiPart = $form.attr('enctype') === 'multipart/form-data';
         // hide old error messages
         $form.find('.is-invalid').removeClass('is-invalid');
         $form.find('.invalid-note').text('');
 
-        $.post(url, $form.serialize(), function(response) {
-            if(response.status === 'error') {
-                $.each(response.errors, function(key, value) {
-                    $form.find(`[name="${key}"]`).addClass('is-invalid');
-                    $form.find(`[name="${key}"]`).parent().find('.invalid-note').text(value[0]);
-                });
-            } else {
-                $(container).html(response); // Update HTML
-                bootstrap.Modal.getInstance(modalEl).hide(); // Hide Modal
-            }
-        }).fail(function() { alert('Error saving data.'); });
+        if(checkFormMultiPart) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: new FormData($form[0]),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if(response.status === 'error') {
+                        $.each(response.errors, function(key, value) {
+                            $form.find(`[name="${key}"]`).addClass('is-invalid');
+                            $form.find(`[name="${key}"]`).parent().find('.invalid-note').text(value[0]);
+                        });
+                    } else {
+                        $(container).html(response); // Update HTML
+                        bootstrap.Modal.getInstance(modalEl).hide(); // Hide Modal
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        } else {
+            $.post(url, $form.serialize(), function(response) {
+                if(response.status === 'error') {
+                    $.each(response.errors, function(key, value) {
+                        $form.find(`[name="${key}"]`).addClass('is-invalid');
+                        $form.find(`[name="${key}"]`).parent().find('.invalid-note').text(value[0]);
+                    });
+                } else {
+                    $(container).html(response); // Update HTML
+                    bootstrap.Modal.getInstance(modalEl).hide(); // Hide Modal
+                }
+            }).fail(function() { alert('Error saving data.'); });
+        }
     });
 
     // 3. Generic Delete Handler

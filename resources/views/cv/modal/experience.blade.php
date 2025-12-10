@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" name="is_current" value="1" id="exp_current">
-                    <label class="form-check-label" for="exp_current">I currently work here</label>
+                    <label class="form-check-label" for="exp_current">I'm currently working here</label>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Description</label>

@@ -21,8 +21,9 @@ return new class extends Migration
             $table->string('document_type', 255)->nullable();
             $table->string('document_title', 255)->nullable();
             $table->boolean('confidential')->default(0);
+            $table->string('disk', 25)->nullable();
             $table->string('file_url', 255)->nullable();
-            $table->bigInteger('file_name_original')->nullable();
+            $table->string('file_name_original')->nullable();
             $table->bigInteger('size')->nullable();
             $table->string('extension')->nullable();
             $table->string('mime_type')->nullable();

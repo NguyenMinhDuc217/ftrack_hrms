@@ -22,7 +22,11 @@
                         <div class="invalid-note"></div>
                     </div>
                 </div>
-                <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="3"></textarea></div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="is_current" value="1" id="edu_current">
+                    <label class="form-check-label" for="edu_current">I'm currently studying here</label>
+                </div>
+                <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="3"></textarea><div class="invalid-note"></div></div>
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button><button type="submit" class="btn btn-danger">Save</button></div>
         </form>

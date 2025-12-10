@@ -1,0 +1,23 @@
+# compose.yaml
+
+services:
+  # Here's our minio
+  storage:
+    image: quay.io/minio/minio:RELEASE.2025-02-03T21-03-04Z
+    restart: always
+    command: ["server", "/data", "--console-address=:9001"]
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    networks:
+      - my-network # use the same network as your app
+    env_file:
+      - .env
+    volumes:
+      - object-storage:/data
+
+networks:
+  my-network: # declare a network
+
+volumes:
+  object-storage: # for persistent data

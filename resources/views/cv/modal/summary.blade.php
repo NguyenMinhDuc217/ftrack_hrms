@@ -1,12 +1,33 @@
 <!-- ================= NEW SUMMARY MODAL ================= -->
 <div class="modal fade" id="summaryModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <form class="modal-content ajax-form" data-route="{{ route('profile.save.summary') }}" data-container="#container-summary">
+        <form class="modal-content ajax-form" enctype="multipart/form-data" data-route="{{ route('profile.save.summary') }}" data-container="#container-summary">
             <div class="modal-header">
                 <h5 class="modal-title text-bold">Edit Summary</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 col-12 mb-3 text-center">
+                        <label class="form-label d-block">Avatar</label>
+                        <div class="position-relative d-inline-block">
+                            <img src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" 
+                                 alt="Avatar Preview" 
+                                 class="img-fluid rounded-circle border shadow-sm" 
+                                 id="avatar-preview"
+                                 style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;"
+                                 onclick="document.getElementById('avatar-input').click()">
+                            
+                            <div class="position-absolute bottom-0 end-0 bg-white rounded-circle border p-1" 
+                                 style="cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;"
+                                 onclick="document.getElementById('avatar-input').click()">
+                                <i class="ti ti-camera fs-4 text-primary"></i>
+                            </div>
+                        </div>
+                        <input type="file" class="d-none" id="avatar-input" name="avatar" accept="image/*" onchange="previewAvatar(this)">
+                        <div class="invalid-note"></div>
+                    </div>
+                </div>
                 <div class="row">
                     <!-- Full Name -->
                     <div class="col-md-8 mb-3">
@@ -82,3 +103,15 @@
         </form>
     </div>
 </div>
+
+<script>
+    function previewAvatar(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatar-preview').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

@@ -103,4 +103,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
 
     // Route Menu
     Route::get('/menus', [AdminMennuController::class, 'index'])->name('menu.index');
+
+    // File Management
+    Route::get('files/upload', [App\Http\Controllers\Admin\AdminFileController::class, 'index'])->name('files.upload');
+    Route::post('files/store', [App\Http\Controllers\Admin\AdminFileController::class, 'store'])->name('files.store');
 });

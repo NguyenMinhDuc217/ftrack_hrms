@@ -10,12 +10,12 @@ use App\Models\CvExperience;
 use App\Models\CvLanguage;
 use App\Models\CvProfile;
 use App\Models\CvProject;
-use App\Models\CvSkill;
 use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Storage;
 
 class CvProfileController extends Controller
 {
@@ -74,7 +74,7 @@ class CvProfileController extends Controller
         return view('cv.profile.index', compact('profile', 'user','provinces','genders'));
     }
 
-   public function saveSummary(Request $request) {
+    public function saveSummary(Request $request, \App\Services\UserDocumentService $userDocumentService) {
         $profile = $this->getUserProfile();
 
         $rules = [
@@ -82,9 +82,10 @@ class CvProfileController extends Controller
             'title' => ['required', 'string', 'max:64'],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
             'phone_number' => ['required', 'max:10', 'regex:/^\d{10}$/'],
-            'address' => ['string', 'max:255'],
+            'address' => ['nullable','string', 'max:255'],
             'province_code' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['required', 'date'],
+            'avatar' => ['nullable', 'image', 'max:2048'], // 2MB Max
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -121,11 +122,22 @@ class CvProfileController extends Controller
             }
         }
 
+        // Handle Avatar Upload
+        if ($request->hasFile('avatar')) {
+            $oldFile = $profile->avatar;
+            $file = $userDocumentService->upload($request->file('avatar'), $this->user,'avatars');
+            $data['avatar_file_id'] = $file->id;
+            if ($oldFile) {
+                $userDocumentService->delete($oldFile);
+            }
+        }
+
         $profile->update($data);
         $user = $this->user;
         $user->update($userData);
         $provinces = Province::orderBy('name')->get(); 
         $genders = Gender::cases();
+        $profile->load('avatar');
         return view('cv.partials.summary', compact('profile','user','provinces','genders'))->render();
     }
 
@@ -139,11 +151,14 @@ class CvProfileController extends Controller
             'id' => ['nullable', Rule::exists($ruleModel->getTable(), $ruleModel->getKeyName())],
             'position' => ['required', 'string', 'max:64'],
             'company_name' => ['required', 'string', 'max:64'],
+            'is_current' => ['nullable','boolean'],
             'start_date' => ['required', 'date_format:Y-m'],
-            'end_date' => ['required', 'date_format:Y-m','after_or_equal:start_date'],
-            'description' => ['string', 'max:255'],
+            'end_date' => ['required_without:is_current','date_format:Y-m','after_or_equal:start_date'],
+            'description' => ['nullable','string', 'max:3000'],
         ];
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules,[
+            'end_date.required_without' => 'Trường này không được bỏ trống',
+        ]);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -155,14 +170,15 @@ class CvProfileController extends Controller
             'id',
             'position',
             'company_name',
+            'is_current',
             'start_date',
             'end_date',
             'description',
         ]);
 
         $data['cv_profile_id'] = $profile->id;
-        $data['start_date'] = date('Y-m-d', strtotime($request->start_date.'-01'));
-        $data['end_date'] = date('Y-m-d', strtotime($request->end_date.'-01'));
+        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date.'-01')) : null;
+        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date.'-01')) : null;
 
         if(isset($data['id'])) {
             $experience = $profile->experiences()->findOrFail($data['id']);
@@ -205,11 +221,14 @@ class CvProfileController extends Controller
             'school' => ['required', 'string', 'max:64'],
             'degree' => ['required', 'string', 'max:64'],
             'major' => ['required', 'string', 'max:64'],
+            'is_current' => ['nullable','boolean'],
             'start_date' => ['required', 'date_format:Y-m'],
-            'end_date' => ['required', 'date_format:Y-m','after_or_equal:start_date'],
-            'description' => ['string', 'max:255'],
+            'end_date' => ['required_without:is_current','date_format:Y-m','after_or_equal:start_date'],
+            'description' => ['nullable','string', 'max:3000'],
         ];
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, [
+            'end_date.required_without' => 'Trường này không được bỏ trống',
+        ]);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -222,12 +241,13 @@ class CvProfileController extends Controller
             'school',
             'degree',
             'major',
+            'is_current',
             'description',
         ]);
 
         $data['cv_profile_id'] = $profile->id;
-        $data['start_date'] = date('Y-m-d', strtotime($request->start_date.'-01'));
-        $data['end_date'] = date('Y-m-d', strtotime($request->end_date.'-01'));
+        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date.'-01')) : null;
+        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date.'-01')) : null;
 
         if (isset($data['id'])) {
             $education = $profile->educations()->findOrFail($data['id']);
@@ -350,11 +370,14 @@ class CvProfileController extends Controller
             'id' => ['nullable', Rule::exists($ruleModel->getTable(), $ruleModel->getKeyName())],
             'name' => ['required', 'string', 'max:64'],
             'url' => ['nullable', 'url'],
-            'start_date' => ['nullable', 'date_format:Y-m'],
-            'end_date' => ['nullable', 'date_format:Y-m', 'after_or_equal:start_date'],
+            'is_current' => ['nullable','boolean'],
+            'start_date' => ['required', 'date_format:Y-m'],
+            'end_date' => ['required_without:is_current','date_format:Y-m', 'after_or_equal:start_date'],
             'description' => ['nullable', 'string', 'max:3000'],
         ];
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, [
+            'end_date.required_without' => 'Trường này không được bỏ trống',
+        ]);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -362,11 +385,11 @@ class CvProfileController extends Controller
             ]);
         }
 
-        $data = $request->only(['id','name', 'url', 'description']);
+        $data = $request->only(['id','name', 'url', 'description', 'is_current']);
 
         $data['cv_profile_id'] = $profile->id;
-        $data['start_date'] = date('Y-m-d', strtotime($request->start_date.'-01'));
-        $data['end_date'] = date('Y-m-d', strtotime($request->end_date.'-01'));
+        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date.'-01')) : null;
+        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date.'-01')) : null;
 
         if (isset($data['id'])) {
             $project = $profile->projects()->findOrFail($data['id']);
@@ -411,8 +434,8 @@ class CvProfileController extends Controller
         }
         $data = $request->only(['id','name', 'organization', 'issue_date', 'expiration_date', 'url']);
         $data['cv_profile_id'] = $profile->id;
-        $data['issue_date'] = date('Y-m-d', strtotime($request->issue_date.'-01'));
-        $data['expiration_date'] = date('Y-m-d', strtotime($request->expiration_date.'-01'));
+        $data['issue_date'] = !empty($request->issue_date) ? date('Y-m-d', strtotime($request->issue_date.'-01')) : null;
+        $data['expiration_date'] = !empty($request->expiration_date) ? date('Y-m-d', strtotime($request->expiration_date.'-01')) : null;
         if (isset($data['id'])) {
             $certificate = $profile->certificates()->findOrFail($data['id']);
             unset($data['id']);
@@ -474,32 +497,32 @@ class CvProfileController extends Controller
     
     private function projectsDTO($projects) {
         return $projects->map(function ($project) {
-            $project->start_date = date('Y-m', strtotime($project->start_date));
-            $project->end_date = date('Y-m', strtotime($project->end_date));
+            $project->start_date = !empty($project->start_date) ? date('Y-m', strtotime($project->start_date)) : null;
+            $project->end_date = !empty($project->end_date) ? date('Y-m', strtotime($project->end_date)) : null;
             return $project;
         });
     }
 
     private function educationDTO($education) {
         return $education->map(function ($education) {
-            $education->start_date = date('Y-m', strtotime($education->start_date));
-            $education->end_date = date('Y-m', strtotime($education->end_date));
+            $education->start_date = !empty($education->start_date) ? date('Y-m', strtotime($education->start_date)) : null;
+            $education->end_date = !empty($education->end_date) ? date('Y-m', strtotime($education->end_date)) : null;
             return $education;
         });
     }
 
     private function experienceDTO($experience) {
         return $experience->map(function ($experience) {
-            $experience->start_date = date('Y-m', strtotime($experience->start_date));
-            $experience->end_date = date('Y-m', strtotime($experience->end_date));
+            $experience->start_date = !empty($experience->start_date) ? date('Y-m', strtotime($experience->start_date)) : null;
+            $experience->end_date = !empty($experience->end_date) ? date('Y-m', strtotime($experience->end_date)) : null;
             return $experience;
         });
     }
 
     private function certificatesDTO($certificates) {
         return $certificates->map(function ($certificate) {
-            $certificate->issue_date = date('Y-m', strtotime($certificate->issue_date));
-            $certificate->expiration_date = date('Y-m', strtotime($certificate->expiration_date));
+            $certificate->issue_date = !empty($certificate->issue_date) ? date('Y-m', strtotime($certificate->issue_date)) : null;
+            $certificate->expiration_date = !empty($certificate->expiration_date) ? date('Y-m', strtotime($certificate->expiration_date)) : null;
             return $certificate;
         });
     }
