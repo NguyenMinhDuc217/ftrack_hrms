@@ -15,16 +15,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_documents', function (Blueprint $table) {
-            $table->id('document_id');
-            $table->bigInteger('user_id')->nullable();
+            $table->id('id');
+            $table->bigInteger('user_id')->constrained('users', 'user_id')->onDelete('cascade');
             $table->bigInteger('uploaded_by')->nullable();
             $table->string('document_type', 255)->nullable();
             $table->string('document_title', 255)->nullable();
             $table->boolean('confidential')->default(0);
             $table->string('file_url', 255)->nullable();
             $table->bigInteger('file_name_original')->nullable();
+            $table->bigInteger('size')->nullable();
+            $table->string('extension')->nullable();
+            $table->string('mime_type')->nullable();
+            $table->string('language')->nullable();
             $table->bigInteger('org_id')->default(0);
-            $table->string('status',100)->nullable();
+            $table->string('status', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

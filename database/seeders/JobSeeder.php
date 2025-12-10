@@ -16,6 +16,7 @@ class JobSeeder extends Seeder
         $faker = app(\Faker\Generator::class);
         $department_ids = DB::table('departments')->pluck('department_id')->toArray() ?? [1, 2];
         $province_ids = DB::table('provinces')->pluck('code')->toArray() ?? [1, 2];
+        $ward_ids = DB::table('wards')->pluck('code')->toArray() ?? [1, 2];
 
         // for ($i = 1; $i < 10; $i++) {
         //     DB::table('jobs_hrms')->insert([
@@ -36,7 +37,6 @@ class JobSeeder extends Seeder
         DB::table('jobs_hrms')->insert([
             'title' => 'NHÂN VIÊN TREO BANNER - HANGER - POSTER TẾT KÊNH TẠP HÓA, QUÁN ĂN',
             'department_id' => $faker->randomElement($department_ids),
-            'province_code' => $faker->randomElement($province_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'headcount' => $faker->numberBetween(0, 1000),
             'description_md' => '💰 LƯƠNG từ 500k lên tới 1 TRIỆU/ Ngày hoặc hơn chỉ với 3 bước đơn giản:
@@ -59,7 +59,6 @@ class JobSeeder extends Seeder
         DB::table('jobs_hrms')->insert([
             'title' => 'CHUYÊN VIÊN KHẢO SÁT THỊ TRƯỜNG',
             'department_id' => $faker->randomElement($department_ids),
-            'province_code' => $faker->randomElement($province_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'headcount' => $faker->numberBetween(0, 1000),
             'description_md' => '- Khảo sát thông tin tại các cửa hàng & NPP theo tuyến được giao
@@ -77,7 +76,6 @@ class JobSeeder extends Seeder
         DB::table('jobs_hrms')->insert([
             'title' => 'COMMUNITY SPECIALIST (CS) - NGÀNH ĐIỆN TỬ TIÊU DÙNG',
             'department_id' => $faker->randomElement($department_ids),
-            'province_code' => $faker->randomElement($province_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'headcount' => $faker->numberBetween(0, 1000),
             'description_md' => '– Quản lý & hỗ trợ bán hàng tại cụm 8–14 cửa hàng
@@ -96,7 +94,6 @@ class JobSeeder extends Seeder
         DB::table('jobs_hrms')->insert([
             'title' => 'NHÂN VIÊN KINH DOANH THỨC ĂN THÚ CƯNG KÊNH GT',
             'department_id' => $faker->randomElement($department_ids),
-            'province_code' => $faker->randomElement($province_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'headcount' => $faker->numberBetween(0, 1000),
             'description_md' => '– Tư vấn sản phẩm tại điểm bán (Các cửa hàng thú cưng chuyên biệt như phòng khám thú y, spa, khách sạn thú cưng, v.v.)
@@ -111,5 +108,14 @@ class JobSeeder extends Seeder
             'currency' => $faker->randomElement(['VND', 'USD']),
             'status' => $faker->randomElement([0, 1]),
         ]);
+
+        // Area application
+        for ($i = 1; $i < 10; $i++) {
+            DB::table('area_application')->insert([
+                'job_id' => $faker->randomElement([1, 4]),
+                'province_code' => $faker->randomElement($province_ids),
+                'ward_code' => $faker->randomElement($ward_ids),
+            ]);
+        }
     }
 }

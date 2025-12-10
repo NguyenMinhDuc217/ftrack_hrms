@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('area_application', function (Blueprint $table) {
-            $table->id('job_id');
+            $table->id();
+            $table->bigInteger('job_id');
             $table->bigInteger('province_code')->nullable();
             $table->bigInteger('ward_code')->nullable();
             $table->timestamps();

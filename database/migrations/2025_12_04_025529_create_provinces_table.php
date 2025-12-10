@@ -30,7 +30,8 @@ return new class extends Migration
         });
 
         Schema::create('provinces', function (Blueprint $table) {
-            $table->string('code', 20)->primary(); // Corresponds to PRIMARY KEY (code)
+            $table->id('id');
+            $table->string('code', 20)->unique();
             $table->string('name', 255);
             $table->string('name_en', 255)->nullable();
             $table->string('full_name', 255);
@@ -41,14 +42,15 @@ return new class extends Migration
             $table->integer('unit_id')->nullable();
             // Create the foreign key constraint
             $table->foreign('unit_id', 'provinces_unit_id_fkey')
-                  ->references('id')
-                  ->on('units');
+                ->references('id')
+                ->on('units');
             // Create the index
             $table->index('unit_id', 'idx_provinces_unit');
         });
 
         Schema::create('wards', function (Blueprint $table) {
-            $table->string('code', 20)->primary(); // Corresponds to PRIMARY KEY (code)
+            $table->id('id');
+            $table->string('code', 20)->unique();
             $table->string('name', 255);
             $table->string('name_en', 255)->nullable();
             $table->string('full_name', 255)->nullable();
@@ -61,14 +63,14 @@ return new class extends Migration
 
             // Foreign Key to units
             $table->foreign('unit_id', 'wards_unit_id_fkey')
-                  ->references('id')
-                  ->on('units');
-            
+                ->references('id')
+                ->on('units');
+
             // Foreign Key to provinces
             $table->foreign('province_code', 'wards_province_code_fkey')
-                  ->references('code')
-                  ->on('provinces');
-            
+                ->references('code')
+                ->on('provinces');
+
             // Create indexes
             $table->index('province_code', 'idx_wards_province');
             $table->index('unit_id', 'idx_wards_unit');
