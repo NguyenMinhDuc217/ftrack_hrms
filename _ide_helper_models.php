@@ -202,7 +202,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $avatar_file_id
- * @property-read \App\Models\File|null $avatar
+ * @property-read \App\Models\UserDocument|null $avatar
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CvAward> $awards
  * @property-read int|null $awards_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CvCertificate> $certificates
@@ -693,6 +693,7 @@ namespace App\Models{
  * @property string|null $document_type
  * @property string|null $document_title
  * @property int $confidential
+ * @property string|null $disk
  * @property string|null $file_url
  * @property string|null $file_name_original
  * @property int|null $size
@@ -712,6 +713,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereConfidential($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereDisk($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereDocumentTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereDocumentType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDocument whereExtension($value)

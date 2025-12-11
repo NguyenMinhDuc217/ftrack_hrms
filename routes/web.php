@@ -56,6 +56,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete-certificate/{id}', [CvProfileController::class, 'deleteCertificate'])->name('profile.delete.certificate');
     Route::post('/profile/save-award', [CvProfileController::class, 'saveAward'])->name('profile.save.award');
     Route::delete('/profile/delete-award/{id}', [CvProfileController::class, 'deleteAward'])->name('profile.delete.award');
+
+    // CV Management
+    Route::get('/cv-manage', [App\Http\Controllers\CvManagementController::class, 'index'])->name('cv.manage');
+    Route::post('/cv-manage/upload', [App\Http\Controllers\CvManagementController::class, 'upload'])->name('cv.upload');
+    Route::delete('/cv-manage/delete/{id}', [App\Http\Controllers\CvManagementController::class, 'delete'])->name('cv.delete');
+    
 });
 
 // Admin Routes

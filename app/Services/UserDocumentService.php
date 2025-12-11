@@ -18,10 +18,8 @@ class UserDocumentService
      * @param string|null $disk
      * @return UserDocument
      */
-    public function upload(UploadedFile $file, User $userOwner = null, ?string $path = null, ?string $disk = null): UserDocument
+    public function upload(UploadedFile $file, UserDocument $userDocument, ?string $path = null, ?string $disk = null): UserDocument
     {
-        $userUploaded = auth()->user();
-
         $disk = $disk ?? config('filesystems.default');
         $rootPath = env('DEFAULT_UPLOAD_PATH', 'uploads/default');
 
@@ -37,18 +35,19 @@ class UserDocumentService
 
         // Create database record
         return UserDocument::create([
-            'user_id' => $userOwner ? $userOwner->user_id : $userUploaded->user_id,
-            'uploaded_by' => $userUploaded ? $userUploaded->user_id : null,
-            'document_type' => 'profile_picture',
-            'document_title' => 'Profile Picture',
-            'confidential' => 0,
+            'user_id' => $userDocument->user_id,
+            'uploaded_by' => $userDocument->uploaded_by,
+            'document_type' => $userDocument->document_type,
+            'document_title' => $userDocument->document_title,
+            'confidential' => $userDocument->confidential,
+            'org_id' => $userDocument->org_id,
             'file_url' => $filePath,
             'file_name_original' => $file->getClientOriginalName(),
             'size' => $file->getSize(),
             'extension' => $file->extension(),
             'mime_type' => $file->getClientMimeType(),
-            'org_id' => $userOwner ? $userOwner->org_id : $userUploaded->org_id,
 
+            'disk' => $disk,
         ]);
     }
 

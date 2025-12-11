@@ -111,4 +111,17 @@ return [
     'delete_error' => 'Lỗi khi xóa mục.',
     'save_error' => 'Lỗi khi lưu dữ liệu.',
     'validation_required' => 'Trường này không được bỏ trống',
+
+    // Manage CV
+    'manage_cvs' => 'Quản lý CV',
+    'your_cv' => 'CV của bạn',
+    'uploaded' => 'Đã tải lên',
+    'delete_cv' => 'Xóa CV',
+    'confirm_delete_cv' => 'Bạn có chắc chắn muốn xóa CV này không?',
+    'no_cv_attached' => 'Bạn chưa tải lên CV nào',
+    'upload_cv' => 'Tải lên CV',
+    'upload_file_rules' => 'Vui lòng tải lên tệp .doc, .docx hoặc .pdf, tối đa 3MB và không có mật khẩu',
+    'upload_success' => 'Tải lên CV thành công!',
+    'delete_success' => 'Xóa CV thành công!',
+    'user_cv_title' => 'CV người dùng',
 ];

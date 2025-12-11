@@ -111,4 +111,17 @@ return [
     'delete_error' => 'Error deleting item.',
     'save_error' => 'Error saving data.',
     'validation_required' => 'This field is required',
+
+    // Manage CV
+    'manage_cvs' => 'Manage CVs',
+    'your_cv' => 'Your CV',
+    'uploaded' => 'Uploaded',
+    'delete_cv' => 'Delete CV',
+    'confirm_delete_cv' => 'Are you sure you want to delete this CV?',
+    'no_cv_attached' => 'You have not attached a CV yet',
+    'upload_cv' => 'Upload CV',
+    'upload_file_rules' => 'Please upload a .doc, .docx, or .pdf file, maximum 3MB and no password protection',
+    'upload_success' => 'CV uploaded successfully!',
+    'delete_success' => 'CV deleted successfully!',
+    'user_cv_title' => 'User CV',
 ];

@@ -11,6 +11,7 @@ use App\Models\CvLanguage;
 use App\Models\CvProfile;
 use App\Models\CvProject;
 use App\Models\Province;
+use App\Models\UserDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -125,7 +126,15 @@ class CvProfileController extends Controller
         // Handle Avatar Upload
         if ($request->hasFile('avatar')) {
             $oldFile = $profile->avatar;
-            $file = $userDocumentService->upload($request->file('avatar'), $this->user,'avatars');
+            $userDocument =  new UserDocument([
+                'user_id' => $this->user_id,
+                'uploaded_by' => $this->user_id,
+                'document_type' => 'avatar',
+                'document_title' => 'Avatar',
+                'confidential' => false,
+                'org_id' => $this->user->org_id,
+            ]);
+            $file = $userDocumentService->upload($request->file('avatar'), $userDocument,'avatars');
             $data['avatar_file_id'] = $file->id;
             if ($oldFile) {
                 $userDocumentService->delete($oldFile);

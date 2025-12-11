@@ -23,6 +23,7 @@
               <ul>
                   <li><a href="{{ route('client.profile') }}">Profile</a></li>
                   <li><a href="{{ route('profile') }}">CV Profile</a></li>
+                  <li><a href="{{ route('cv.manage') }}">CV</a></li>
                   <li>
                       <form method="POST" action="{{ route('logout') }}">
                           @csrf
