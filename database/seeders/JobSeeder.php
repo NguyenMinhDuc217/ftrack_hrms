@@ -54,6 +54,9 @@ class JobSeeder extends Seeder
             'min_salary' => $faker->numberBetween(1000000, 100000000),
             'max_salary' => $faker->numberBetween(1000000, 100000000),
             'currency' => $faker->randomElement(['VND', 'USD']),
+            'start_date' => $faker->date('Y-m-d'),
+            'end_date' => $faker->date('Y-m-d'),
+            'experience' => $faker->randomElement(['Dưới 1 năm', '1-2 năm', '2-3 năm', '3-5 năm', '5-10 năm', 'Trên 10 năm']),
             'status' => $faker->randomElement([0, 1]),
         ]);
         DB::table('jobs_hrms')->insert([
@@ -71,6 +74,9 @@ class JobSeeder extends Seeder
             'min_salary' => $faker->numberBetween(1000000, 100000000),
             'max_salary' => $faker->numberBetween(1000000, 100000000),
             'currency' => $faker->randomElement(['VND', 'USD']),
+            'start_date' => $faker->date('Y-m-d'),
+            'end_date' => $faker->date('Y-m-d'),
+            'experience' => $faker->randomElement(['Dưới 1 năm', '1-2 năm', '2-3 năm', '3-5 năm', '5-10 năm', 'Trên 10 năm']),
             'status' => $faker->randomElement([0, 1]),
         ]);
         DB::table('jobs_hrms')->insert([
@@ -89,6 +95,9 @@ class JobSeeder extends Seeder
             'min_salary' => $faker->numberBetween(1000000, 100000000),
             'max_salary' => $faker->numberBetween(1000000, 100000000),
             'currency' => $faker->randomElement(['VND', 'USD']),
+            'start_date' => $faker->date('Y-m-d'),
+            'end_date' => $faker->date('Y-m-d'),
+            'experience' => $faker->randomElement(['Dưới 1 năm', '1-2 năm', '2-3 năm', '3-5 năm', '5-10 năm', 'Trên 10 năm']),
             'status' => $faker->randomElement([0, 1]),
         ]);
         DB::table('jobs_hrms')->insert([
@@ -106,6 +115,9 @@ class JobSeeder extends Seeder
             'min_salary' => $faker->numberBetween(1000000, 100000000),
             'max_salary' => $faker->numberBetween(1000000, 100000000),
             'currency' => $faker->randomElement(['VND', 'USD']),
+            'start_date' => $faker->date('Y-m-d'),
+            'end_date' => $faker->date('Y-m-d'),
+            'experience' => $faker->randomElement(['Dưới 1 năm', '1-2 năm', '2-3 năm', '3-5 năm', '5-10 năm', 'Trên 10 năm']),
             'status' => $faker->randomElement([0, 1]),
         ]);
 

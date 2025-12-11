@@ -23,36 +23,74 @@
         <!-- Job Grid -->
         <div id="job-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 
-            @foreach($jobs as $job)
-            <!-- Job 1 -->
-            <div class=" job-card bg-white rounded-xl shadow-sm border border-gray-100 p-3 hover:shadow-lg transition-shadow duration-300 group cursor-pointer" data-location="TP. Hồ Chí Minh">
-                <div class="flex items-start gap-4">
+            <!-- @foreach($jobs as $job)
+            <div class="job-card bg-white rounded-xl shadow-sm border border-gray-100 p-3 hover:shadow-lg transition-shadow duration-300 group cursor-pointer" data-location="TP. Hồ Chí Minh" id="job-{{ $job->id }}">
+                <div class="flex items-start gap-4 h-full">
                     <img src="https://picsum.photos/id/101/64/64" alt="Company Logo" class="w-16 h-16 object-contain rounded-lg" />
-                    <div class="flex-1 min-w-0">
+                    <div class="flex flex-col gap-2 min-w-0 h-full">
                         <h3 class="text-base font-bold text-gray-900 leading-snug mb-1 group-hover:text-primary transition-colors line-clamp-2">{{ $job->title }}</h3>
-                        <div class="text-base text-black tracking-wide font-medium my-1 leading-6">{{ Str::limit(strip_tags($job->description_md), 50, '...') }}</div>
+                        <div class="text-base text-black tracking-wide font-medium my-1 leading-6 min-h-[10vh] h-[10vh]">{{ Str::limit(strip_tags($job->description_md), 50, '...') }}</div>
 
                          <div class="space-y-2">
+                             @if($job->area_application->count() > 0)
                             <div class="flex items-center text-sm text-gray-600">
                                 <i class="bi bi-geo w-4 h-4 mr-2 text-gray-400"></i>
-                                @if($job->area_application)
                                 @foreach($job->area_application as $area)
                                 <span class="truncate border border-gray-200 p-1 rounded-md">{{ $area->province->name ?? '' }}</span> &nbsp;
                                 @endforeach
-                                @endif
                             </div>
-                            <div class="grid grid-cols-3 text-sm text-green-600 font-medium">
-                                <div class="col-span-2">
+                            @endif
+                            <div class="grid grid-cols-5 text-sm text-green-600 font-medium">
+                                <div class="col-span-3">
                                     <i class="bi bi-coin w-4 h-4 mr-2"></i>
                                     <span>{{ round($job->min_salary / 1000000,1) }} - {{ round($job->max_salary / 1000000,1) }} triệu</span>
                                 </div>
-                                <div class="col-span-1 text-gray-500">{{ !empty( $job->created_at) ? $job->created_at->diffForHumans() : '' }}</div>
+                                <div class="col-span-2 text-gray-500">{{ !empty( $job->created_at) ? $job->created_at->diffForHumans() : '' }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                
             </div>
+            @endforeach -->
+            @foreach($jobs as $job)
+            <a href="{{ route('client.job.detail', $job->job_id) }}" class="job-card bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-lg transition-shadow duration-300 group cursor-pointer h-full flex flex-col" id="job-{{ $job->id }}">
+                <div class="flex items-start gap-4 flex-1">
+                    <img src="https://picsum.photos/id/101/64/64" alt="Company Logo" class="w-16 h-16 object-contain rounded-lg flex-shrink-0" />
+
+                    <div class="flex flex-col flex-1 min-w-0">
+                        <h3 class="text-base font-bold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 h-[3rem]">
+                            {{ $job->title }}
+                        </h3>
+
+                        <div class="text-base text-black tracking-wide font-medium my-2 leading-6 line-clamp-3 h-[10vh]">
+                            {{ Str::limit(strip_tags($job->description_md), 120, '...') }}
+                        </div>
+
+                        @if($job->area_application->count() > 0)
+                        <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
+                            <i class="bi bi-geo-alt-fill w-4 h-4 text-[var(--accent-color)]"></i>
+                            @foreach($job->area_application as $area)
+                                <span class="px-2 py-1 bg-gray-100 rounded-md text-xs">
+                                    {{ $area->province->name ?? '' }}
+                                </span>
+                            @endforeach
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Phần lương + thời gian luôn nằm sát đáy -->
+                <div class=" border-t border-gray-100 grid grid-cols-5 text-sm font-medium">
+                    <div class="col-span-3 text-green-600">
+                        <i class="bi bi-coin mr-2"></i>
+                        {{ number_format($job->min_salary / 1000000, 1) }} - {{ number_format($job->max_salary / 1000000, 1) }} triệu
+                    </div>
+                    <div class="col-span-2 text-gray-500 text-right">
+                        {{ $job->created_at?->diffForHumans() }}
+                    </div>
+                </div>
+            </a>
             @endforeach
         </div>
 

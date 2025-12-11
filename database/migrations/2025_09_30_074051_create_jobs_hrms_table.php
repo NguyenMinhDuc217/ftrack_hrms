@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('currency')->nullable()->comment('Tiền tệ');
             $table->string('application_position', 255)->nullable();
             $table->bigInteger('org_id')->default(0);
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('experience', 255)->nullable();
             $table->string('status', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();

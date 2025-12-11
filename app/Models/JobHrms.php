@@ -26,6 +26,9 @@ class JobHrms extends Model
         'max_salary',
         'currency',
         'org_id',
+        'start_date',
+        'end_date',
+        'experience',
         'status',
     ];
 

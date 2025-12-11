@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CvProfileController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/client-dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
     Route::get('/client-profile', [ClientController::class, 'profile'])->name('client.profile');
+
+    Route::get('/job/{id}', [JobController::class, 'detail'])->name('client.job.detail');
 
     Route::get('/profile', [CvProfileController::class, 'index'])->name('profile');
     Route::post('/profile/save-summary', [CvProfileController::class, 'saveSummary'])->name('profile.save.summary');
