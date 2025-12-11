@@ -14,7 +14,7 @@
             <!-- Location Tabs -->
              <div class="w-3/5">
                 <x-client.filter 
-                    type="$type"
+                    :type="$type"
                     :val="isset($val) ? $val : ''"
                     id="filter" />
              </div>
@@ -35,7 +35,11 @@
                          <div class="space-y-2">
                             <div class="flex items-center text-sm text-gray-600">
                                 <i class="bi bi-geo w-4 h-4 mr-2 text-gray-400"></i>
-                                <span class="truncate">{{ $job->province->name }}</span>
+                                @if($job->area_application)
+                                @foreach($job->area_application as $area)
+                                <span class="truncate border border-gray-200 p-1 rounded-md">{{ $area->province->name ?? '' }}</span> &nbsp;
+                                @endforeach
+                                @endif
                             </div>
                             <div class="grid grid-cols-3 text-sm text-green-600 font-medium">
                                 <div class="col-span-2">

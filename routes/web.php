@@ -83,11 +83,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     Route::post('/jobs/delete/{job_id}', [AdminJobController::class, 'delete'])->name('jobs.delete');
 
     // route blogs
-    Route::get('/blogs', [AdminBlogController::class, 'index'])->name('blog.index');
-    Route::get('/blog-add', [AdminBlogController::class, 'create'])->name('blog.create');
-    Route::post('/blog-add', [AdminBlogController::class, 'update'])->name('blog.store');
-    Route::get('/blogs/{blog_id}', [AdminBlogController::class, 'show'])->name('blog.show');
-    Route::patch('/blogs/{blog}', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::get('/blogs', [AdminBlogController::class, 'index'])->name('blogs.index');
+    Route::get('/blog-add', [AdminBlogController::class, 'create'])->name('blogs.create');
+    Route::post('/blog-add', [AdminBlogController::class, 'update'])->name('blogs.store');
+    Route::get('/blogs/{blog_id}', [AdminBlogController::class, 'show'])->name('blogs.show');
+    Route::patch('/blogs/{blog}', [AdminBlogController::class, 'update'])->name('blogs.update');
     Route::post('/blogs/delete/{blog_id}', [AdminBlogController::class, 'delete'])->name('blogs.delete');
 
     // route roles

@@ -115,6 +115,7 @@ class JobSeeder extends Seeder
                 'job_id' => $faker->randomElement([1, 4]),
                 'province_code' => $faker->randomElement($province_ids),
                 'ward_code' => $faker->randomElement($ward_ids),
+                'status' => $faker->randomElement(['active', 'inactive']),
             ]);
         }
     }

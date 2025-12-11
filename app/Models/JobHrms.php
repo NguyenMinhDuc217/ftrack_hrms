@@ -47,7 +47,7 @@ class JobHrms extends Model
         ];
     }
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'job_id';
 
     public function department()
     {
@@ -57,5 +57,10 @@ class JobHrms extends Model
     public function province()
     {
         return $this->belongsTo(Province::class, 'province_code', 'code');
+    }
+
+    public function area_application()
+    {
+        return $this->hasMany(AreaApplication::class, 'job_id', 'job_id');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Enums\EmploymentType;
-use App\Models\Province;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -34,12 +33,10 @@ class JobPostRequest extends FormRequest
 
     public function rules(): array
     {
-        $provinces = Province::all();
-
         return [
             'title' => 'required|string|max:255',
             'department_id' => 'exists:departments,department_id',
-            'province_code' => $provinces->isNotEmpty() ? ['required', 'string', 'max:255', Rule::in($provinces->pluck('code')->toArray())] : 'nullable',
+            'province_code' => ['required', 'max:255', Rule::exists('provinces', 'code')],
             'employment_type' => ['string', 'max:255', new Enum(EmploymentType::class)],
             'headcount' => 'integer',
             'description_md' => 'string',
@@ -60,9 +57,8 @@ class JobPostRequest extends FormRequest
             'title.max' => __('job.title_max'),
             'department_id.exists' => __('job.department_id_exists'),
             'province_code.required' => __('job.province_code_required'),
-            'province_code.string' => __('job.province_code_string'),
             'province_code.max' => __('job.province_code_max'),
-            'province_code.in' => __('job.province_code_in'),
+            'province_code.exists' => __('job.province_code_in'),
             'employment_type.string' => __('user.employment_type_string'),
             'employment_type.enum' => __('user.employment_type_enums'),
             'headcount.integer' => __('job.headcount_integer'),

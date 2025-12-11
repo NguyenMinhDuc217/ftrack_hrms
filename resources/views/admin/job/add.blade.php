@@ -1,11 +1,4 @@
-@extends('layouts.admin')
 
-@section('title', 'Admin Dashboard - Users')
-@section('page_title')
-{{ __('job.txt_add_job') }}
-@endsection
-
-@section('content')
 <!-- [ Main Content ] start -->
 <div class="row">
     <!-- [ sample-page ] start -->
@@ -49,7 +42,7 @@
 
                     <div class="form-group">
                         <label class="form-label">{{ __('job.txt_province') }}</label>
-                        <select class="form-control @error('province_code') is-invalid @enderror" name="province_code">
+                        <select onchange="addProvince()" class="form-control @error('province_code') is-invalid @enderror" id="province_code">
                             <option label="-{{ __('job.txt_province') }}-"></option>
                             @foreach ($provinces as $province)
                             <option value="{{$province->code}}" @selected(old('province_code')==$province->code)>
@@ -62,6 +55,22 @@
                             <strong>{{ $message }}</strong>
                         </div>
                         @enderror
+
+                        <select name="province_code[]" multiple style="display: none;" id="area_application_hidden">
+                        </select>
+
+                        <div id="province_tags" class="d-flex flex-wrap gap-2 mt-3">
+                            @foreach($job->area_application ?? [] as $area)
+                                @if($area)
+                                    <span class="badge rounded-pill bg-success d-flex flex-row align-items-center gap-1 p-2" id="province_tag_{{ $area->province->code }}">
+                                        <span class="text-white">{{ $area->province->name }}</span>
+                                        <button onclick="removeProvince('{{ $area->province->code }}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-x"></i>
+                                        </button>
+                                    </span>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -182,4 +191,3 @@
     <!-- [ sample-page ] end -->
 </div>
 <!-- [ Main Content ] end -->
-@endsection

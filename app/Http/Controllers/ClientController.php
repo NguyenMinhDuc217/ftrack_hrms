@@ -12,6 +12,8 @@ class ClientController extends Controller
     public function buildFilter(Request $request)
     {
         $data = [];
+        $data['type'] = 'department_id';
+
         if ($request->has('province_id')) {
             $data['province_id'] = $request->province_id;
         }
@@ -30,6 +32,7 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         $jobs = $this->buildQuery($request)->where('status', 1)->where('deleted_at', null)->paginate(10);
+        // dd($jobs);
 
         $filters = [
             'profession' => __('job.txt_category'),
@@ -47,9 +50,11 @@ class ClientController extends Controller
 
     public function buildQuery(Request $request)
     {
-        $query = JobHrms::query()->with('province')->with('department');
+        $query = JobHrms::query()->with('department')->with('area_application')->with('area_application.province');
         if ($request->has('province_id')) {
-            $query->where('province_code', (int) $request->province_id);
+            $query->whereHas('area_application', function ($q) use ($request) {
+                $q->where('province_code', (int) $request->province_id);
+            });
         }
         if ($request->has('search')) {
             $key = $request->search;

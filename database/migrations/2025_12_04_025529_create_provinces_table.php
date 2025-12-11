@@ -31,7 +31,7 @@ return new class extends Migration
 
         Schema::create('provinces', function (Blueprint $table) {
             $table->id('id');
-            $table->string('code', 20)->unique();
+            $table->integer('code')->unique();
             $table->string('name', 255);
             $table->string('name_en', 255)->nullable();
             $table->string('full_name', 255);
@@ -50,7 +50,7 @@ return new class extends Migration
 
         Schema::create('wards', function (Blueprint $table) {
             $table->id('id');
-            $table->string('code', 20)->unique();
+            $table->bigInteger('code')->unique();
             $table->string('name', 255);
             $table->string('name_en', 255)->nullable();
             $table->string('full_name', 255)->nullable();
@@ -58,7 +58,7 @@ return new class extends Migration
             $table->string('code_name', 255)->nullable();
 
             // Foreign Keys and Indexes
-            $table->string('province_code', 20)->nullable();
+            $table->integer('province_code')->nullable();
             $table->integer('unit_id')->nullable();
 
             // Foreign Key to units

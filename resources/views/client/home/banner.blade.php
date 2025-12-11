@@ -44,6 +44,8 @@
             <button class="w-full md:w-auto px-8 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--accent-color)] hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">
                 {{ __('default.txt_search') }}
             </button>
+
+            <a href="{{ route('client.home') }}" class="w-full md:w-auto px-8 py-3 border border-transparent text-sm font-medium rounded-md bg-white hover:bg-gray-100  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">Clear</a>
         </div>
     </div>
 </div>

@@ -42,6 +42,7 @@
     }
 </style>
 @if(!$filters->isEmpty())
+
 <div class="flex items-center gap-2 w-full md:w-auto" id="location-tabs">
     <button class="p-2 border border-gray-200 rounded-full hover:bg-gray-100 text-gray-500" id="prev">
         <i class="bi bi-chevron-left"></i>

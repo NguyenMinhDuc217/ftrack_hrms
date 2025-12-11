@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\EmploymentType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPostRequest;
+use App\Models\AreaApplication;
 use App\Models\Department;
 use App\Models\JobHrms;
 use App\Models\Province;
@@ -49,9 +50,12 @@ class AdminJobController extends Controller
             ['label' => __('role.create')], // Use a more general 'create' key for the last breadcrumb
         ];
 
+        $action = 'create';
+
         return view(
-            'admin.job.add',
+            'admin.job.form',
             [
+                'action' => $action,
                 'departments' => $departments,
                 'provinces' => $provinces,
                 'employment_types' => $employment_types,
@@ -62,7 +66,7 @@ class AdminJobController extends Controller
 
     public function show($job_id)
     {
-        $job = JobHrms::where('job_id', $job_id)->first();
+        $job = JobHrms::where('job_id', $job_id)->with('area_application', 'area_application.province')->first();
 
         $breadcrumbs = [
             ['label' => __('job.txt_edit_job'), 'url' => route('admin.jobs.index')],
@@ -76,8 +80,9 @@ class AdminJobController extends Controller
         })->toArray();
 
         return view(
-            'admin.job.edit',
+            'admin.job.form',
             [
+                'action' => 'edit',
                 'breadcrumbs' => $breadcrumbs,
                 'job' => $job,
                 'departments' => $departments,
@@ -91,15 +96,49 @@ class AdminJobController extends Controller
     {
         $data = $request->validated();
 
-        if ($job) {
+        // ADD
+        if (! $job) {
+            $province_codes = $data['province_code'];
+            unset($data['province_code']);
+            $job = JobHrms::create($data);
+
+            if ($province_codes) {
+                foreach ($province_codes as $province_code) {
+                    AreaApplication::create([
+                        'job_id' => $job->job_id,
+                        'province_code' => $province_code,
+                    ]);
+                }
+            }
+
+            return redirect()->route('admin.jobs.index')->with('success', 'Job added successfully.');
+        } else { // EDIT
+            $province_codes = $data['province_code'];
+
+            if ($province_codes) {
+                $current_provinces = $job->area_application()->pluck('province_code')->toArray();
+                $new_provinces = array_diff($province_codes, $current_provinces);
+                $deleted_provinces = array_diff($current_provinces, $province_codes);
+
+                if ($deleted_provinces) {
+                    foreach ($deleted_provinces as $deleted_province) {
+                        $job->area_application()->where('province_code', $deleted_province)->delete();
+                    }
+                }
+                if ($new_provinces) {
+                    foreach ($new_provinces as $new_province) {
+                        $job->area_application()->create([
+                            'province_code' => $new_province,
+                        ]);
+                    }
+                }
+            }
+
             $job = JobHrms::where('job_id', $job->job_id)->first();
+            unset($data['province_code']);
             $job->update($data);
 
             return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
-        } else {
-            $job = JobHrms::create($data);
-
-            return redirect()->route('admin.jobs.index')->with('success', 'Job added successfully.');
         }
     }
 

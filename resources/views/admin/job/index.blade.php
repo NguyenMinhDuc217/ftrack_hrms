@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="text-end px-4 py-2">
                     <a href="{{ route('admin.jobs.create') }}"
-                        class="btn btn-sm btn-success d-inline-flex align-item-center">
+                        class="btn btn-sm btn-success d-inline-flex align-items-center">
                         <i class="ti ti-plus f-18"></i> Add Job
                     </a>
                 </div>
@@ -27,17 +27,17 @@
                     <table class="table table-hover" id="pc-dt-simple">
                         <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>{{ __('job.txt_title') }}</th>
-                                <th>{{ __('job.txt_description') }}</th>
-                                <th>{{ __('user.txt_status') }}</th>
-                                <th class="text-center">{{ __('user.txt_actions') }}</th>
+                                <th width="5%">Id</th>
+                                <th width="30%">{{ __('job.txt_title') }}</th>
+                                <th width="45%">{{ __('job.txt_description') }}</th>
+                                <th width="10%">{{ __('user.txt_status') }}</th>
+                                <th width="20%" class="text-center">{{ __('user.txt_actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($jobs as $job)
                             <tr>
-                                <td class="text-center">{{ $job->job_id }}</td>
+                                <td class="text-left">{{ $job->job_id }}</td>
                                 <td>
                                         <!-- <div class="col-auto pe-0">
                                             <img src="../assets/images/user/avatar-1.jpg" alt="user-image"
