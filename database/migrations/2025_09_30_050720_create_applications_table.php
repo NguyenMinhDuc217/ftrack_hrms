@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('application_id');
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('job_id')->nullable();
+            $table->bigInteger('province_code')->nullable();
             $table->dateTime('date_apply')->nullable();
             $table->timestamps();
             $table->softDeletes();

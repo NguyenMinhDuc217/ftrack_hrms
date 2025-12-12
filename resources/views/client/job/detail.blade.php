@@ -4,6 +4,23 @@
 
 @section('content')
 
+<style>
+    #applyModal .modal-body {
+        max-height: 50vh;
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+    #applyModal .modal-body::-webkit-scrollbar {
+        display: none;
+    }
+
+    .collapse { 
+        border-width: 0 !important;
+        visibility: inherit !important;
+    }
+</style>
+
 <section class="py-6 bg-gray-50">
     <div class="container mx-auto px-4">
 
@@ -65,7 +82,9 @@
                         </p>
                     </div>
                     <!-- Hạn nộp + Nút ứng tuyển -->
-                    <button class="h-12 btn bg-[var(--accent-color)] text-white w-full flex justify-center items-center gap-2 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200"><i class="bi bi-send-plus"></i><span>Ứng tuyển ngay</span></button>
+                    <button class="h-12 btn bg-[var(--accent-color)] text-white w-full flex justify-center items-center gap-2 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200" data-bs-toggle="modal" data-bs-target="#applyModal">
+                        <i class="bi bi-send-plus"></i><span>Ứng tuyển ngay</span>
+                    </button>
                 </div>
 
                 <!-- Mô tả công việc -->
@@ -171,9 +190,9 @@
                         </div>
                     </div>
 
+                    @if($job->area_application->count() > 0)
                     <div class="space-y-4">
                         <h3 class="text-xl font-bold text-gray-900">Khu vực tuyển dụng</h3>
-                         @if($job->area_application->count() > 0)
                         <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
                             <i class="text-xl bi bi-geo-alt-fill text-[var(--accent-color)]"></i>
                             @foreach($job->area_application as $area)
@@ -182,8 +201,8 @@
                                 </span>
                             @endforeach
                         </div>
-                        @endif
                     </div>
+                    @endif
                 </div>
 
                 <!-- Nút Back (chỉ hiện trên mobile) -->
@@ -196,7 +215,164 @@
             <!-- ==================== HẾT BÊN PHẢI ==================== -->
              </div>
 
+             <!-- Modal -->
+            <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered lg:max-w-[40%]">
+                    <div class="modal-content">
+
+                        <form action="{{ route('apply.job') }}" id="applyForm" method="POST">
+                            @csrf
+                            <input type="hidden" name="job_id" value="{{ $job->job_id }}">
+                            <input type="hidden" name="cv_id" id="selectedCvId" value="">
+
+                            <div class="modal-header">
+                                <h1 class="modal-title text-xl font-bold">
+                                    Ứng tuyển <span class="text-[var(--accent-color)]">{{ $job->title }}</span>
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            
+                            <div class="modal-body ">
+                                <div class="flex flex-col gap-3 items-center">
+                                    <div class="flex items-center gap-2 w-full">
+                                        <i class="bi bi-folder2-open text-lg text-[var(--accent-color)]"></i>
+                                        <span class="font-bold">Chọn CV để ứng tuyển</span>
+                                    </div>
+
+                                    <!-- Chọn CV có sẵn -->
+                                    <div class="group-collapse flex flex-col gap-2 w-full border-2 hover:border-[var(--accent-color)] border-gray-200 p-2 rounded-md" data-collapse-group="cv-group">
+                                        <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full p-0" data-bs-toggle="collapse" data-bs-target="#collapseCVList">
+                                            <span class="title-collapse">Chọn CV có sẵn</span>
+                                        </button>
+                                        <div id="collapseCVList" class="flex flex-col gap-2 collapse">
+                                        @if($cvs->count() > 0)
+                                            @foreach($cvs as $cv)
+                                                <div class="text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
+                                                    <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold">{{ $cv->document_title }}</a>
+                                                    <span onclick="chooseCV({{ $cv->id }}, this )" class="cv-select-btn btn bg-[var(--accent-color)] text-white hover:outline-[var(--accent-color)] hover:border-2 hover:border-[var(--accent-color)] hover:bg-transparent hover:!text-[var(--accent-color)] hover:cursor-pointer">Chọn CV</span>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="text-secondary mb-4">
+                                                <i class="ti ti-file-off me-2"></i> {{ __('cv.no_cv_attached') }}
+                                            </div>
+                                        @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Tạo CV mới -->
+                                    <div class="group-collapse w-full border-2 border-dashed hover:border-[var(--accent-color)] border-gray-200 p-2 rounded-md" data-collapse-group="cv-group">
+                                        <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full" data-bs-toggle="collapse" data-bs-target="#collapseUploadCV">
+                                            <span class="title-collapse">Tạo CV mới</span>
+                                        </button>
+                                        <div id="collapseUploadCV" class="flex flex-col gap-2 collapse">
+                                            <div class="mb-3">
+                                                <label for="cv_name" class="form-label fw-bold">{{ __('cv.cv_name') }} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="cv_name" name="cv_name" placeholder="{{ __('cv.placeholder_cv_name') }}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold">{{ __('cv.upload_cv') }}</label>
+                                                <div class="input-group">
+                                                    <input type="file" name="cv_file" id="cv_file" class="form-control" accept=".doc,.docx,.pdf">
+                                                    <button type="button" onclick="uploadCV()" class="btn btn-primary">
+                                                        <i class="ti ti-upload me-2"></i> {{ __('cv.upload_cv') }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <small class="text-muted">{{ __('cv.upload_file_rules') }}</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="w-full">
+                                        <div class="mb-3">
+                                            <label for="province_code" class="form-label fw-bold">Tỉnh thành <span class="text-danger">*</span></label>
+                                            <select name="province_code" id="province_code" class="form-select" required>
+                                                <option value="">Tỉnh thành</option>
+                                                @foreach ($job->area_application as $area)
+                                                        <option value="{{ $area->province->code }}">{{ $area->province->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer grid grid-cols-5 justify-center items-center gap-2">
+                                <button type="submit" class="col-span-4 h-12 btn bg-[var(--accent-color)] text-white flex justify-center items-center gap-2 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">Nộp hồ sơ ứng tuyển</button>
+                                <button type="button" class="col-span-1 h-12 btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
     </div>
+    <script>
+        $(document).ready(function() {
+           $('#applyModal').modal('show'); 
+
+           $(document).on('show.bs.collapse', '.collapse', function () {
+                var $this = $(this);
+                var group = $this.closest('.group-collapse');
+                var title = group.find('.title-collapse');
+
+                // Đóng tất cả collapse khác trong cùng group
+                $('.collapse').not(this).collapse('hide');
+                $('.collapse .title-collapse').removeClass('font-semibold text-[var(--accent-color)] underline');
+
+                // Thêm class active cho khối cha đang mở
+                $('.group-collapse').removeClass('border-[var(--accent-color)] shadow-md');
+                $this.closest('.group-collapse')
+                    .addClass('border-[var(--accent-color)] shadow-md')
+                    .find('.title-collapse')
+                    .addClass('font-semibold text-[var(--accent-color)] underline')
+            });
+
+            // Khi collapse đóng xong → bỏ viền + xoay icon về
+            $(document).on('hidden.bs.collapse', '.collapse', function () {
+                var $parent = $(this).closest('.group-collapse');
+                $parent.removeClass('border-[var(--accent-color)] shadow-md');
+                $parent.find('.title-collapse').removeClass('font-semibold text-[var(--accent-color)] underline');
+            });
+
+            // Xóa required khi collapse đóng
+            $(document).on('hidden.bs.collapse', '#collapseUploadCV', function () {
+                $(this).find('input[required]').removeAttr('required');
+            });
+            // Thêm required khi collapse mở
+            $(document).on('show.bs.collapse', '#collapseUploadCV', function () {
+                $(this).find('#cv_name, #cv_file').attr('required', 'required');
+            });
+        });
+
+        function uploadCV() {
+            const formData = new FormData();
+            formData.append('cv_file', $('#cv_file')[0].files[0]);
+            formData.append('cv_name', $('#cv_name').val());
+            var url = '{{ route('cv.upload') }}';
+            console.log(url)
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function chooseCV(cvId, element) {
+            $(element).hide();
+            $('.cv-select-btn').not(element).show();
+            $('#selectedCvId').val(cvId);
+        }
+
+    </script>
 </section>
 
 @endsection

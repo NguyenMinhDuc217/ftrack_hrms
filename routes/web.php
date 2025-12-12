@@ -64,6 +64,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/cv-manage/upload', [App\Http\Controllers\CvManagementController::class, 'upload'])->name('cv.upload');
     Route::delete('/cv-manage/delete/{id}', [App\Http\Controllers\CvManagementController::class, 'delete'])->name('cv.delete');
 
+    // Apply Job
+    Route::post('/apply-job', [App\Http\Controllers\JobController::class, 'applyJob'])->name('apply.job');
+
 });
 
 // Admin Routes
