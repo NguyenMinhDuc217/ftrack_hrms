@@ -18,18 +18,25 @@ class CvManagementController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $cv = UserDocument::where('user_id', $user->user_id)
+        $cvs = UserDocument::where('user_id', $user->user_id)
             ->where('document_type', 'cv_file')
-            ->latest() // Get the most recent one
-            ->first();
+            ->latest()
+            ->get();
 
-        return view('cv.manage', compact('cv'));
+        return view('cv.manage', compact('cvs'));
     }
 
     public function upload(Request $request)
     {
         $request->validate([
             'cv_file' => 'required|file|mimes:doc,docx,pdf|max:3072', // Max 3MB
+            'cv_name' => 'required|string|max:255',
+        ],[
+            'cv_file.required' => __('cv.cv_file_required'),
+            'cv_file.mimes' => __('cv.cv_file_mimes'),
+            'cv_file.max' => __('cv.cv_file_max'),
+            'cv_name.required' => __('cv.cv_name_required'),
+            'cv_name.max' => __('cv.cv_name_max'),
         ]);
 
         $user = auth()->user();
@@ -38,10 +45,11 @@ class CvManagementController extends Controller
             'user_id' => $user->user_id,
             'uploaded_by' => $user->user_id,
             'document_type' => 'cv_file',
-            'document_title' => __('cv.user_cv_title'),
+            'document_title' => $request->input('cv_name'),
             'confidential' => false,
             'org_id' => $user->org_id,
         ]);
+
         // Upload new CV
         $this->documentService->upload(
             $request->file('cv_file'),

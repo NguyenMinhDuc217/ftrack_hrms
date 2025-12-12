@@ -75,6 +75,7 @@ return [
     'save_group' => 'Save Group',
     'close' => 'Close',
     'cancel' => 'Cancel',
+    'confirm'=> 'Confirm',
     'select' => 'Select...',
     'select_province' => 'Select Province...',
 
@@ -117,11 +118,20 @@ return [
     'your_cv' => 'Your CV',
     'uploaded' => 'Uploaded',
     'delete_cv' => 'Delete CV',
-    'confirm_delete_cv' => 'Are you sure you want to delete this CV?',
+    'confirm_delete_cv' => 'Are you sure you want to delete ":name"?',
     'no_cv_attached' => 'You have not attached a CV yet',
     'upload_cv' => 'Upload CV',
     'upload_file_rules' => 'Please upload a .doc, .docx, or .pdf file, maximum 3MB and no password protection',
     'upload_success' => 'CV uploaded successfully!',
     'delete_success' => 'CV deleted successfully!',
     'user_cv_title' => 'User CV',
+    'cv_name' => 'CV Name',
+    'placeholder_cv_name' => 'e.g. PHP Developer CV',
+
+    // Validation
+    'cv_file_required' => 'CV file is required',
+    'cv_file_mimes' => 'CV file must be a .doc, .docx, or .pdf file',
+    'cv_file_max' => 'CV file must be less than 3MB',
+    'cv_name_required' => 'CV name is required',
+    'cv_name_max' => 'CV name must be less than 255 characters',
 ];

@@ -75,6 +75,7 @@ return [
     'save_group' => 'Lưu nhóm',
     'close' => 'Đóng',
     'cancel' => 'Hủy',
+    'confirm'=> 'Xác nhận',
     'select' => 'Chọn...',
     'select_province' => 'Chọn Tỉnh/Thành phố...',
 
@@ -117,11 +118,20 @@ return [
     'your_cv' => 'CV của bạn',
     'uploaded' => 'Đã tải lên',
     'delete_cv' => 'Xóa CV',
-    'confirm_delete_cv' => 'Bạn có chắc chắn muốn xóa CV này không?',
+    'confirm_delete_cv' => 'Bạn có chắc chắn muốn xóa ":name" không?',
     'no_cv_attached' => 'Bạn chưa tải lên CV nào',
     'upload_cv' => 'Tải lên CV',
     'upload_file_rules' => 'Vui lòng tải lên tệp .doc, .docx hoặc .pdf, tối đa 3MB và không có mật khẩu',
     'upload_success' => 'Tải lên CV thành công!',
     'delete_success' => 'Xóa CV thành công!',
     'user_cv_title' => 'CV người dùng',
+    'cv_name' => 'Tên CV',
+    'placeholder_cv_name' => 'VD: CV Lập trình viên PHP',
+
+    // Validation
+    'cv_file_required' => 'File CV là bắt buộc',
+    'cv_file_mimes' => 'File CV phải là .doc, .docx hoặc .pdf',
+    'cv_file_max' => 'File CV phải nhỏ hơn 3MB',
+    'cv_name_required' => 'Tên CV là bắt buộc',
+    'cv_name_max' => 'Tên CV phải nhỏ hơn 255 ký tự',
 ];
