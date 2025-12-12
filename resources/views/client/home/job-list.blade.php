@@ -70,11 +70,9 @@
                         @if($job->area_application->count() > 0)
                         <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
                             <i class="bi bi-geo-alt-fill w-4 h-4 text-[var(--accent-color)]"></i>
-                            @foreach($job->area_application as $area)
-                                <span class="px-2 py-1 bg-gray-100 rounded-md text-xs">
-                                    {{ $area->province->name ?? '' }}
-                                </span>
-                            @endforeach
+                            <span class="px-2 py-1 bg-gray-100 rounded-md text-xs">
+                                {{ $job->area_application->first()->province->name ?? '' }} {{ $job->area_application->count() > 1 ? 'và ' . ($job->area_application->count() - 1) . ' nơi khác' : '' }}
+                            </span>
                         </div>
                         @endif
                     </div>

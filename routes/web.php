@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
+Route::get('/job/{id}', [JobController::class, 'detail'])->name('client.job.detail');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
@@ -37,8 +38,6 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/client-dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
     Route::get('/client-profile', [ClientController::class, 'profile'])->name('client.profile');
-
-    Route::get('/job/{id}', [JobController::class, 'detail'])->name('client.job.detail');
 
     Route::get('/profile', [CvProfileController::class, 'index'])->name('profile');
     Route::post('/profile/save-summary', [CvProfileController::class, 'saveSummary'])->name('profile.save.summary');
@@ -64,7 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cv-manage', [App\Http\Controllers\CvManagementController::class, 'index'])->name('cv.manage');
     Route::post('/cv-manage/upload', [App\Http\Controllers\CvManagementController::class, 'upload'])->name('cv.upload');
     Route::delete('/cv-manage/delete/{id}', [App\Http\Controllers\CvManagementController::class, 'delete'])->name('cv.delete');
-    
+
 });
 
 // Admin Routes
