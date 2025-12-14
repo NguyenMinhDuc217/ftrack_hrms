@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\UserDocument;
 use App\Services\UserDocumentService;
+use Illuminate\Http\Request;
 
 class CvManagementController extends Controller
 {
@@ -31,7 +31,7 @@ class CvManagementController extends Controller
         $request->validate([
             'cv_file' => 'required|file|mimes:doc,docx,pdf|max:3072', // Max 3MB
             'cv_name' => 'required|string|max:255',
-        ],[
+        ], [
             'cv_file.required' => __('cv.cv_file_required'),
             'cv_file.mimes' => __('cv.cv_file_mimes'),
             'cv_file.max' => __('cv.cv_file_max'),
@@ -40,7 +40,7 @@ class CvManagementController extends Controller
         ]);
 
         $user = auth()->user();
-        
+
         $userDocument = new UserDocument([
             'user_id' => $user->user_id,
             'uploaded_by' => $user->user_id,
@@ -57,6 +57,13 @@ class CvManagementController extends Controller
             'cvs',
             null
         );
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('cv.upload_success'),
+            ]);
+        }
 
         return redirect()->back()->with('success', __('cv.upload_success'));
     }

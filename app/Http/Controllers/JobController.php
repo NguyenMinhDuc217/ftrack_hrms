@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AreaApplication;
 use App\Models\JobHrms;
 use App\Models\UserDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -14,20 +14,21 @@ class JobController extends Controller
 
         try {
             $job = JobHrms::with('department')->with('area_application', 'area_application.province')->findOrFail($id);
-
-            $user = auth()->user();
-            $cvs = UserDocument::where('user_id', $user->user_id)
-                ->where('document_type', 'cv_file')
-                ->latest()
-                ->get();
+            if (Auth::check()) {
+                $user = auth()->user();
+                $cvs = UserDocument::where('user_id', $user->user_id)
+                    ->where('document_type', 'cv_file')
+                    ->latest()
+                    ->get();
+            }
 
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Job not found');
         }
 
         return view('client.job.detail', [
-            'job' => $job,
-            'cvs' => $cvs,
+            'job' => $job ?? null,
+            'cvs' => $cvs ?? null,
         ]);
     }
 
@@ -40,11 +41,9 @@ class JobController extends Controller
                 $cv = UserDocument::findOrFail($request->cv_id);
                 $job = JobHrms::findOrFail($request->job_id);
 
-                // $area = $job->area_application->where('province_code', $request->province_code)->first();
-                // $area2 = AreaApplication::where('province_code', $request->province_code)->first();
-
-                
-                dd($cv, $job);
+                $area = $job->area_application->where('province_code', $request->province_code)->first();
+`
+                dd($cv, $job, $area);
 
             }
         }

@@ -31,12 +31,16 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
+            $backUrl = $request->session()->get('_previous', ['url' => route('client.dashboard')]);
+
             if ($user->hasPermissionTo('admin.dashboard')) {
                 return redirect()->intended(route('admin.dashboard'));
             }
 
             // Redirect to the client dashboard after successful login
-            return redirect()->intended(route('client.dashboard'));
+            // return redirect()->intended(route('client.dashboard'));
+
+            return redirect()->intended($backUrl['url']);
         }
 
         throw ValidationException::withMessages([
