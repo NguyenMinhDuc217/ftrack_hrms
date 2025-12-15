@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
-            $table->id('department_id');
-            $table->string('department_name')->nullable();
-            $table->string('description')->nullable();
-            $table->string('type',50)->nullable();
-            $table->bigInteger('org_id')->default(0);
-            $table->string('status',50)->nullable();
+        Schema::create('application_areas', function (Blueprint $table) {
+            $table->bigInteger('job_area_id')->unsigned();
+            $table->bigInteger('application_id')->unsigned();
+            $table->string('status', 100)->default('active');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->primary(['job_area_id', 'application_id']);
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('area_application');
     }
 };

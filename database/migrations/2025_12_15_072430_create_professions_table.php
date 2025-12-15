@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('area_application', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('job_id');
-            $table->bigInteger('province_code')->nullable();
-            $table->bigInteger('ward_code')->nullable();
-            $table->string('status', 100)->default('active');
+        Schema::create('professions', function (Blueprint $table) {
+            $table->id('profession_id');
+            $table->string('profession_name')->nullable();
+            $table->string('description')->nullable();
+            $table->string('type', 50)->nullable();
+            $table->string('status', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('area_application');
+        Schema::dropIfExists('professions');
     }
 };

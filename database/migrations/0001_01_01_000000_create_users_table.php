@@ -14,26 +14,28 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->string('username',100);
-            $table->string('google_id',100)->nullable();
-            $table->string('login_type',100)->default('system');
             $table->string('email')->unique();
+            $table->string('username', 100);
+            $table->string('first_name', 50)->nullable();
+            $table->string('last_name', 50)->nullable();
+            $table->string('province_ids', 255)->nullable();
+            $table->string('phone_number', 11)->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password',255)->default(Hash::make('password'));
-            $table->string('phone_number',11)->unique()->nullable();
-            $table->string('first_name',50)->nullable();
-            $table->string('last_name',50)->nullable();
+            $table->string('password', 255)->default(Hash::make('password'));
+            $table->string('avatar')->nullable();
+            $table->bigInteger('height')->nullable();
             $table->string('gender', 100)->nullable();
             $table->dateTime('date_of_birth')->nullable();
             $table->date('hire_date')->nullable(); // Ngày bắt đầu làm việc
-            $table->bigInteger('department_id')->nullable();
             $table->bigInteger('manager_id')->nullable();
-            $table->bigInteger('document_id')->nullable();
+            $table->bigInteger('document_default_id')->nullable();
             $table->bigInteger('role_id')->default(3);
             $table->string('employment_type', 255)->nullable();
             $table->boolean('applicant')->default(0);
             $table->bigInteger('org_id')->default(0);
-            $table->string('status', 100)->default('Unverified');
+            $table->string('google_id', 100)->nullable();
+            $table->string('login_type', 100)->default('system');
+            $table->string('status', 100)->default('unverified');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

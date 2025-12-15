@@ -24,7 +24,6 @@ class RolesAndPermissionsSeeder extends Seeder
         /** @var Faker $faker */
         $faker = app(Faker::class);
 
-
         // Xóa cache permission/role trước khi seed
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
@@ -36,7 +35,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.users.show',
             'admin.users.update',
             'admin.users.changeDepartment',
-            'admin.departments',
+            'admin.professions',
             'admin.role.index',
             'admin.permission.index',
             'admin.menu.index',
@@ -46,9 +45,9 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::firstOrCreate(['name' => $p, 'guard_name' => $guard]);
         }
 
-        $super_admin        = Role::firstOrCreate(['name' => UserRoles::SUPER_ADMIN->value, 'guard_name' => $guard]);
-        $admin              = Role::firstOrCreate(['name' => UserRoles::ADMIN->value, 'guard_name' => $guard]);
-        $hr_manager         = Role::firstOrCreate(['name' => UserRoles::HR_MANAGER->value, 'guard_name' => $guard]);
+        $super_admin = Role::firstOrCreate(['name' => UserRoles::SUPER_ADMIN->value, 'guard_name' => $guard]);
+        $admin = Role::firstOrCreate(['name' => UserRoles::ADMIN->value, 'guard_name' => $guard]);
+        $hr_manager = Role::firstOrCreate(['name' => UserRoles::HR_MANAGER->value, 'guard_name' => $guard]);
 
         $permissionAdmin = [
             'admin.dashboard',
@@ -56,7 +55,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.users.update',
             'admin.users.changeDepartment',
             'admin.users',
-            'admin.departments',
+            'admin.professions',
             'admin.role.index',
             'admin.permission.index',
             'admin.menu.index',
@@ -70,25 +69,23 @@ class RolesAndPermissionsSeeder extends Seeder
             'admin.users',
         ]);
 
-
         $superAdminUser = User::firstOrCreate(
             ['email' => 'superadmin@example.com'],
             [
-                'username'       => 'admin',
-                'first_name'     => 'Admin',
-                'last_name'      => 'Super',
-                'password'       => Hash::make('password'),
-                'phone_number'   => $faker->numerify('09########'),
-                'gender'         => $faker->randomElement(Gender::cases())->value,
-                'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
-                'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
-                'department_id'  => 1,
-                'manager_id'     => 1,
-                'document_id'    => 1,
-                'role_id'        => 1,
+                'username' => 'admin',
+                'first_name' => 'Admin',
+                'last_name' => 'Super',
+                'password' => Hash::make('password'),
+                'phone_number' => $faker->numerify('09########'),
+                'gender' => $faker->randomElement(Gender::cases())->value,
+                'date_of_birth' => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date' => $faker->dateTimeBetween('-10 years', 'now'),
+                'manager_id' => 1,
+                'document_default_id' => 1,
+                'role_id' => 1,
                 'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
-                'applicant'      => 0,
-                'status'         => 'active',
+                'applicant' => 0,
+                'status' => 'active',
             ]
         );
         $superAdminUser->assignRole('super_admin');
@@ -96,45 +93,42 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminUser = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
-                'username'       => 'admin',
-                'first_name'     => 'Admin',
-                'last_name'      => 'Super',
-                'password'       => Hash::make('password'),
-                'phone_number'   => $faker->numerify('09########'),
-                'gender'         => $faker->randomElement(Gender::cases())->value,
-                'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
-                'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
-                'department_id'  => 1,
-                'manager_id'     => 1,
-                'document_id'    => 1,
-                'role_id'        => 1,
+                'username' => 'admin',
+                'first_name' => 'Admin',
+                'last_name' => 'Super',
+                'password' => Hash::make('password'),
+                'phone_number' => $faker->numerify('09########'),
+                'gender' => $faker->randomElement(Gender::cases())->value,
+                'date_of_birth' => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date' => $faker->dateTimeBetween('-10 years', 'now'),
+                'manager_id' => 1,
+                'document_default_id' => 1,
+                'role_id' => 1,
                 'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
-                'applicant'      => 0,
-                'status'         => 'active',
+                'applicant' => 0,
+                'status' => 'active',
             ]
         );
 
         $adminUser->assignRole('admin');
 
-
         $hrManager = User::firstOrCreate(
             ['email' => 'hr@example.com'],
             [
-                'username'       => 'hr',
-                'first_name'     => 'hr',
-                'last_name'      => '(test)',
-                'password'       => Hash::make('password'),
-                'phone_number'   => $faker->numerify('09########'),
-                'gender'         => $faker->randomElement(Gender::cases())->value,
-                'date_of_birth'  => $faker->dateTimeBetween('-50 years', '-18 years'),
-                'hire_date'      => $faker->dateTimeBetween('-10 years', 'now'),
-                'department_id'  => 1,
-                'manager_id'     => 1,
-                'document_id'    => 1,
-                'role_id'        => 2,
+                'username' => 'hr',
+                'first_name' => 'hr',
+                'last_name' => '(test)',
+                'password' => Hash::make('password'),
+                'phone_number' => $faker->numerify('09########'),
+                'gender' => $faker->randomElement(Gender::cases())->value,
+                'date_of_birth' => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date' => $faker->dateTimeBetween('-10 years', 'now'),
+                'manager_id' => 1,
+                'document_default_id' => 1,
+                'role_id' => 2,
                 'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
-                'applicant'      => 0,
-                'status'         => 'active',
+                'applicant' => 0,
+                'status' => 'active',
             ]
         );
 

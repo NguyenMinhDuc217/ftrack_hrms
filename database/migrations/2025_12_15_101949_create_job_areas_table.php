@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('applications', function (Blueprint $table) {
-            $table->id('application_id');
-            $table->bigInteger('user_id')->nullable();
-            $table->bigInteger('job_id')->nullable();
-            $table->bigInteger('user_document_id')->nullable();
-            $table->dateTime('applied_at')->nullable();
+        Schema::create('job_areas', function (Blueprint $table) {
+            $table->id('job_area_id');
+            $table->bigInteger('job_id');
+            $table->bigInteger('province_id');
+            $table->bigInteger('ward_id');
+            $table->bigInteger('headcount')->nullable();
+            $table->string('status', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('applications');
+        Schema::dropIfExists('job_areas');
     }
 };

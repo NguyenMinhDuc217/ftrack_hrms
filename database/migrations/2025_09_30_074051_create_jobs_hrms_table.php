@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('jobs_hrms', function (Blueprint $table) {
             $table->id('job_id');
-            $table->string('title', 255)->nullable();
-            $table->bigInteger('department_id')->nullable();
+            $table->string('name', 255)->nullable();
+            $table->bigInteger('image_id')->nullable();
+            $table->bigInteger('profession_id')->nullable();
             $table->string('employment_type', 255)->nullable();
-            $table->bigInteger('headcount')->nullable();
             $table->mediumText('description_md')->nullable();
             $table->mediumText('requirements_md')->nullable();
             $table->decimal('min_salary', 12, 0)->nullable();

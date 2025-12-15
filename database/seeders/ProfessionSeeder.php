@@ -5,90 +5,90 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DepartmentSeeder extends Seeder
+class ProfessionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('departments')->insert([
+        DB::table('professions')->insert([
             // Field force
             [
-                'department_name' => 'Sales',
+                'profession_name' => 'Sales',
                 'description' => 'Nhân viên kinh doanh GT / Nhân viên kinh doanh MT',
                 'type' => 'Field Force',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Merchandising',
+                'profession_name' => 'Merchandising',
                 'description' => 'Nhân viên trưng bày (Merchandiser)',
                 'type' => 'Field Force',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'POSM',
+                'profession_name' => 'POSM',
                 'description' => 'Nhân viên lắp đặt POSM',
                 'type' => 'Field Force',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Audit',
+                'profession_name' => 'Audit',
                 'description' => 'Audit, survey, cencus',
                 'type' => 'Field Force',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Activation / PG-PB',
+                'profession_name' => 'Activation / PG-PB',
                 'description' => 'PG / Brand Ambassador / Activation Staff',
                 'type' => 'Field Force',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Mystery Shopper',
+                'profession_name' => 'Mystery Shopper',
                 'description' => 'Mystery Shopper',
                 'type' => 'Field Force',
                 'status' => 'active',
             ],
             // Back office
             [
-                'department_name' => 'Human Resource',
+                'profession_name' => 'Human Resource',
                 'description' => 'HR Admin / C&B / Talent Acquisition/ training',
                 'type' => 'Back Office',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Admin',
+                'profession_name' => 'Admin',
                 'description' => 'Nhân viên hành chính / Lễ tân',
                 'type' => 'Back Office',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Accounting/Finance',
+                'profession_name' => 'Accounting/Finance',
                 'description' => 'Kế toán thanh toán / Kế toán công nợ / Finance Executive',
                 'type' => 'Back Office',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Marketing / Trade MKT',
+                'profession_name' => 'Marketing / Trade MKT',
                 'description' => 'Trade Marketing Executive / Marketing Executive',
                 'type' => 'Back Office',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Client Service & Project',
+                'profession_name' => 'Client Service & Project',
                 'description' => 'Project Assistant / Project, Manager/Account Manager, Sales Admin, DC, QC',
                 'type' => 'Back Office',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'IT / Data',
+                'profession_name' => 'IT / Data',
                 'description' => 'IT Support / Data Analyst/ UX-UI/PHP',
                 'type' => 'Back Office',
                 'status' => 'active',
             ],
             [
-                'department_name' => 'Design',
+                'profession_name' => 'Design',
                 'description' => '2D/ 3D',
                 'type' => 'Back Office',
                 'status' => 'active',

@@ -8,8 +8,6 @@ use App\Enums\UserStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
 
 class UserSeeder extends Seeder
 {
@@ -19,26 +17,27 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $faker = app(\Faker\Generator::class);
-        $department_ids = DB::table('departments')->pluck('department_id')->toArray() ?? [1,2];
+        $province_ids = DB::table('provinces')->pluck('id')->toArray() ?? [1, 2, 3, 4, 5];
 
         for ($i = 2; $i < 100; $i++) {
             DB::table('users')->insert([
-               'username' => $faker->userName,
-               'first_name' => $faker->firstName,
-               'last_name' => $faker->lastName,
-               'email' => $faker->unique()->safeEmail(),
-               'password' => Hash::make('password'),
-               'phone_number' => $faker->numerify('09########'),
-               'gender' => $faker->randomElement(Gender::cases())->value,
-               'date_of_birth' => $faker->dateTimeBetween('-50 years', '-18 years'),
-               'hire_date' => $faker->dateTimeBetween('-10 years', 'now'),
-               'department_id' => $faker->randomElement($department_ids),
-               'manager_id' => rand(1,10),
-               'document_id' => rand(1,10),
-               'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
-               'applicant' => rand(0,1),
-               'status' => $faker->randomElement(UserStatus::cases())->value,
-           ]);
+                'email' => $faker->unique()->safeEmail(),
+                'username' => $faker->userName,
+                'first_name' => $faker->firstName,
+                'last_name' => $faker->lastName,
+                'province_ids' => $faker->randomElement($province_ids),
+                'phone_number' => $faker->numerify('09########'),
+                'password' => Hash::make('password'),
+                'height' => $faker->randomNumber(3),
+                'gender' => $faker->randomElement(Gender::cases())->value,
+                'date_of_birth' => $faker->dateTimeBetween('-50 years', '-18 years'),
+                'hire_date' => $faker->dateTimeBetween('-10 years', 'now'),
+                'manager_id' => rand(1, 10),
+                'document_default_id' => rand(1, 10),
+                'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
+                'applicant' => rand(0, 1),
+                'status' => $faker->randomElement(UserStatus::cases())->value,
+            ]);
         }
     }
 }
