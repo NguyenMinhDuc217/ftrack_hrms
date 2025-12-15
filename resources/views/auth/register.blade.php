@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">Register</button>
+                                <button type="submit" class="btn btn-success">Register</button>
                             </div>
 
                             <div class="text-center mt-3">

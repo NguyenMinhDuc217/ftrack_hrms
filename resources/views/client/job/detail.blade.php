@@ -55,7 +55,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">Địa điểm</p>
-                                <p class="font-semibold text-gray-900">{{ $job->area_application->first()->province->name ?? '' }} {{ $job->area_application->count() > 1 ? 'và ' . ($job->area_application->count() - 1) . ' nơi khác' : '' }}</p>
+                                <p class="font-semibold text-gray-900">{{ $job->job_area->first()->province->name ?? '' }} {{ $job->job_area->count() > 1 ? 'và ' . ($job->job_area->count() - 1) . ' nơi khác' : '' }}</p>
                             </div>
                         </div>
 
@@ -190,12 +190,12 @@
                         </div>
                     </div>
 
-                    @if($job->area_application->count() > 0)
+                    @if($job->job_area->count() > 0)
                     <div class="space-y-4">
                         <h3 class="text-xl font-bold text-gray-900">Khu vực tuyển dụng</h3>
                         <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
                             <i class="text-xl bi bi-geo-alt-fill text-[var(--accent-color)]"></i>
-                            @foreach($job->area_application as $area)
+                            @foreach($job->job_area as $area)
                                 <span class="p-2 bg-gray-100 rounded-md text-xs">
                                     {{ $area->province->name ?? '' }}
                                 </span>
@@ -241,11 +241,11 @@
                                         </div>
 
                                         <!-- Chọn CV có sẵn -->
-                                        <div class="group-collapse flex flex-col gap-2 w-full border-2 hover:border-[var(--accent-color)] border-gray-200 p-2 rounded-md" data-collapse-group="cv-group">
+                                        <div id="collapseChooseCV" class="group-collapse flex flex-col gap-2 w-full border-2 hover:border-[var(--accent-color)] border-gray-200 p-2 rounded-md" data-collapse-group="cv-group">
                                             <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full p-0" data-bs-toggle="collapse" data-bs-target="#collapseCVList">
                                                 <span class="title-collapse">Chọn CV có sẵn</span>
                                             </button>
-                                            <div id="collapseCVList" class="flex flex-col gap-2 collapse">
+                                            <div id="collapseCVList" class="flex flex-col gap-2 collapse show">
                                             @if($cvs && $cvs->count() > 0)
                                                 @foreach($cvs as $cv)
                                                     <div class="text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
@@ -262,7 +262,7 @@
                                         </div>
 
                                         <!-- Tạo CV mới -->
-                                        <div class="group-collapse w-full border-2 border-dashed hover:border-[var(--accent-color)] border-gray-200 p-2 rounded-md" data-collapse-group="cv-group">
+                                        <div id="collapseCreateCV" class="group-collapse w-full border-2 border-dashed hover:border-[var(--accent-color)] border-gray-200 rounded-md" data-collapse-group="cv-group">
                                             <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full" data-bs-toggle="collapse" data-bs-target="#collapseUploadCV">
                                                 <span class="title-collapse">Tạo CV mới</span>
                                             </button>
@@ -280,6 +280,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
+                                                <input type="hidden" id="user_document_id">
                                                 <small class="text-muted">{{ __('cv.upload_file_rules') }}</small>
                                             </div>
                                         </div>
@@ -289,7 +290,7 @@
                                                 <label for="province_code" class="form-label fw-bold">Khu vực đang tuyển dụng <span class="text-danger">*</span></label>
                                                 <select name="province_code" id="province_code" class="form-select" required>
                                                     <option value="">Tỉnh thành</option>
-                                                    @foreach ($job->area_application as $area)
+                                                    @foreach ($job->job_area as $area)
                                                             <option value="{{ $area->province->code }}">{{ $area->province->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -313,23 +314,24 @@
     </div>
 
     <script>
-    @if(session('success'))
-    Toast.fire({
-        icon: "success",
-        title: "{{ session('success') }}"
-    });
-    @endif
-    @if(session('error'))
-    Toast.fire({
-        icon: 'error',
-        title: "{{ session('error') }}"
-    });
-    @endif
+        @if(session('success'))
+        Toast.fire({
+            icon: "success",
+            title: "{{ session('success') }}"
+        });
+        @endif
+        @if(session('error'))
+        Toast.fire({
+            icon: 'error',
+            title: "{{ session('error') }}"
+        });
+        @endif
     </script>
 
     <script>
         $(document).ready(function() {
-        //    $('#applyModal').modal('show'); 
+           $('#applyModal').modal('show'); 
+           $('#collapseChooseCV').addClass('border-[var(--accent-color)] shadow-md').find('.title-collapse').addClass('font-semibold text-[var(--accent-color)] underline');
 
            $(document).on('show.bs.collapse', '.collapse', function () {
                 var $this = $(this);
@@ -397,6 +399,9 @@
                 success: function (response) {
                     console.log(response);
                     if (response.success) {
+                        if (response.data) {
+                            $('#user_document_id').val(response.data.id);
+                        }
                         Toast.fire({
                             icon: 'success',
                             title: response.message

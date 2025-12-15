@@ -12,7 +12,7 @@ class ClientController extends Controller
     public function buildFilter(Request $request)
     {
         $data = [];
-        $data['type'] = 'department_id';
+        $data['type'] = 'profession_id';
 
         if ($request->has('province_id')) {
             $data['province_id'] = $request->province_id;
@@ -20,9 +20,9 @@ class ClientController extends Controller
         if ($request->has('search')) {
             $data['search'] = $request->search;
         }
-        if ($request->has('department_id')) {
-            $data['department_id'] = $data['val'] = $request->department_id;
-            $data['type'] = 'department_id';
+        if ($request->has('profession_id')) {
+            $data['profession_id'] = $data['val'] = $request->profession_id;
+            $data['type'] = 'profession_id';
             $data['active'] = 1;
         }
 
@@ -38,7 +38,7 @@ class ClientController extends Controller
             'profession' => __('job.txt_category'),
             'salary' => __('job.txt_salary'),
         ];
-        $provinces = Province::select('code', 'name')->get();
+        $provinces = Province::select('id', 'name')->get();
 
         $data = $this->buildFilter($request);
         $data['jobs'] = $jobs;
@@ -50,10 +50,10 @@ class ClientController extends Controller
 
     public function buildQuery(Request $request)
     {
-        $query = JobHrms::query()->with('department')->with('area_application')->with('area_application.province');
+        $query = JobHrms::query()->with('profession')->with('job_area')->with('job_area.province');
         if ($request->has('province_id')) {
-            $query->whereHas('area_application', function ($q) use ($request) {
-                $q->where('province_code', (int) $request->province_id);
+            $query->whereHas('job_area', function ($q) use ($request) {
+                $q->where('province_id', (int) $request->province_id);
             });
         }
         if ($request->has('search')) {
@@ -62,12 +62,12 @@ class ClientController extends Controller
                 $q->where('title', 'like', '%'.$key.'%')
                     ->orWhere('description_md', 'like', '%'.$key.'%')
                     ->orWhere('application_position', 'like', '%'.$key.'%');
-            })->orWhereHas('department', function ($q) use ($key) {
-                $q->where('department_name', 'like', '%'.$key.'%');
+            })->orWhereHas('profession', function ($q) use ($key) {
+                $q->where('profession_name', 'like', '%'.$key.'%');
             });
         }
-        if ($request->has('department_id')) {
-            $query->where('department_id', $request->department_id);
+        if ($request->has('profession_id')) {
+            $query->where('profession_id', $request->profession_id);
         }
 
         return $query;

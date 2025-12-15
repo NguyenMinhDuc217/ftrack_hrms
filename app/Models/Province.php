@@ -16,6 +16,6 @@ class Province extends Model
         'unit_id',
     ];
 
-     protected $primaryKey = 'user_id';
+     protected $primaryKey = 'id';
 
 }

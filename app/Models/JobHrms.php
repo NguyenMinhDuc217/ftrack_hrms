@@ -15,9 +15,9 @@ class JobHrms extends Model
 
     protected $fillable = [
         'job_id',
-        'title',
-        'department_id',
-        'province_code',
+        'name',
+        'profession_id',
+        'province_id',
         'employment_type',
         'headcount',
         'description_md',
@@ -35,9 +35,9 @@ class JobHrms extends Model
     public function searchable(): array
     {
         return [
-            'title',
-            'department_id',
-            'province_code',
+            'name',
+            'profession_id',
+            'province_id',
             'employment_type',
             'headcount',
             'description_md',
@@ -52,18 +52,13 @@ class JobHrms extends Model
 
     protected $primaryKey = 'job_id';
 
-    public function department()
+    public function profession()
     {
-        return $this->belongsTo(Department::class, 'department_id');
+        return $this->belongsTo(Profession::class, 'profession_id');
     }
 
-    public function province()
+    public function job_area()
     {
-        return $this->belongsTo(Province::class, 'province_code', 'code');
-    }
-
-    public function area_application()
-    {
-        return $this->hasMany(AreaApplication::class, 'job_id', 'job_id');
+        return $this->hasMany(JobArea::class, 'job_id', 'job_id');
     }
 }

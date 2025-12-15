@@ -31,7 +31,7 @@
                 onchange="filterJobs('province_id', this.value)">
                     <option value="">{{__('default.txt_location')}}</option>
                     @foreach($provinces  as $province)
-                    <option value="{{ $province->code }}" {{ isset($province_id) && $province->code == $province_id ? 'selected' : '' }}>{{ $province->name }}</option>
+                    <option value="{{ $province->id }}" {{ isset($province_id) && $province->id == $province_id ? 'selected' : '' }}>{{ $province->name }}</option>
                     @endforeach
                 </select>
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">

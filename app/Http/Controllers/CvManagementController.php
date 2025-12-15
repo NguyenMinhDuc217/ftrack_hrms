@@ -62,6 +62,7 @@ class CvManagementController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => __('cv.upload_success'),
+                'data' => $userDocument,
             ]);
         }
 

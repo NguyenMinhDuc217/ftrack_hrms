@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Profession extends Model
 {
     protected $fillable = [
-        'department_id',
-        'department_name',
+        'profession_id',
+        'profession_name',
         'description',
+        'type',
         'status',
     ];
 
-     protected $primaryKey = 'department_id';
+    protected $primaryKey = 'profession_id';
 }

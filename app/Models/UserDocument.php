@@ -26,6 +26,8 @@ class UserDocument extends Model
         'status',
     ];
 
+    protected $primaryKey = 'user_document_id';
+
     public function getUrlAttribute()
     {
         return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->file_url);

@@ -15,7 +15,8 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
+
     use SoftDeletes;
 
     /**
@@ -26,22 +27,27 @@ class User extends Authenticatable
     protected $guard_name = 'web';
 
     protected $fillable = [
-        'google_id',
-        'username',
         'email',
-        'email_verified_at',
-        'password',
-        'phone_number',
+        'username',
         'first_name',
         'last_name',
+        'province_ids',
+        'phone_number',
+        'email_verified_at',
+        'password',
+        'avatar',
+        'height',
         'gender',
         'date_of_birth',
         'hire_date',
-        'department_id',
         'manager_id',
-        'document_id',
+        'document_default_id',
+        'role_id',
         'employment_type',
         'applicant',
+        'org_id',
+        'google_id',
+        'login_type',
         'status',
     ];
 
@@ -49,17 +55,23 @@ class User extends Authenticatable
     {
         return [
             'search',
-            'username',
-            'google_id',
             'email',
-            'phone_number',
+            'username',
             'first_name',
             'last_name',
+            'province_ids',
+            'phone_number',
+            'height',
             'gender',
+            'date_of_birth',
             'hire_date',
-            'department_id',
             'manager_id',
+            'document_default_id',
+            'role_id',
             'employment_type',
+            'applicant',
+            'org_id',
+            'login_type',
             'status',
         ];
     }
@@ -91,18 +103,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function department()
-    {
-        return $this->belongsTo(Department::class, 'department_id');
-    }
-
     public function getFullNameAttribute(): string
     {
         if ($this->first_name || $this->last_name) {
-            return trim(($this->first_name ?? '') . ' ' . ($this->last_name ?? ''));
+            return trim(($this->first_name ?? '').' '.($this->last_name ?? ''));
         }
 
-        return "";
+        return '';
     }
 
     public function cvProfile()

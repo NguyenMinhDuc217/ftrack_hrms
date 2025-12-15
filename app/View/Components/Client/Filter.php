@@ -2,7 +2,7 @@
 
 namespace App\View\Components\Client;
 
-use App\Models\Department;
+use App\Models\Profession;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -23,8 +23,8 @@ class Filter extends Component
     public function render(): View|Closure|string
     {
         switch ($this->type) {
-            case 'department_id':
-                $filters = Department::select('department_id as id', 'department_name as name')->where('status', 'active')->where('deleted_at', null)->get();
+            case 'profession_id':
+                $filters = Profession::select('profession_id as id', 'profession_name as name')->where('status', 'active')->where('deleted_at', null)->get();
                 $type = $this->type;
                 $val = $this->val;
                 break;
@@ -35,9 +35,9 @@ class Filter extends Component
                 $type = $this->type;
                 break;
             default:
-                $type = 'department_id';
+                $type = 'profession_id';
                 $val = $this->val;
-                $filters = Department::select('department_id as id', 'department_name as name')->where('status', 'active')->where('deleted_at', null)->get();
+                $filters = Profession::select('profession_id as id', 'profession_name as name')->where('status', 'active')->where('deleted_at', null)->get();
                 break;
         }
 
