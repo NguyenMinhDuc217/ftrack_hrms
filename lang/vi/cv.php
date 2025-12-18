@@ -75,7 +75,7 @@ return [
     'save_group' => 'Lưu nhóm',
     'close' => 'Đóng',
     'cancel' => 'Hủy',
-    'confirm'=> 'Xác nhận',
+    'confirm' => 'Xác nhận',
     'select' => 'Chọn...',
     'select_province' => 'Chọn Tỉnh/Thành phố...',
 
@@ -134,4 +134,12 @@ return [
     'cv_file_max' => 'File CV phải nhỏ hơn 3MB',
     'cv_name_required' => 'Tên CV là bắt buộc',
     'cv_name_max' => 'Tên CV phải nhỏ hơn 255 ký tự',
+
+    // Modal create
+    'txt_welcome' => 'Chào mừng bạn đến với tuyển dụng CPM',
+    'txt_you_not_cv' => 'Bạn chưa có CV nào',
+    'txt_create_cv_des' => 'Hãy tải CV đầu tiên để sẵn sàng ứng tuyển hàng ngàn việc làm hấp dẫn!',
+    'txt_support_type_file' => 'Hỗ trợ: .pdf, .doc, .docx (tối đa 5MB)',
+    'txt_skip_create_cv' => 'Để sau, tôi muốn xem việc làm trước',
+
 ];

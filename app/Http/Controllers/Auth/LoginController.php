@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -31,10 +32,19 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            $backUrl = $request->session()->get('_previous', ['url' => route('client.dashboard')]);
-
             if ($user->hasPermissionTo('admin.dashboard')) {
                 return redirect()->intended(route('admin.dashboard'));
+            }
+
+            $backUrl = $request->session()->get('_previous', ['url' => route('client.dashboard')]);
+
+            $cvs = UserDocument::where('user_id', $user->user_id)
+                ->where('document_type', 'cv_file')
+                ->where('deleted_at', null)
+                ->count();
+
+            if ($cvs === 0) {
+                session(['show_create_cv_modal' => true]);
             }
 
             // Redirect to the client dashboard after successful login

@@ -5,6 +5,36 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $application_id
+ * @property int|null $user_id
+ * @property int|null $job_id
+ * @property int|null $user_document_id
+ * @property string|null $applied_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\JobHrms|null $job
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\JobArea> $job_area
+ * @property-read int|null $job_area_count
+ * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\UserDocument|null $user_document
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereApplicationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereAppliedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereJobId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereUserDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Application withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Application extends Model
 {
     use SoftDeletes;
@@ -31,12 +61,16 @@ class Application extends Model
 
     public function user_document()
     {
-        return $this->belongsTo(UserDocument::class, 'user_document_id');
-    }
-    
-    public function job()
-    {
-        return $this->belongsTo(JobHrms::class, 'job_id');
+        return $this->belongsTo(UserDocument::class, 'user_document_id')->where('user_documents.deleted_at', null);
     }
 
+    public function job()
+    {
+        return $this->belongsTo(JobHrms::class, 'job_id')->where('job_hrms.status', 1)->where('job_hrms.deleted_at', null);
+    }
+
+    public function job_area()
+    {
+        return $this->belongsToMany(JobArea::class, 'application_areas', 'application_id', 'job_area_id')->where('job_area.status', 1)->where('job_area.deleted_at', null)->withTimestamps();
+    }
 }

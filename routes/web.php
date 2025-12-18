@@ -14,6 +14,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CvProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Client Routes
@@ -63,6 +64,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/cv-manage', [App\Http\Controllers\CvManagementController::class, 'index'])->name('cv.manage');
     Route::post('/cv-manage/upload', [App\Http\Controllers\CvManagementController::class, 'upload'])->name('cv.upload');
     Route::delete('/cv-manage/delete/{id}', [App\Http\Controllers\CvManagementController::class, 'delete'])->name('cv.delete');
+
+    // Xóa flag tạo CV
+    Route::post('/clear-create-cv-flag', function (Request $request) {
+        $request->session()->forget(['show_create_cv_modal']);
+        return response()->json(['success' => true]);
+    })->name('clear.create.cv.flag');
 
     // Apply Job
     Route::post('/apply-job', [App\Http\Controllers\JobController::class, 'applyJob'])->name('apply.job');

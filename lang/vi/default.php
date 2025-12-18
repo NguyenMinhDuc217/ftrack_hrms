@@ -8,6 +8,8 @@ return [
     // btn
     'btn_submit' => 'Lưu',
     'btn_reset' => 'Reset',
+    'btn_back' => 'Quay lại',
+    'btn_close' => 'Đóng',
 
     // delete common
     'button_confirm' => 'Xác nhận',

@@ -38,4 +38,14 @@ class JobArea extends Model
     // {
     //     return $this->belongsTo(Ward::class, 'ward_id');
     // }
+
+    public function application()
+    {
+        return $this->belongsToMany(
+            Application::class,
+            'application_areas',
+            'job_area_id',
+            'application_id'
+        )->withTimestamps();
+    }
 }

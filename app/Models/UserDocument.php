@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class UserDocument extends Model
 {
     use SoftDeletes;
+
     protected $table = 'user_documents';
+
     protected $fillable = [
+        'id',
         'user_id',
         'uploaded_by',
         'disk',
@@ -26,10 +30,15 @@ class UserDocument extends Model
         'status',
     ];
 
-    protected $primaryKey = 'user_document_id';
+    protected $primaryKey = 'id';
 
     public function getUrlAttribute()
     {
-        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->file_url);
+        // check file existed before return link
+        if ($this->file_url == null) {
+            return null;
+        }
+
+        return Storage::disk($this->disk)->url($this->file_url);
     }
 }

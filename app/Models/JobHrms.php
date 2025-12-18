@@ -54,11 +54,11 @@ class JobHrms extends Model
 
     public function profession()
     {
-        return $this->belongsTo(Profession::class, 'profession_id');
+        return $this->belongsTo(Profession::class, 'profession_id')->where('status', 'active')->where('deleted_at', null);
     }
 
     public function job_area()
     {
-        return $this->hasMany(JobArea::class, 'job_id', 'job_id');
+        return $this->hasMany(JobArea::class, 'job_id', 'job_id')->where('status', 'active')->where('deleted_at', null);
     }
 }

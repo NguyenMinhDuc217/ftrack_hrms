@@ -51,7 +51,7 @@ class CvManagementController extends Controller
         ]);
 
         // Upload new CV
-        $this->documentService->upload(
+        $userDocument = $this->documentService->upload(
             $request->file('cv_file'),
             $userDocument,
             'cvs',
@@ -66,7 +66,10 @@ class CvManagementController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', __('cv.upload_success'));
+        $backUrl = $request->session()->get('_previous', ['url' => back()->getTargetUrl()]);
+
+        return redirect()->intended($backUrl['url'])->with('success', __('cv.upload_success'));
+        // return redirect()->back()->with('success', __('cv.upload_success'));
     }
 
     public function delete($id)

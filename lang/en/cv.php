@@ -65,7 +65,7 @@ return [
     'year_4' => '4 years',
     'year_5_plus' => '5+ years',
     'year_10_plus' => '10+ years',
-    
+
     // Actions
     'edit' => 'Edit',
     'delete' => 'Delete',
@@ -75,7 +75,7 @@ return [
     'save_group' => 'Save Group',
     'close' => 'Close',
     'cancel' => 'Cancel',
-    'confirm'=> 'Confirm',
+    'confirm' => 'Confirm',
     'select' => 'Select...',
     'select_province' => 'Select Province...',
 
@@ -134,4 +134,11 @@ return [
     'cv_file_max' => 'CV file must be less than 3MB',
     'cv_name_required' => 'CV name is required',
     'cv_name_max' => 'CV name must be less than 255 characters',
+
+    // Modal create
+    'txt_welcome' => 'Welcome to CPM recruiting',
+    'txt_you_not_cv' => "You don't have any CV yet",
+    'txt_create_cv_des' => 'Download your CV first to be ready to apply for thousands of attractive jobs!',
+    'txt_support_type_file' => 'Support: .pdf, .doc, .docx (maximum 5MB)',
+    'txt_skip_create_cv' => 'Later, I want to see the work first',
 ];

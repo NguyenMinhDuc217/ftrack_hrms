@@ -24,4 +24,17 @@
 	$(() => {
 		$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 	});
+
+	@if(session('success'))
+	Toast.fire({
+		icon: "success",
+		title: "{{ session('success') }}"
+	});
+	@endif
+	@if(session('error'))
+	Toast.fire({
+		icon: 'error',
+		title: "{{ session('error') }}"
+	});
+	@endif
 </script>

@@ -68,9 +68,9 @@ class UserFilter extends BaseFilter
         $this->builder->whereDate('hire_date', $value);
     }
 
-    protected function department_id($value)
+    protected function document_default_id($value)
     {
-        $this->builder->where('department_id', (int)$value);
+        $this->builder->where('document_default_id', (int)$value);
     }
 
     protected function manager_id($value)

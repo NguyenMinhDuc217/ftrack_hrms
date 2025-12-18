@@ -89,6 +89,30 @@
         @yield('content')
     </main>
 
+    @auth
+    @if(session('show_create_cv_modal'))
+        <x-client.create-cv />
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var modal = new bootstrap.Modal($('#CreateCVModal'), {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                modal.show();
+
+                //Xóa flag sau khi hiện (chỉ hiện 1 lần)
+                fetch(`{{ route('clear.create.cv.flag') }}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                });
+            });
+        </script>
+    @endif
+    @endauth
+
   @if(!Route::is('login'))
       @include('client.partials.footer')
   @endif
