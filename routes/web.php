@@ -34,6 +34,12 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/google/callback', [LoginController::class, 'callback'])->name('google.callback');
 });
 
+Route::get('/clear-cache', function () {
+    Artisan::call('optimize:clear');
+
+    return 'Application optimization caches cleared!';
+});
+
 // Authenticated Client Routes
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
@@ -68,6 +74,7 @@ Route::middleware('auth')->group(function () {
     // Xóa flag tạo CV
     Route::post('/clear-create-cv-flag', function (Request $request) {
         $request->session()->forget(['show_create_cv_modal']);
+
         return response()->json(['success' => true]);
     })->name('clear.create.cv.flag');
 

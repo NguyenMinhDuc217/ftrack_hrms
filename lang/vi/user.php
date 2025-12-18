@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 return [
     'username_required' => 'Tên người dùng là bắt buộc.',
     'username_string' => 'Tên người dùng phải là một chuỗi.',
@@ -43,7 +44,7 @@ return [
     'txt_gender' => 'Giới tính',
     'txt_date_of_birth' => 'Ngày sinh',
     'txt_hire_date' => 'Ngày tuyển dụng',
-    'txt_department' => 'Phòng ban',
+    'txt_profession' => 'Nghề nghiệp',
     'txt_manager' => 'Quản lý',
     'txt_document' => 'Tài liệu',
     'txt_employment_type' => 'Loại người dùng',

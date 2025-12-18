@@ -5,6 +5,7 @@ return [
     'txt_edit_job' => 'Cập nhật công việc',
     'txt_title' => 'Tiêu đề',
     'txt_province' => 'Tỉnh thành',
+    'txt_can_choose_multiple' => 'Có thể chọn nhiều',
     'txt_headcount' => 'Số lượng cần tuyển',
     'txt_description' => 'Mô tả công việc',
     'txt_requirements' => 'Yêu cầu công việc',
@@ -15,7 +16,7 @@ return [
     'title_required' => 'Tiêu đề là bắt buộc.',
     'title_string' => 'Tiêu đề phải là một chuỗi.',
     'title_max' => 'Tiêu đề không được dài hơn 255 ký tự.',
-    'department_id_exists' => 'Phòng ban đã chọn không tồn tại.',
+    'profession_id_exists' => 'Ngành nghề đã chọn không tồn tại.',
     'province_code_required' => 'Mã khu vực là bắt buộc.',
     'province_code_string' => 'Mã khu vực phải là một chuỗi.',
     'province_code_max' => 'Mã khu vực không được dài hơn 255 ký tự.',
@@ -64,7 +65,7 @@ return [
     'txt_number_of_recruitment' => 'Số lượng tuyển dụng',
     'txt_form_of_work' => 'Hình thức làm việc',
     'txt_area_recruitment' => 'Khu vực tuyển dụng',
-    
+
     'txt_salary_rank' => ':min - :max triệu',
     // Modal
     'txt_apply' => 'Ứng tuyển',

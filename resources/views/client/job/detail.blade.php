@@ -176,7 +176,7 @@
                     </div>
 
                     <div class="text-center">
-                        <a href="#" class="inline-flex items-center gap-2 text-green-600 font-bold hover:text-green-700 transition">
+                        <a href="https://www.facebook.com/CPMVietnam/" target="_blank" class="inline-flex items-center gap-2 text-green-600 font-bold hover:text-green-700 transition">
                             {{ __('job.txt_see_company_page') }}
                             <i class="bi bi-box-arrow-up-right"></i>
                         </a>

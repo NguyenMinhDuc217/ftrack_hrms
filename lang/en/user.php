@@ -44,7 +44,7 @@ return [
     'txt_gender' => 'Gender',
     'txt_date_of_birth' => 'Date of Birth',
     'txt_hire_date' => 'Hire Date',
-    'txt_department' => 'Department',
+    'txt_profession' => 'Profession',
     'txt_manager' => 'Manager',
     'txt_document' => 'Document',
     'txt_employment_type' => 'Employment Type',

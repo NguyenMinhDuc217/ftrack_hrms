@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id('job_area_id');
             $table->bigInteger('job_id');
             $table->bigInteger('province_id');
-            $table->bigInteger('ward_id');
+            $table->bigInteger('ward_id')->nullable();
             $table->bigInteger('headcount')->nullable();
-            $table->string('status', 50)->nullable();
+            $table->string('status', 50)->nullable()->default('active');
             $table->timestamps();
             $table->softDeletes();
         });
