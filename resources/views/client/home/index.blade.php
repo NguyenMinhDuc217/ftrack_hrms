@@ -1,4 +1,4 @@
-<main class="flex-grow">
+<main class="flex-grow overflow-auto">
     @include('client.home.banner')
 
     @include('client.home.job-list')

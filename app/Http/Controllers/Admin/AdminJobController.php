@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\EmploymentType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPostRequest;
-use App\Models\AreaApplication;
 use App\Models\Department;
+use App\Models\JobArea;
 use App\Models\JobHrms;
+use App\Models\Profession;
 use App\Models\Province;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -66,14 +67,15 @@ class AdminJobController extends Controller
 
     public function show($job_id)
     {
-        $job = JobHrms::where('job_id', $job_id)->with('area_application', 'area_application.province')->first();
+        $job = JobHrms::with('profession')->with('job_area', 'job_area.province')->findOrFail($job_id);
+        // dd($job);
 
         $breadcrumbs = [
             ['label' => __('job.txt_edit_job'), 'url' => route('admin.jobs.index')],
             ['label' => 'Edit Job: '."{$job->job_id} - {$job->title}", 'url' => route('admin.jobs.show', $job_id)],
         ];
 
-        $departments = Department::where('status', 'active')->get();
+        $professions = Profession::where('status', 'active')->get();
         $provinces = Province::all();
         $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
             return [$type->value => $type->getLabelData()['label']];
@@ -85,7 +87,7 @@ class AdminJobController extends Controller
                 'action' => 'edit',
                 'breadcrumbs' => $breadcrumbs,
                 'job' => $job,
-                'departments' => $departments,
+                'professions' => $professions,
                 'provinces' => $provinces,
                 'employment_types' => $employment_types,
             ]
@@ -98,44 +100,47 @@ class AdminJobController extends Controller
 
         // ADD
         if (! $job) {
-            $province_codes = $data['province_code'];
-            unset($data['province_code']);
+            $province_ids = $data['province_id'];
+            unset($data['province_id']);
             $job = JobHrms::create($data);
 
-            if ($province_codes) {
-                foreach ($province_codes as $province_code) {
-                    AreaApplication::create([
+            if ($province_ids) {
+                foreach ($province_ids as $province_id) {
+                    JobArea::create([
                         'job_id' => $job->job_id,
-                        'province_code' => $province_code,
+                        'province_id' => $province_id,
+                        'headcount' => $data['headcount'], // Tạm thời lưu chung cho tất cả area
                     ]);
                 }
             }
 
             return redirect()->route('admin.jobs.index')->with('success', 'Job added successfully.');
         } else { // EDIT
-            $province_codes = $data['province_code'];
+            $province_ids = $data['province_id'];
 
-            if ($province_codes) {
-                $current_provinces = $job->area_application()->pluck('province_code')->toArray();
-                $new_provinces = array_diff($province_codes, $current_provinces);
-                $deleted_provinces = array_diff($current_provinces, $province_codes);
+            if ($province_ids) {
+                // đang lấy những province.id của nhưng job_area status = active (chưa làm trường hợp nếu province_id mới thêm trùng với province_id cũ nhưng bị inactive)
+                $current_provinces = $job->job_area->pluck('province.id')->toArray();
+                $new_provinces = array_diff($province_ids, $current_provinces);
+                $deleted_provinces = array_diff($current_provinces, $province_ids);
 
                 if ($deleted_provinces) {
                     foreach ($deleted_provinces as $deleted_province) {
-                        $job->area_application()->where('province_code', $deleted_province)->delete();
+                        $job->job_area()->where('province_id', $deleted_province)->delete();
                     }
                 }
                 if ($new_provinces) {
                     foreach ($new_provinces as $new_province) {
-                        $job->area_application()->create([
-                            'province_code' => $new_province,
+                        $job->job_area()->create([
+                            'province_id' => $new_province,
+                            'headcount' => $data['headcount'],
                         ]);
                     }
                 }
             }
 
             $job = JobHrms::where('job_id', $job->job_id)->first();
-            unset($data['province_code']);
+            unset($data['province_id']);
             $job->update($data);
 
             return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');

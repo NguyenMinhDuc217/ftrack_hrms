@@ -39,7 +39,7 @@
                           <div class="col-sm-3">
                             <div class="form-group">
                               <select name="department_id" class="form-control form-control-sm" onchange="changeDepartment(this.value)">
-                                <option value="">-{{ __('user.txt_department') }}-</option>
+                                <option value="">-{{ __('user.txt_profession') }}-</option>
                                 @foreach ($departments as $department)
                                 <option value="{{$department->department_id}}" @selected(request('department_id') == $department->department_id)>
                                   {{ $department->department_name }}
@@ -112,7 +112,7 @@
                       <th>{{ __('user.txt_user_id') }}</th>
                       <th>{{ __('user.txt_username') }}</th>
                       <th>{{ __('user.txt_phone_number') }}</th>
-                      <th>{{ __('user.txt_department') }}</th>
+                      <th>{{ __('user.txt_profession') }}</th>
                       <th>{{ __('user.txt_status') }}</th>
                       <th class="text-center">{{ __('user.txt_actions') }}</th>
                     </tr>

@@ -50,6 +50,14 @@ class JobHrms extends Model
 
     protected $primaryKey = 'job_id';
 
+    public function scopeActive($query)
+    {
+        return $query->where('start_date', '<=', today())
+            ->where('end_date', '>=', today())
+            ->where('status', 1)
+            ->where('deleted_at', null);
+    }
+
     public function profession()
     {
         return $this->belongsTo(Profession::class, 'profession_id')->where('status', 'active')->where('deleted_at', null);

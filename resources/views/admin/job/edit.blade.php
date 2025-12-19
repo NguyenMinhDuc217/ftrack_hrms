@@ -13,10 +13,10 @@
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="form-label" for="title">{{ __('job.txt_title') }}</label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" name="title"
-                            placeholder="{{ __('job.txt_title') }}" id="title" value="{{ $job->title }}">
-                        @error('title')
+                        <label class="form-label" for="name">{{ __('job.txt_title') }}</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                            placeholder="{{ __('job.txt_title') }}" id="name" value="{{ $job->name }}">
+                        @error('name')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </div>
@@ -25,15 +25,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">{{ __('user.txt_department') }}</label>
-                        <select class="form-control @error('department_id') is-invalid @enderror" name="department_id">
-                            <option label="-{{ __('user.txt_department') }}-"></option>
-                            @foreach ($departments as $department)
-                            <option value="{{$department->department_id}}" @selected($job->department_id ==
-                                $department->department_id)>{{$department->department_name}}</option>
+                        <label class="form-label">{{ __('user.txt_profession') }}</label>
+                        <select class="form-control @error('profession_id') is-invalid @enderror" name="profession_id">
+                            <option label="-{{ __('user.txt_profession') }}-"></option>
+                            @foreach ($professions as $profession)
+                            <option value="{{$profession->profession_id}}" @selected($job->profession_id ==
+                                $profession->profession_id)>{{$profession->profession_name}}</option>
                             @endforeach
                         </select>
-                        @error('department_id')
+                        @error('profession_id')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </div>
@@ -41,33 +41,33 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_province') }} (có thể chọn nhiều)</label>
-                        <select onchange="addProvince()" class="form-control @error('province_code') is-invalid @enderror" id="province_code">
+                        <label class="form-label">{{ __('job.txt_province') }} ({{  __('job.txt_can_choose_multiple') }})</label>
+                        <select onchange="addProvince()" class="form-control @error('province_id') is-invalid @enderror" id="province_id">
                             <option label="-{{ __('job.txt_province') }}-"></option>
                             @foreach ($provinces as $province)
-                            <option value="{{$province->code}}" @selected($job->province_code == $province->code)>
+                            <option value="{{$province->id}}" @selected(0 == $province->id)>
                                 {{$province->name}}
                             </option>
                             @endforeach
                         </select>
-                        @error('code')
+                        @error('province_id')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </div>
                         @enderror
 
-                        <select name="province_code[]" multiple style="display: none;" id="area_application_hidden">
-                            @foreach($job->area_application ?? [] as $area)
-                                <option value="{{ $area->province_code }}" selected></option>
+                        <select name="province_id[]" multiple style="display: none;" id="area_application_hidden">
+                            @foreach($job->job_area ?? [] as $job_area)
+                                <option value="{{ $job_area->province->id }}" selected></option>
                             @endforeach
                         </select>
 
                         <div id="province_tags" class="d-flex flex-wrap gap-2 mt-3">
-                            @foreach($job->area_application ?? [] as $area)
-                                @if($area)
-                                    <span class="badge rounded-pill bg-success d-flex flex-row align-items-center gap-1 p-2" id="province_tag_{{ $area->province->code }}">
-                                        <span class="text-white">{{ $area->province->name }}</span>
-                                        <button onclick="removeProvince('{{ $area->province->code }}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition d-flex align-items-center justify-content-center">
+                            @foreach($job->job_area ?? [] as $job_area)
+                                @if($job_area)
+                                    <span class="badge rounded-pill bg-success d-flex flex-row align-items-center gap-1 p-2" id="province_tag_{{ $job_area->province->id }}">
+                                        <span class="text-white">{{ $job_area->province->name }}</span>
+                                        <button onclick="removeProvince('{{ $job_area->province->id }}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition d-flex align-items-center justify-content-center">
                                             <i class="ti ti-x"></i>
                                         </button>
                                     </span>

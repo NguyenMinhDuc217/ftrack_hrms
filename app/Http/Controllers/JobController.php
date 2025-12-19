@@ -15,7 +15,7 @@ class JobController extends Controller
     public function detail($id)
     {
         try {
-            $job = JobHrms::with('profession')->with('job_area', 'job_area.province')->findOrFail($id);
+            $job = JobHrms::active()->with('profession')->with('job_area', 'job_area.province')->findOrFail($id);
             if (Auth::check()) {
                 $user = auth()->user();
                 $cvs = UserDocument::where('user_id', $user->user_id)
@@ -53,7 +53,7 @@ class JobController extends Controller
         }
 
         // Kiểm tra job có tồn tại ở khu vực này không
-        $job = JobHrms::with(['job_area' => fn ($q) => $q->where('province_id', $province_id)])->findOrFail($job_id);
+        $job = JobHrms::active()->with(['job_area' => fn ($q) => $q->where('province_id', $province_id)])->findOrFail($job_id);
         $jobArea = $job->job_area->first();
         if (! $jobArea) {
             return back()->with('error', __('job.application_area_not_exists'));

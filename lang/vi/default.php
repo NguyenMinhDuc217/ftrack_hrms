@@ -26,6 +26,8 @@ return [
     'button_add' => 'Thêm',
 
     'txt_search' => 'Tìm kiếm',
+    'txt_clear' => 'Làm mới',
+    'txt_get_current_location' => 'Lấy vị trí hiện tại',
     'txt_users' => 'Người dùng',
     'txt_home' => 'Trang chủ',
 
@@ -49,4 +51,7 @@ return [
 
     'txt_active' => 'Hoạt động',
     'txt_inactive' => 'Không hoạt động',
+
+    // Error
+    'error_location_not_found' => 'Không tìm thấy vị trí',
 ];

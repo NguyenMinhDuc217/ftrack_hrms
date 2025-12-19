@@ -16,10 +16,12 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Process\Process;
 
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
 Route::get('/job/{id}', [JobController::class, 'detail'])->name('client.job.detail');
+Route::get('/current-location', [ClientController::class, 'getCurrentLocation'])->name('client.current.location');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
@@ -37,7 +39,67 @@ Route::middleware('guest')->group(function () {
 Route::get('/clear-cache', function () {
     Artisan::call('optimize:clear');
 
-    return 'Application optimization caches cleared!';
+    $customTemp = storage_path('app/temp');
+    if (! file_exists($customTemp)) {
+        mkdir($customTemp, 0777, true);
+    }
+    $process = new Process(
+        ['composer', 'install'],
+        base_path(),
+        [
+            'COMPOSER_HOME' => $customTemp,
+            'HOME' => $customTemp,
+            'sys_temp_dir' => $customTemp,
+            'TMP' => $customTemp,
+            'TEMP' => $customTemp,
+            'TMPDIR' => $customTemp,
+        ]
+    );
+    $process->setTimeout(300);
+    try {
+        $process->mustRun(); // Runs the process and throws an exception on failure
+
+        return 'Composer update successful: '.$process->getOutput();
+    } catch (\Symfony\Component\Process\Exception\ProcessFailedException $exception) {
+        return 'Composer update failed: '.$exception->getMessage();
+    }
+});
+
+function updateVendorFolder() {
+    $zipPath = base_path('vendor.zip');
+    $vendorPath = base_path('vendor');
+
+    // 1. Check if the zip file was actually uploaded
+    if (!File::exists($zipPath)) {
+        return "Error: vendor.zip not found in the root directory.";
+    }
+
+    // 2. Increase execution time (unzipping thousands of files is slow)
+    set_time_limit(600); 
+    ini_set('memory_limit', '512M');
+
+    // 3. Remove the old vendor folder first
+    if (File::exists($vendorPath)) {
+        File::deleteDirectory($vendorPath);
+    }
+
+    // 4. Extract the new vendor zip
+    $zip = new \ZipArchive;
+    if ($zip->open($zipPath) === TRUE) {
+        $zip->extractTo(base_path()); // Extracts into 'vendor/'
+        $zip->close();
+
+        // 5. Clean up the zip file
+        File::delete($zipPath);
+
+        return "Vendor folder updated successfully!";
+    } else {
+        return "Error: Could not open vendor.zip.";
+    }
+}
+
+Route::get('/upload/vendor', function () {
+    updateVendorFolder();
 });
 
 // Authenticated Client Routes

@@ -34,9 +34,9 @@ class JobPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'department_id' => 'exists:departments,department_id',
-            'province_code' => ['required', 'max:255', Rule::exists('provinces', 'code')],
+            'name' => 'required|string|max:255',
+            'profession_id' => 'exists:professions,profession_id',
+            'province_id' => ['required', 'max:255', Rule::exists('provinces', 'id')],
             'employment_type' => ['string', 'max:255', new Enum(EmploymentType::class)],
             'headcount' => 'integer',
             'description_md' => 'string',
@@ -52,13 +52,13 @@ class JobPostRequest extends FormRequest
     {
 
         return [
-            'title.required' => __('job.title_required'),
-            'title.string' => __('job.title_string'),
-            'title.max' => __('job.title_max'),
-            'department_id.exists' => __('job.department_id_exists'),
-            'province_code.required' => __('job.province_code_required'),
-            'province_code.max' => __('job.province_code_max'),
-            'province_code.exists' => __('job.province_code_in'),
+            'name.required' => __('job.title_required'),
+            'name.string' => __('job.title_string'),
+            'name.max' => __('job.title_max'),
+            'profession_id.exists' => __('job.profession_id_exists'),
+            'province_id.required' => __('job.province_code_required'),
+            'province_id.max' => __('job.province_code_max'),
+            'province_id.exists' => __('job.province_code_in'),
             'employment_type.string' => __('user.employment_type_string'),
             'employment_type.enum' => __('user.employment_type_enums'),
             'headcount.integer' => __('job.headcount_integer'),

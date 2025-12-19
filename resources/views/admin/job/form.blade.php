@@ -26,8 +26,8 @@
 
     // Thêm tỉnh mới
     function addProvince() {
-        const code = $('#province_code').val();
-        const name = $('#province_code').find('option:selected').text();
+        const code = $('#province_id').val();
+        const name = $('#province_id').find('option:selected').text();
         console.log(code, name);
 
         if (!code) return;

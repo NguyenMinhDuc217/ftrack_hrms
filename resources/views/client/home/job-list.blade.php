@@ -1,4 +1,4 @@
-<section class="py-12 bg-gray-50">
+<section class="py-6 bg-gray-50">
     <div class="container mx-auto px-4">
 
         <!-- Filters -->

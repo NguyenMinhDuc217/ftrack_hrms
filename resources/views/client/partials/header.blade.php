@@ -46,7 +46,7 @@
             <a href="{{ route('language.switch', ["locale" => "vi"] ) }}" class="bg-transparent border-0 p-0 text-it-white {{ $locale == 'vi' ? 'active' : '' }}">VI</a>
           </div>
         </li> -->
-        <li class="ipy-5 ipy-xl-0 navbar-nav align-items-center">
+        <li class="align-items-center">
           @if (!empty($locale) && $locale == 'en')
           <a href="{{ route('language.switch',["locale"=>"vi"]) }}" class="link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('default.vi')">
             <img src="{{ asset('files/flags/vi.svg') }}" alt="vi icon" style="width:20px;">

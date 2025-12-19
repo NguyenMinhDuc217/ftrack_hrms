@@ -26,6 +26,8 @@ return [
     'button_add' => 'Add',
 
     'txt_search' => 'Search',
+    'txt_clear' => 'Clear',
+    'txt_get_current_location' => 'Get current location',
     'txt_users' => 'Users',
     'txt_home' => 'Home',
 
@@ -49,4 +51,7 @@ return [
 
     'txt_active' => 'Active',
     'txt_inactive' => 'Inactive',
+
+    // Error
+    'error_location_not_found' => 'Location not found',
 ];

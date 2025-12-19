@@ -23,9 +23,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">{{ __('user.txt_department') }}</label>
+                        <label class="form-label">{{ __('user.txt_profession') }}</label>
                         <select class="form-control @error('department_id') is-invalid @enderror" name="department_id">
-                            <option label="-{{ __('user.txt_department') }}-"></option>
+                            <option label="-{{ __('user.txt_profession') }}-"></option>
                             @foreach ($departments as $department)
                             <option value="{{$department->department_id}}" @selected(old('department_id')==$department->
                                 department_id)>
