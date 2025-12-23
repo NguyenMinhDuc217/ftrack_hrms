@@ -81,4 +81,9 @@ return [
     'txt_create_new_cv' => 'Create new CV',
     'txt_create_cv' => 'Create CV',
 
+    // Banner
+    'txt_sales_staff' => 'Sales staff',
+    'txt_display_staff' => 'Display staff',
+    'txt_marketing_staff' => 'Marketing staff',
+
 ];

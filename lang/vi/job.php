@@ -75,4 +75,9 @@ return [
     'txt_choose_cv' => 'Chọn CV',
     'txt_create_new_cv' => 'Tạo CV mới',
     'txt_create_cv' => 'Tạo CV',
+
+    // Banner
+    'txt_sales_staff' => 'Nhân viên bán hàng',
+    'txt_display_staff' => 'Nhân viên trưng bày',
+    'txt_marketing_staff' => 'Nhân viên tiếp thị',
 ];

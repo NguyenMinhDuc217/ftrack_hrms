@@ -1,6 +1,7 @@
 <style>
     .profession_selected {
         color: var(--accent-color) !important;
+        text-decoration: underline;
     }
 </style>
 <div class="relative w-full">
@@ -31,9 +32,9 @@
                     </div>
                     
                     <div class=" flex flex-col md:flex-row gap-2 md:gap-4">
-                        <a id="profession_id_1" onclick="setSearchAndFocus('profession_id', '1')" class="text-sm underline {{!empty($profession_id) && $profession_id == '1' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">Nhân viên bán hàng</a>
-                        <a id="profession_id_2" onclick="setSearchAndFocus('profession_id', '2')" class="text-sm underline {{!empty($profession_id) && $profession_id == '2' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">Nhân viên trưng bày</a>
-                        <a id="profession_id_3" onclick="setSearchAndFocus('profession_id', '3')" class="text-sm underline {{!empty($profession_id) && $profession_id == '3' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">Nhân viên tiếp thị</a>
+                        <a id="profession_id_1" onclick="setSearchAndFocus(event,'profession_id', '1')" class="text-sm underline {{!empty($profession_id) && $profession_id == '1' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">{{ __('job.txt_sales_staff') }}</a>
+                        <a id="profession_id_2" onclick="setSearchAndFocus(event,'profession_id', '2')" class="text-sm underline {{!empty($profession_id) && $profession_id == '2' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">{{ __('job.txt_display_staff') }}</a>
+                        <a id="profession_id_3" onclick="setSearchAndFocus(event,'profession_id', '3')" class="text-sm underline {{!empty($profession_id) && $profession_id == '3' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">{{ __('job.txt_marketing_staff') }}</a>
                         <input type="hidden" id="profession_id" value="{{!empty($profession_id) ? $profession_id : ''}}">
                     </div>
                 </div>
@@ -70,12 +71,12 @@
     </div>
 </div>
 <script>
-    function setSearchAndFocus(id, value) {
+    function setSearchAndFocus(event, id, value) {
         $('#'+id).val(value);
         $('#'+id).focus();
-        // console.log(id, value)
-        // console.log($(`#profession_id_${id}`))
-        // $('#profession_id_'+id).addClass('profession_selected')
+        $('.profession_selected').addClass('text-gray-400').removeClass('profession_selected')
+        var a = $(event.currentTarget)
+        a.addClass('profession_selected')
     }
 
     function getCurrentLocation() {
