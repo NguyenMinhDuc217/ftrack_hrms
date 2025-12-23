@@ -3,26 +3,26 @@
 
     <a href="{{ route('client.home') }}" class="logo d-flex align-items-center me-auto">
       <!-- <h1 class="sitename">eNno</h1> -->
-      <img src="{{ asset('client/assets/img/logo.png') }}" alt="Logo">
+      <!-- <img src="{{ asset('client/assets/img/logo.png') }}" alt="Logo"> -->
+      <img src="{{ asset('client/assets/img/cpm-logo.webp') }}" alt="Logo">
     </a>
 
     <nav id="navmenu" class="navmenu">
       <ul>
         <li><a href="{{ route('client.home') }}" class="{{ request()->routeIs('client.home') ? 'active' : '' }}">Home</a></li>
         {{-- Other static links --}}
-        <li><a href="{{ route('client.home') }}#about">About</a></li>
+        <!-- <li><a href="{{ route('client.home') }}#about">About</a></li>
         <li><a href="{{ route('client.home') }}#services">Services</a></li>
         <li><a href="{{ route('client.home') }}#portfolio">Portfolio</a></li>
         <li><a href="{{ route('client.home') }}#team">Team</a></li>
-        <li><a href="{{ route('client.home') }}#contact">Contact</a></li>
+        <li><a href="{{ route('client.home') }}#contact">Contact</a></li> -->
 
         @auth {{-- Checks if any user is authenticated --}}
-          <li><a href="{{ route('client.dashboard') }}" class="{{ request()->routeIs('client.dashboard') ? 'active' : '' }}">Dashboard</a></li>
+          <!-- <li><a href="{{ route('client.dashboard') }}" class="{{ request()->routeIs('client.dashboard') ? 'active' : '' }}">Dashboard</a></li> -->
           <li class="dropdown">
               <a href="#"><span>Welcome, {{ Auth::user()->full_name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
-                  <li><a href="{{ route('client.profile') }}">Profile</a></li>
-                  <li><a href="{{ route('profile') }}">CV Profile</a></li>
+                  <li><a href="{{ route('profile') }}">User Profile</a></li>
                   <li><a href="{{ route('cv.manage') }}">CV</a></li>
                   <li>
                       <form method="POST" action="{{ route('logout') }}">

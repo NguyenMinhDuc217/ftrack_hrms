@@ -7,5 +7,4 @@
 
     @include('client.home.register-cv')
 
-    @include('client.home.blog')
 </main>

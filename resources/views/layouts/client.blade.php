@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>@yield('title', 'eNno Bootstrap Template')</title>
+    <title>CPM VIETNAM</title>
     <meta name="description" content="@yield('description', '')">
     <meta name="keywords" content="@yield('keywords', '')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicons -->
-    <link href="{{ asset('client/assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('client/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <link href="{{ asset('client/assets/img/cpm-favicon.webp') }}" rel="icon">
+    <link href="{{ asset('client/assets/img/cpm-favicon-apple.webp') }}" rel="apple-touch-icon">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">

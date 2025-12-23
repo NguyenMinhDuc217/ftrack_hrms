@@ -12,7 +12,7 @@
                 <p class="text-gray-600 mb-8 max-w-lg leading-relaxed">
                     Thiết kế CV nổi bật, thu hút nhà tuyển dụng và mở ra cơ hội nghề nghiệp bạn mong muốn. Với công cụ tạo CV trực tuyến của FTrack, bạn sẽ có ngay một bản CV chuyên nghiệp trong vài phút.
                 </p>
-                <button class="bg-primary hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group">
+                <button class="bg-[var(--accent-color)] hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group">
                     Tạo ngay
                     <i data-lucide="arrow-right" class="w-5 h-5 transform group-hover:translate-x-1 transition-transform"></i>
                 </button>
@@ -30,7 +30,7 @@
                     <div class="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                         <span class="text-xl">🔔</span>
                     </div>
-                    <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg transform -rotate-12">
+                    <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-[var(--accent-color)] rounded-lg flex items-center justify-center shadow-lg transform -rotate-12">
                         <span class="text-white text-2xl font-bold">CV</span>
                     </div>
                 </div>

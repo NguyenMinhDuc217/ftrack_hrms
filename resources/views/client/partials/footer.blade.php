@@ -1,4 +1,4 @@
-<footer class="bg-footer text-gray-300 pt-16 pb-8 border-t-4 border-primary">
+<footer class="bg-footer text-gray-300 pt-16 pb-8 border-t-4 border-[var(--accent-color)]">
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
       <!-- Column 1: Brand & Address -->
