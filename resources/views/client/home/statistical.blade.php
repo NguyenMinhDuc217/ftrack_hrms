@@ -11,23 +11,23 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-green-400/30">
             <div class="flex flex-col items-center">
                 <span class="text-4xl md:text-5xl font-bold text-white mb-2">12+</span>
-                <span class="text-sm md:text-base font-medium text-green-100">Việc làm</span>
-                <span class="text-xs text-green-200 mt-1">Mới nhất</span>
+                <span class="text-sm md:text-base font-medium text-green-100">{{ __('default.txt_job') }}</span>
+                <span class="text-xs text-green-200 mt-1">{{ __('default.txt_newest') }}</span>
             </div>
             <div class="flex flex-col items-center">
                 <span class="text-4xl md:text-5xl font-bold text-white mb-2">30+</span>
-                <span class="text-sm md:text-base font-medium text-green-100">Người dùng sử dụng</span>
-                <span class="text-xs text-green-200 mt-1">Hàng ngày</span>
+                <span class="text-sm md:text-base font-medium text-green-100">{{ __('default.txt_user') }}</span>
+                <span class="text-xs text-green-200 mt-1">{{ __('default.txt_everyday') }}</span>
             </div>
             <div class="flex flex-col items-center">
                 <span class="text-4xl md:text-5xl font-bold text-white mb-2">08+</span>
-                <span class="text-sm md:text-base font-medium text-green-100">Đối tác</span>
-                <span class="text-xs text-green-200 mt-1">Tiêu biểu</span>
+                <span class="text-sm md:text-base font-medium text-green-100">{{ __('default.txt_partner') }}</span>
+                <span class="text-xs text-green-200 mt-1">{{ __('default.txt_tepresentative') }}</span>
             </div>
             <div class="flex flex-col items-center">
                 <span class="text-4xl md:text-5xl font-bold text-white mb-2">10%</span>
-                <span class="text-sm md:text-base font-medium text-green-100">Tăng trưởng nhân sự</span>
-                <span class="text-xs text-green-200 mt-1">Thích ứng nhanh nhất</span>
+                <span class="text-sm md:text-base font-medium text-green-100">{{ __('default.txt_personnel_growth') }}</span>
+                <span class="text-xs text-green-200 mt-1">{{ __('default.txt_fastest_adaptation') }}</span>
             </div>
         </div>
     </div>

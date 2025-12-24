@@ -54,6 +54,7 @@ return [
     'txt_apply_now' => 'Apply now',
     'txt_description' => 'Description',
     'txt_requirements' => 'Requirements',
+    'txt_otherwhere' => 'otherwhere',
 
     'txt_company_des' => 'CPM Vietnam: The Power of Field Marketing - The secrets of growing sales you can not miss.',
     'txt_company_address' => '12th Floor, Rosana Building',

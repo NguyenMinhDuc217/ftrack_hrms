@@ -68,7 +68,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">{{ __('job.txt_location') }}</p>
-                                <p class="font-semibold text-gray-900">{{ $job->job_area->first()->province->name ?? '' }} {{ $job->job_area->count() > 1 ? 'và ' . ($job->job_area->count() - 1) . ' nơi khác' : '' }}</p>
+                                <p class="font-semibold text-gray-900">{{ $job->job_area->first()->province->name ?? '' }} {{ $job->job_area->count() > 1 ? 'và ' . ($job->job_area->count() - 1) . ' ' . __('job.txt_otherwhere') : '' }}</p>
                             </div>
                         </div>
 

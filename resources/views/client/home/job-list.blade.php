@@ -41,7 +41,7 @@
                         <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
                             <i class="bi bi-geo-alt-fill w-4 h-4 text-[var(--accent-color)]"></i>
                             <span class="px-2 py-1 bg-gray-100 rounded-md text-xs">
-                                {{ $job->job_area->first()->province->name ?? '' }} {{ $job->job_area->count() > 1 ? 'và ' . ($job->job_area->count() - 1) . ' nơi khác' : '' }}
+                                {{ $job->job_area->first()->province->name ?? '' }} {{ $job->job_area->count() > 1 ? 'và ' . ($job->job_area->count() - 1) . ' ' . __('job.txt_otherwhere') : '' }}
                             </span>
                         </div>
                         @endif
@@ -52,7 +52,8 @@
                 <div class=" border-t border-gray-100 grid grid-cols-5 text-sm font-medium">
                     <div class="col-span-3 text-green-600">
                         <i class="bi bi-coin mr-2"></i>
-                        {{ number_format($job->min_salary / 1000000, 1) }} - {{ number_format($job->max_salary / 1000000, 1) }} triệu
+                        {{ __('job.txt_salary_rank', ['min' => number_format($job->min_salary / 1000000, 1), 'max' => number_format($job->max_salary / 1000000, 1)]) }}
+
                     </div>
                     <div class="col-span-2 text-gray-500 text-right">
                         {{ $job->created_at?->diffForHumans() }}
