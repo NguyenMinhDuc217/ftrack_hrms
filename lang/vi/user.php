@@ -7,6 +7,7 @@ return [
     'email_required' => 'Email là bắt buộc.',
     'email_email' => 'Email phải là một địa chỉ email hợp lệ.',
     'email_unique' => 'Email đã được sử dụng.',
+    'phone_number_required' => 'Số điện thoại là bắt buộc.',
     'phone_number_numeric' => 'Số điện thoại phải là một số.',
     'phone_number_digits' => 'Số điện thoại phải có chính xác 11 chữ số.',
     'phone_number_unique' => 'Số điện thoại đã được sử dụng.',
@@ -61,5 +62,10 @@ return [
     'txt_male' => 'Nam',
     'txt_female' => 'Nữ',
     'txt_other' => 'Khác',
+
+    // Error
+    'txt_user_not_exists' => 'Người dùng không tồn tại',
+    'txt_phone_number_not_exists' => 'Người dùng không có số điện thoại',
+    'txt_please_fill_phone_number' => 'Bạn chưa có số điện thoại, vui lòng nhập để cập nhật',
 
 ];

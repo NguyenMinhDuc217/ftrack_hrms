@@ -1,12 +1,14 @@
-<?php 
+<?php
+
 return [
     // Validation
-    'username_required'     => 'The username field is required.',
-    'username_string'     => 'The username must be a string.',
-    'username_max'     => 'The username may not be greater than 255 characters.',
-    'email_required'     => 'The email field is required.',
+    'username_required' => 'The username field is required.',
+    'username_string' => 'The username must be a string.',
+    'username_max' => 'The username may not be greater than 255 characters.',
+    'email_required' => 'The email field is required.',
     'email_email' => 'The email must be a valid email address.',
     'email_unique' => 'The email has already been taken.',
+    'phone_number_required' => 'The phone number is required.',
     'phone_number_numeric' => 'The phone number must be a number.',
     'phone_number_digits' => 'The phone number must be exactly 11 digits.',
     'phone_number_unique' => 'The phone number has already been taken.',
@@ -61,4 +63,9 @@ return [
     'txt_male' => 'Male',
     'txt_female' => 'Female',
     'txt_other' => 'Other',
+
+    // Error
+    'txt_user_not_exists' => 'User not exists',
+    'txt_phone_number_not_exists' => 'The user does not have a phone number',
+    'txt_please_fill_phone_number' => 'You don\'t have a phone number yet, please enter to update',
 ];

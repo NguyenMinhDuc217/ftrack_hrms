@@ -251,6 +251,14 @@
                         </div>
                         
                         <div class="modal-body ">
+                                 @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            <li>{{ $errors->first() }}</li>
+                                        </ul>
+                                    </div>
+                                @endif
+
                             <div class="flex flex-col gap-3 items-center">
                                 <div class="flex items-center gap-2 w-full">
                                     <i class="bi bi-folder2-open text-lg text-[var(--accent-color)]"></i>
@@ -302,6 +310,16 @@
                                     </div>
                                 </div>
 
+                                @if($checkPhone == false)
+                                <div class="w-full">
+                                    <label for="province_id" class="form-label text-danger fw-bold">{{ __('user.txt_please_fill_phone_number') }} <span class="text-danger">*</span></label>
+                                    <input type="number" name="phone_number" id="phone_number" class="form-control" placeholder="{{ __('user.txt_phone_number') }}">
+                                    @error('phone_number')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                @endif
+
                                 <div class="w-full">
                                     <div class="mb-3">
                                         <label for="province_id" class="form-label fw-bold">{{__('job.txt_area_recruitment')}} <span class="text-danger">*</span></label>
@@ -330,9 +348,10 @@
 
     </div>
 
+
     <script>
         $(document).ready(function() {
-           $('#collapseChooseCV').addClass('border-[var(--accent-color)] shadow-md').find('.title-collapse').addClass('font-semibold text-[var(--accent-color)] underline');
+            $('#collapseChooseCV').addClass('border-[var(--accent-color)] shadow-md').find('.title-collapse').addClass('font-semibold text-[var(--accent-color)] underline');
 
             $(document).on('show.bs.collapse', '.collapse', function () {
                 var $this = $(this);
@@ -380,6 +399,7 @@
         // Sau khi login xong sẽ tự động mở
         document.addEventListener('DOMContentLoaded', function () {
             const applyUrl = sessionStorage.getItem('job_apply_url');
+            var checkPhone = @json($checkPhone);
             
             @if(session('applied_successfully'))
                 Toast.fire({
@@ -391,7 +411,9 @@
                 if(applyUrl && applyUrl === window.location.href) {
                     var modal = new bootstrap.Modal(document.getElementById('applyModal'));
                     modal.show();
-                    sessionStorage.removeItem('job_apply_url');
+                    if (checkPhone) {
+                        sessionStorage.removeItem('job_apply_url');
+                    }
                 }
             @endif
         });

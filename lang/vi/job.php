@@ -66,8 +66,11 @@ return [
     'txt_number_of_recruitment' => 'Số lượng tuyển dụng',
     'txt_form_of_work' => 'Hình thức làm việc',
     'txt_area_recruitment' => 'Khu vực tuyển dụng',
-
     'txt_salary_rank' => ':min - :max triệu',
+
+    'txt_apply_cv_required' => 'Vui lòng chọn hoặc tải lên một CV để ứng tuyển',
+    'txt_apply_application_area_required' => 'Vui lòng chọn khu vực ứng tuyển',
+
     // Modal
     'txt_apply' => 'Ứng tuyển',
     'txt_choose_cv_apply' => 'Chọn CV để ứng tuyển',

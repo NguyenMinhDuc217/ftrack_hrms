@@ -66,8 +66,10 @@ return [
     'txt_number_of_recruitment' => 'Number of recruitment',
     'txt_form_of_work' => 'Form of work',
     'txt_area_recruitment' => 'Area recruitment',
-
     'txt_salary_rank' => ':min - :maxM VND',
+
+    'txt_apply_cv_required' => 'Please select or upload a CV to apply',
+    'txt_apply_application_area_required' => 'Please select application area',
 
     // Modal
     'txt_apply' => 'Apply',

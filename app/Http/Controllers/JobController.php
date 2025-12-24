@@ -22,6 +22,10 @@ class JobController extends Controller
                     ->where('document_type', 'cv_file')
                     ->latest()
                     ->get();
+                $checkPhone = true;
+                if (empty($user->phone_number)) {
+                    $checkPhone = false;
+                }
             }
 
         } catch (\Exception $e) {
@@ -31,18 +35,43 @@ class JobController extends Controller
         return view('client.job.detail', [
             'job' => $job ?? null,
             'cvs' => $cvs ?? null,
+            'checkPhone' => $checkPhone ?? false,
         ]);
     }
 
     public function applyJob(Request $request)
     {
+        $user = Auth::user();
+        $checkPhone = empty($user->phone_number) ? false : true;
+
         $request->validate([
             'job_id' => 'required:exists:job_hrms,job_id',
             'cv_id' => 'required:exists:user_documents,id',
             'province_id' => 'required:exists:provinces,id',
+            'phone_number' => [
+                function ($attribute, $value, $fail) use ($checkPhone) {
+                    if ($checkPhone == false && empty($value)) {
+                        $fail(__('user.phone_number_required'));
+                    }
+                },
+                'numeric',
+                'digits:10',
+                'unique:users,phone_number',
+            ],
+        ], [
+            'job_id.required' => 'Job not exists',
+            'cv_id.required' => __('job.txt_apply_cv_required'),
+            'province_id.required' => __('job.txt_apply_application_area_required'),
+            'phone_number.required_if' => __('user.phone_number_required'),
+            'phone_number.numeric' => __('user.phone_number_numeric'),
+            'phone_number.digits' => __('user.phone_number_digits'),
+            'phone_number.unique' => __('user.phone_number_unique'),
         ]);
 
-        $user = Auth::user();
+        if (! $user) {
+            return back()->with('error', __('user.txt_user_not_exists'));
+        }
+
         $job_id = $request->job_id;
         $cv_id = $request->cv_id;
         $province_id = $request->province_id;
@@ -67,6 +96,9 @@ class JobController extends Controller
 
         DB::beginTransaction();
         try {
+            if ($request->phone_number) {
+                $user->update(['phone_number' => $request->phone_number]);
+            }
             // Tìm | tạo mới, KHÔNG update nếu đã có
             $application = Application::firstOrCreate([
                 'job_id' => $job->job_id,
