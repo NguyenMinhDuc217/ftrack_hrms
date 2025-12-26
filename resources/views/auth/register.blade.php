@@ -20,6 +20,14 @@
                                 @enderror
                             </div>
 
+                            <div class="mb-3">
+                                <label for="username" class="pb-2">Số điện thoại</label>
+                                <input id="phone_number" type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" required autocomplete="phone_number" autofocus>
+                                @error('phone_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
 
                             <div class="mb-3">
                                 <label for="first_name" class="pb-2">Họ</label>
