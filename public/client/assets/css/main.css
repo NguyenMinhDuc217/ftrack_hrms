@@ -291,6 +291,12 @@ h6 {
     order: 3;
   }
 }
+@media (max-width: 576px) {
+  .header .btn-getstarted {
+    display: none;
+  }
+}
+
 
 .scrolled .header {
   box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
