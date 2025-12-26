@@ -52,7 +52,7 @@
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn bg-[#10BC69] hover:bg-[#10BC69] text-white">Login</button>
+                                <button type="submit" class="btn btn-success">Login</button>
                             </div>
 
                             <div class="text-center mt-3">

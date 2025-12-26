@@ -3,7 +3,7 @@
 @section('title', 'Client Registration')
 
 @section('content')
-    <section class="section d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <section class="section d-flex align-items-center justify-content-center py-12" style="min-height: 80vh;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8">

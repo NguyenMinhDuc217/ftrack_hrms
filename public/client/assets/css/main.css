@@ -21,7 +21,7 @@
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-:root { 
+:root {
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #5f687b; /* Color for headings, subheadings and title throughout the website */
@@ -1770,4 +1770,12 @@ section,
 .btn-success {
     background-color: #6AB745 !important;
     border-color: #6AB745 !important;
+}
+
+.form-control:focus {
+    color: var(--accent-color);
+    background-color: var(--bs-body-bg);
+    border-color: var(--accent-color);
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(var(--accent-color), .25);
 }
