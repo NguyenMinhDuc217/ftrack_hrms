@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-success">Register</button>
+                                <button type="submit" class="btn bg-[var(--accent-color)] hover:bg-[--accent-color] text-white">Register</button>
                             </div>
 
                             <div class="text-center mt-3">
