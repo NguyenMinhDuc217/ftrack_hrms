@@ -41,6 +41,7 @@ return [
     'maxlength_set_to_characters' => 'Độ dài tối đa :length ký tự',
     'maxlength_set_to_numbers' => 'Độ dài tối đa :length số',
     'number' => 'số',
+    'text' => 'chuỗi',
     'enter_a_date_after' => 'Vui lòng chọn ngày sau :date',
     'enter_a_date_before' => 'Vui lòng chọn ngày trước :data',
     'enter_a' => 'Vui lòng nhập',

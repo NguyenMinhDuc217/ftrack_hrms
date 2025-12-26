@@ -78,7 +78,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">{{ __('job.txt_experience') }}</p>
-                                <p class="font-semibold text-gray-900">{{ $job->experience ? str_replace('năm', __('job.txt_year'), $job->experience) : __('job.txt_no_experience') }}</p>
+                                <p class="font-semibold text-gray-900">{{ $job->experience ? trim(str_replace(['năm', 'year', 'years', 'Năm', 'Year', 'Years'], '', $job->experience)) . ' '. __('job.txt_year')  : __('job.txt_no_experience') }}</p>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
                     <h2 class="text-xl font-bold text-gray-900">{{ __('job.txt_description') }}</h2>
                     <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line">
-                        {!! nl2br(e($job->description_md)) !!}
+                        {!! $job->description_md !!}
                     </div>
                 </div>
 
@@ -116,7 +116,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
                     <h2 class="text-xl font-bold text-gray-900">{{ __('job.txt_requirements') }}</h2>
                     <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line">
-                        {!! nl2br(e($job->requirements_md)) !!}
+                        {!! $job->requirements_md !!}
                     </div>
                 </div>
 

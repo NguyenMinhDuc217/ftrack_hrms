@@ -9,19 +9,19 @@
         </div>
         <div class="navbar-content">
             <ul class="pc-navbar">
-                <li class="pc-item">
+                <!-- <li class="pc-item">
                     <a href="{{ route("admin.dashboard") }}" class="pc-link">
                         <span class="pc-micon"><i class="ti ti-home"></i></span>
                         <span class="pc-mtext">Dashboard</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="pc-item">
                     <a href="{{ route("admin.users") }}" class="pc-link">
                         <span class="pc-micon"><i class="ti ti-users"></i></span>
                         <span class="pc-mtext">Users</span>
                     </a>
                 </li>
-                <li class="pc-item">
+                 <!-- <li class="pc-item">
                     <a href="{{ route("admin.role.index") }}" class="pc-link">
                         <span class="pc-micon"><i class="ti ti-key"></i></span>
                         <span class="pc-mtext">Roles</span>
@@ -32,19 +32,19 @@
                         <span class="pc-micon"><i class="ti ti-key"></i></span>
                         <span class="pc-mtext">Permission</span>
                     </a>
-                </li>
+                </li> -->
                  <li class="pc-item">
                     <a href="{{ route("admin.jobs.index") }}" class="pc-link">
                         <span class="pc-micon"><i class="ti ti-key"></i></span>
                         <span class="pc-mtext">Jobs</span>
                     </a>
                 </li>
-                <li class="pc-item">
+                <!-- <li class="pc-item">
                     <a href="{{ route("admin.blogs.index") }}" class="pc-link">
                         <span class="pc-micon"><i class="ti ti-key"></i></span>
                         <span class="pc-mtext">Blogs</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

@@ -1,8 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard - Users')
+@section('title')
+{{  'Admin Dashboard -' . __("default.txt_job") }}
+@endsection
 @section('page_title')
-{{ __("default.txt_users") }}
+{{ __("default.txt_job") }}
 @endsection
 
 @section('content')
@@ -15,7 +17,7 @@
                 <div class="text-end px-4 py-2">
                     <a href="{{ route('admin.jobs.create') }}"
                         class="btn btn-sm btn-success d-inline-flex align-items-center">
-                        <i class="ti ti-plus f-18"></i> Add Job
+                        <i class="ti ti-plus f-18"></i> {{ __('job.txt_add_job') }}
                     </a>
                 </div>
 
@@ -29,14 +31,16 @@
                             <tr>
                                 <th width="5%">Id</th>
                                 <th width="30%">{{ __('job.txt_title') }}</th>
-                                <th width="45%">{{ __('job.txt_description') }}</th>
+                                <th width="15%">{{ __('job.txt_salary') }}</th>
+                                <th width="10%">{{ __('job.txt_experience') }}</th>
+                                <th width="15%">{{ __('job.txt_apply_deadline') }}</th>
                                 <th width="10%">{{ __('user.txt_status') }}</th>
-                                <th width="20%" class="text-center">{{ __('user.txt_actions') }}</th>
+                                <th width="15%" class="text-center">{{ __('user.txt_actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($jobs as $job)
-                            <tr>
+                            <tr class="align-middle">
                                 <td class="text-left">{{ $job->job_id }}</td>
                                 <td>
                                         <!-- <div class="col-auto pe-0">
@@ -44,13 +48,27 @@
                                             class="wid-40 rounded-circle">
                                         </div> -->
                                         <div class="col">
-                                            <h5 class="mb-0">{{ $job->title }}</h5>
+                                            <span class="mb-0">{{ $job->name }}</span>
                                         </div>
                                 </td>
                                 <td>
                                         <div class="col">
-                                            <h5 class="mb-0">{{ $job->description_md }}</h5>
+                                            <span class="mb-0">
+                                                {{ __('job.txt_salary_rank', ['min' => number_format($job->min_salary / 1000000, 1), 'max' => number_format($job->max_salary / 1000000, 1)]) }}
+                                            </span>
                                         </div>
+                                </td>
+                                <td>
+                                    <div class="col">
+                                        <span class="mb-0">
+                                            {{ $job->experience ? trim(str_replace(['năm', 'year', 'years', 'Năm', 'Year', 'Years'], '', $job->experience)) . ' '. __('job.txt_year')  : __('job.txt_no_experience') }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col">
+                                        <span class="mb-0">{{ \Carbon\Carbon::parse($job->end_date)->format('d/m/Y') }}</span>
+                                    </div>
                                 </td>
                                 <td>
                                         <div class="col">

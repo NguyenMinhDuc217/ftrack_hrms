@@ -13,6 +13,9 @@
 <script src="{{ asset('admin/assets/js/plugins/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/plugins/sweetalert2.js') }}"></script>
 
+<script src="{{ asset('admin/assets/js/plugins/ckeditor/classic/ckeditor.js') }}"></script>
+
+
 <script>layout_change('light');</script>
 <script>change_box_container('false');</script>
 <script>layout_rtl_change('false');</script>

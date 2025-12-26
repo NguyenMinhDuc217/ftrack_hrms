@@ -44,6 +44,9 @@ class JobPostRequest extends FormRequest
             'min_salary' => 'numeric|min:0',
             'max_salary' => 'numeric|min:0',
             'currency' => 'string|max:50',
+            'start_date' => 'required|date|date_format:Y-m-d',
+            'end_date' => 'required|date|date_format:Y-m-d|after_or_equal:start_date',
+            'experience' => 'string|max:50',
             'status' => 'boolean',
         ];
     }
@@ -68,6 +71,13 @@ class JobPostRequest extends FormRequest
             'max_salary.numeric' => __('job.max_salary_decimal'),
             'currency.string' => __('job.currency_string'),
             'currency.max' => __('job.currency_max'),
+            'start_date.required' => __('job.start_date_required'),
+            'start_date.date' => __('job.start_date_date'),
+            'start_date.date_format' => __('job.start_date_date_format'),
+            'end_date.required' => __('job.end_date_required'),
+            'end_date.date' => __('job.end_date_date'),
+            'end_date.date_format' => __('job.end_date_date_format'),
+            'end_date.after_or_equal' => __('job.end_date_after_or_equal'),
             'status.boolean' => __('job.status_boolean'),
         ];
     }

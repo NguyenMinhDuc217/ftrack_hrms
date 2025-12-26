@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\EmploymentType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPostRequest;
-use App\Models\Department;
 use App\Models\JobArea;
 use App\Models\JobHrms;
 use App\Models\Profession;
 use App\Models\Province;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AdminJobController extends Controller
@@ -41,7 +41,7 @@ class AdminJobController extends Controller
 
     public function create()
     {
-        $departments = Department::where('status', 'active')->get();
+        $professions = Profession::where('status', 'active')->get();
         $provinces = Province::all();
         $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
             return [$type->value => $type->getLabelData()['label']];
@@ -57,7 +57,7 @@ class AdminJobController extends Controller
             'admin.job.form',
             [
                 'action' => $action,
-                'departments' => $departments,
+                'professions' => $professions,
                 'provinces' => $provinces,
                 'employment_types' => $employment_types,
                 'data' => $data,
@@ -98,52 +98,70 @@ class AdminJobController extends Controller
     {
         $data = $request->validated();
 
-        // ADD
-        if (! $job) {
-            $province_ids = $data['province_id'];
-            unset($data['province_id']);
-            $job = JobHrms::create($data);
+        DB::beginTransaction();
+        try {
+            // ADD
+            if (! $job) {
+                $province_ids = $data['province_id'];
+                unset($data['province_id']);
+                $job = JobHrms::create($data);
 
-            if ($province_ids) {
-                foreach ($province_ids as $province_id) {
-                    JobArea::create([
-                        'job_id' => $job->job_id,
-                        'province_id' => $province_id,
-                        'headcount' => $data['headcount'], // Tạm thời lưu chung cho tất cả area
-                    ]);
-                }
-            }
-
-            return redirect()->route('admin.jobs.index')->with('success', 'Job added successfully.');
-        } else { // EDIT
-            $province_ids = $data['province_id'];
-
-            if ($province_ids) {
-                // đang lấy những province.id của nhưng job_area status = active (chưa làm trường hợp nếu province_id mới thêm trùng với province_id cũ nhưng bị inactive)
-                $current_provinces = $job->job_area->pluck('province.id')->toArray();
-                $new_provinces = array_diff($province_ids, $current_provinces);
-                $deleted_provinces = array_diff($current_provinces, $province_ids);
-
-                if ($deleted_provinces) {
-                    foreach ($deleted_provinces as $deleted_province) {
-                        $job->job_area()->where('province_id', $deleted_province)->delete();
-                    }
-                }
-                if ($new_provinces) {
-                    foreach ($new_provinces as $new_province) {
-                        $job->job_area()->create([
-                            'province_id' => $new_province,
-                            'headcount' => $data['headcount'],
+                if ($province_ids) {
+                    foreach ($province_ids as $province_id) {
+                        JobArea::create([
+                            'job_id' => $job->job_id,
+                            'province_id' => $province_id,
+                            'headcount' => $data['headcount'], // Tạm thời lưu chung cho tất cả area
                         ]);
                     }
                 }
+
+                DB::commit();
+
+                return redirect()->route('admin.jobs.index')->with('success', 'Job added successfully.');
+            } else { // EDIT
+                $province_ids = $data['province_id'];
+
+                if ($province_ids) {
+                    // đang lấy những province.id của nhưng job_area status = active (chưa làm trường hợp nếu province_id mới thêm trùng với province_id cũ nhưng bị inactive)
+                    $current_provinces = $job->job_area->pluck('province.id')->toArray();
+                    $new_provinces = array_diff($province_ids, $current_provinces);
+                    $deleted_provinces = array_diff($current_provinces, $province_ids);
+
+                    if ($deleted_provinces) {
+                        foreach ($deleted_provinces as $deleted_province) {
+                            $job->job_area()->where('province_id', $deleted_province)->delete();
+                        }
+                    }
+                    if ($new_provinces) {
+                        foreach ($new_provinces as $new_province) {
+                            $job->job_area()->create([
+                                'province_id' => $new_province,
+                                'headcount' => $data['headcount'],
+                            ]);
+                        }
+                    }
+                    if ($current_provinces) {
+                        foreach ($current_provinces as $current_province) {
+                            $job->job_area()->where('province_id', $current_province)->update([
+                                'headcount' => $data['headcount'],
+                            ]);
+                        }
+                    }
+                }
+
+                $job = JobHrms::where('job_id', $job->job_id)->first();
+                unset($data['province_id'], $data['headcount']);
+                $job->update($data);
+
+                DB::commit();
+
+                return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
             }
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-            $job = JobHrms::where('job_id', $job->job_id)->first();
-            unset($data['province_id']);
-            $job->update($data);
-
-            return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
+            return redirect()->route('admin.jobs.index')->with('error', 'Job update failed: '.$e->getMessage());
         }
     }
 
