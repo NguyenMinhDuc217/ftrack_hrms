@@ -43,6 +43,37 @@ class CvProfileController extends Controller
         return $profile;
     }
 
+    public function getView() {
+        // Get or Create a profile for the current user
+        $profile = $this->getUserProfile();
+        
+        // Load relationships
+        // example laod with order 
+        // $author->load(['books' => function ($query) {
+        //     $query->orderBy('published_date', 'asc');
+        // }]);
+        $profile->load(['experiences' => function ($query) {
+            $query->orderBy('start_date', 'desc');
+        }, 'educations' => function ($query) {
+            $query->orderBy('start_date', 'desc');
+        }, 'skills' => function ($query) {
+            $query->orderBy('group', 'desc')->orderBy('name', 'asc');
+        }, 'languages' => function ($query) {
+            $query->orderBy('language', 'desc');
+        }, 'projects' => function ($query) {
+            $query->orderBy('start_date', 'desc');
+        }, 'awards' => function ($query) {
+            $query->orderBy('year', 'desc');
+        }, 'certificates' => function ($query) {
+            $query->orderBy('issue_date', 'desc');
+        }]);
+        $provinces = Province::orderBy('name')->get(); 
+        $genders = Gender::cases();
+
+        $user = $this->user;
+        return view('cv.partials.profile', compact('profile', 'user','provinces','genders'));
+    }
+
     public function index()
     {
         // Get or Create a profile for the current user
@@ -147,7 +178,7 @@ class CvProfileController extends Controller
         $provinces = Province::orderBy('name')->get(); 
         $genders = Gender::cases();
         $profile->load('avatar');
-        return view('cv.partials.summary', compact('profile','user','provinces','genders'))->render();
+        return $this->getView();
     }
 
     // --- EXPERIENCE SECTION (1-to-Many) ---
@@ -201,7 +232,7 @@ class CvProfileController extends Controller
         $experiences = $this->experienceDTO($profile->experiences()->orderBy('start_date', 'desc')->get());
 
         // Return the Updated Partial View
-        return view('cv.partials.experience', compact('experiences'))->render();
+        return $this->getView();
     }
 
     public function deleteExperience($id)
@@ -211,7 +242,7 @@ class CvProfileController extends Controller
         $experience = $profile->experiences()->findOrFail($id);
         $experience->delete();
         $experiences = $this->experienceDTO($profile->experiences()->orderBy('start_date', 'desc')->get());
-        return view('cv.partials.experience', compact('experiences'))->render();
+        return $this->getView();
     }
 
     // --- 3. Education ---
@@ -267,7 +298,7 @@ class CvProfileController extends Controller
         }
 
         $educations = $this->educationDTO($profile->educations()->orderBy('start_date', 'desc')->get());
-        return view('cv.partials.education', compact('educations'))->render();
+        return $this->getView();
     }
     public function deleteEducation($id) {
         $profile = $this->getUserProfile();
@@ -275,7 +306,7 @@ class CvProfileController extends Controller
         $education = $profile->educations()->findOrFail($id);
         $education->delete();
         $educations = $this->educationDTO($profile->educations()->orderBy('start_date','desc')->get());
-        return view('cv.partials.education', compact('educations'))->render();
+        return $this->getView();
     }
 
     // --- 4. Skills ---
@@ -325,7 +356,7 @@ class CvProfileController extends Controller
         });
 
         $skills = $profile->skills()->orderBy('group')->orderBy('name')->get();
-        return view('cv.partials.skill', compact('skills'))->render();
+        return $this->getView();
     }
 
     public function deleteSkillGroup(Request $request) {
@@ -335,7 +366,7 @@ class CvProfileController extends Controller
             $profile->skills()->where('group', $group)->delete();
         }
         $skills = $profile->skills()->orderBy('group')->orderBy('name')->get();
-        return view('cv.partials.skill', compact('skills'))->render();
+        return $this->getView();
     }
 
     // --- 5. Languages ---
@@ -361,14 +392,14 @@ class CvProfileController extends Controller
             ['id' => $request->id],
             $data
         );
-        return view('cv.partials.language', ['languages' => $profile->languages])->render();
+        return $this->getView();
     }
     public function deleteLanguage($id) {
         $profile = $this->getUserProfile();
         
         $language = $profile->languages()->findOrFail($id);
         $language->delete();
-        return view('cv.partials.language', ['languages' => $profile->languages])->render();
+        return $this->getView();
     }
 
     // --- 6. Projects ---
@@ -410,7 +441,7 @@ class CvProfileController extends Controller
 
         $projects = $profile->projects()->orderBy('start_date', 'desc')->get();
         $projects = $this->projectsDTO($projects);
-        return view('cv.partials.project', compact('projects'))->render();
+        return $this->getView();
     }
     public function deleteProject($id) {
         $profile = $this->getUserProfile();
@@ -419,7 +450,7 @@ class CvProfileController extends Controller
         $project->delete();
         $projects = $profile->projects()->orderBy('start_date', 'desc')->get();
         $projects = $this->projectsDTO($projects);
-        return view('cv.partials.project', compact('projects'))->render();
+        return $this->getView();
     }
 
     // --- 7. Certificates ---
@@ -454,7 +485,7 @@ class CvProfileController extends Controller
         }
 
         $certificates = $this->certificatesDTO($profile->certificates()->orderBy('issue_date', 'desc')->get());
-        return view('cv.partials.certificate', ['certificates' => $certificates])->render();
+        return $this->getView();
     }
     public function deleteCertificate($id) {
         $profile = $this->getUserProfile();
@@ -462,7 +493,7 @@ class CvProfileController extends Controller
         $certificate = $profile->certificates()->findOrFail($id);
         $certificate->delete();
         $certificates = $this->certificatesDTO($profile->certificates()->orderBy('issue_date', 'desc')->get());
-        return view('cv.partials.certificate', ['certificates' => $certificates])->render();
+        return $this->getView();
     }
 
     // --- 8. Awards ---
@@ -493,7 +524,7 @@ class CvProfileController extends Controller
             $award = $profile->awards()->create($data);
         }
         $awards = $profile->awards()->orderByDesc('year')->get();
-        return view('cv.partials.award', ['awards' => $awards])->render();
+        return $this->getView();
     }
     public function deleteAward($id) {
         $profile = $this->getUserProfile();
@@ -501,7 +532,7 @@ class CvProfileController extends Controller
         $award = $profile->awards()->findOrFail($id);
         $award->delete();
         $awards = $profile->awards()->orderByDesc('year')->get();
-        return view('cv.partials.award', ['awards' => $awards])->render();
+        return $this->getView();
     }
     
     private function projectsDTO($projects) {
