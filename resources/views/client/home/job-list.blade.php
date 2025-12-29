@@ -3,7 +3,7 @@
 
         <!-- Filters -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <div class="w-1/5 flex items-center space-x-2 px-4 py-1.5 bg-white rounded-full border border-gray-200 text-sm text-gray-600 w-full md:w-auto">
+            <div class="sm:w-1/5 w-max flex items-center space-x-2 px-4 py-1.5 bg-white rounded-full border border-gray-200 text-sm text-gray-600 w-full md:w-auto">
                 <span class="whitespace-nowrap font-medium text-gray-900">{{ __('job.txt_filter_by') }}:</span>
                 <select class="border-none bg-transparent font-semibold text-gray-900 focus:ring-0 cursor-pointer outline-none">
                     @foreach($filters as $key => $value)
@@ -12,7 +12,7 @@
                 </select>
             </div>
             <!-- Location Tabs -->
-             <div class="w-3/5">
+             <div class="sm:w-3/5 w-80">
                 <x-client.filter 
                     :type="$type"
                     :val="isset($val) ? $val : ''"
@@ -38,9 +38,9 @@
                         </div>
 
                         @if($job->job_area->count() > 0)
-                        <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
-                            <i class="bi bi-geo-alt-fill w-4 h-4 text-[var(--accent-color)]"></i>
+                        <div class="text-sm text-gray-600 my-2">
                             <span class="px-2 py-1 bg-gray-100 rounded-md text-xs">
+                                <i class="bi bi-geo-alt-fill w-4 h-4 text-[var(--accent-color)]"></i>
                                 {{ $job->job_area->first()->province->name ?? '' }} {{ $job->job_area->count() > 1 ? 'và ' . ($job->job_area->count() - 1) . ' ' . __('job.txt_otherwhere') : '' }}
                             </span>
                         </div>
