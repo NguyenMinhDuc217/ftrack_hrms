@@ -17,6 +17,7 @@ return [
     'language' => 'Ngôn ngữ',
     'core_skills' => 'Kỹ năng chuyên môn',
     'soft_skills' => 'Kỹ năng mềm',
+    'contact_info' => 'Thông tin',
 
     // Fields
     'full_name' => 'Họ và tên',
@@ -95,6 +96,7 @@ return [
     'no_education' => 'Chưa thêm thông tin học vấn.',
     'no_experience' => 'Chưa thêm kinh nghiệm làm việc.',
     'no_skills' => 'Chưa thêm kỹ năng.',
+    'no_projects' => 'Chưa thêm dự án.',
     'present' => 'Hiện tại',
     'na' => 'N/A',
     'issued' => 'Cấp ngày:',

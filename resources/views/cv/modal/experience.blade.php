@@ -43,7 +43,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ __('cv.close') }}</button>
-                <button type="submit" class="btn btn-danger">{{ __('cv.save_changes') }}</button>
+                <button type="submit" class="btn btn-success">{{ __('cv.save_changes') }}</button>
             </div>
         </form>
     </div>

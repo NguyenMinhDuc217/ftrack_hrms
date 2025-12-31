@@ -17,6 +17,7 @@ return [
     'language' => 'Language',
     'core_skills' => 'Core skills',
     'soft_skills' => 'Soft skills',
+    'contact_info' => 'Information',
 
     // Fields
     'full_name' => 'Full Name',
@@ -95,6 +96,7 @@ return [
     'no_education' => 'No education added.',
     'no_experience' => 'No work experience added.',
     'no_skills' => 'No skills added.',
+    'no_projects' => 'No projects added.',
     'present' => 'Present',
     'na' => 'N/A',
     'issued' => 'Issued:',

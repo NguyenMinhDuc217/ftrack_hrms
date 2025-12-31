@@ -1773,7 +1773,7 @@ section,
 }
 
 .form-control:focus {
-    color: var(--accent-color);
+    /* color: var(--accent-color); */
     background-color: var(--bs-body-bg);
     border-color: var(--accent-color);
     outline: 0;
