@@ -46,9 +46,9 @@ class CvProfileController extends Controller
     public function getView() {
         // Get or Create a profile for the current user
         $profile = $this->getUserProfile();
-        
+
         // Load relationships
-        // example laod with order 
+        // example laod with order
         // $author->load(['books' => function ($query) {
         //     $query->orderBy('published_date', 'asc');
         // }]);
@@ -67,7 +67,7 @@ class CvProfileController extends Controller
         }, 'certificates' => function ($query) {
             $query->orderBy('issue_date', 'desc');
         }]);
-        $provinces = Province::orderBy('name')->get(); 
+        $provinces = Province::orderBy('name')->get();
         $genders = Gender::cases();
 
         $user = $this->user;
@@ -78,9 +78,9 @@ class CvProfileController extends Controller
     {
         // Get or Create a profile for the current user
         $profile = $this->getUserProfile();
-        
+
         // Load relationships
-        // example laod with order 
+        // example laod with order
         // $author->load(['books' => function ($query) {
         //     $query->orderBy('published_date', 'asc');
         // }]);
@@ -99,7 +99,7 @@ class CvProfileController extends Controller
         }, 'certificates' => function ($query) {
             $query->orderBy('issue_date', 'desc');
         }]);
-        $provinces = Province::orderBy('name')->get(); 
+        $provinces = Province::orderBy('name')->get();
         $genders = Gender::cases();
 
         $user = $this->user;
@@ -121,7 +121,7 @@ class CvProfileController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -137,7 +137,7 @@ class CvProfileController extends Controller
             'phone_number',
             'address',
             'province_code',
-            'summary',  
+            'summary',
         ]);
 
         $userData = $request->only([
@@ -175,7 +175,7 @@ class CvProfileController extends Controller
         $profile->update($data);
         $user = $this->user;
         $user->update($userData);
-        $provinces = Province::orderBy('name')->get(); 
+        $provinces = Province::orderBy('name')->get();
         $genders = Gender::cases();
         $profile->load('avatar');
         return $this->getView();
@@ -204,7 +204,7 @@ class CvProfileController extends Controller
                 'status' => 'error',
                 'errors' => $validator->errors(),
             ]);
-        }   
+        }
 
         $data = $request->only([
             'id',
@@ -312,7 +312,7 @@ class CvProfileController extends Controller
     // --- 4. Skills ---
     public function saveSkillGroup(Request $request) {
         $profile = $this->getUserProfile();
-        
+
         $validator = Validator::make($request->all(), [
             'group' => ['required', 'string', 'max:64'],
             'old_group' => ['nullable', 'string', 'max:64'],
@@ -335,11 +335,11 @@ class CvProfileController extends Controller
 
             // 1. Delete existing skills in the target group (or old group if renaming)
             // If we are renaming, we delete from the old name.
-            // If we are just saving to 'Backend', we delete previous 'Backend' skills to overwrite them 
+            // If we are just saving to 'Backend', we delete previous 'Backend' skills to overwrite them
             // (assuming the modal sends the FULL list of skills for that group).
-            
+
             $targetDelete = $oldGroupName ? $oldGroupName : $groupName;
-            
+
             // Clean up old skills for this group
             $profile->skills()->where('group', $targetDelete)->delete();
 
@@ -396,7 +396,7 @@ class CvProfileController extends Controller
     }
     public function deleteLanguage($id) {
         $profile = $this->getUserProfile();
-        
+
         $language = $profile->languages()->findOrFail($id);
         $language->delete();
         return $this->getView();
@@ -498,7 +498,7 @@ class CvProfileController extends Controller
 
     // --- 8. Awards ---
     public function saveAward(Request $request) {
-        $profile = $this->getUserProfile(); 
+        $profile = $this->getUserProfile();
         $ruleModel = new CvAward();
         $rules = [
             'id' => ['nullable', Rule::exists($ruleModel->getTable(), $ruleModel->getKeyName())],
@@ -534,7 +534,7 @@ class CvProfileController extends Controller
         $awards = $profile->awards()->orderByDesc('year')->get();
         return $this->getView();
     }
-    
+
     private function projectsDTO($projects) {
         return $projects->map(function ($project) {
             $project->start_date = !empty($project->start_date) ? date('Y-m', strtotime($project->start_date)) : null;

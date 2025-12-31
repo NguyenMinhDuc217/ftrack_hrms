@@ -8,10 +8,10 @@
 @endphp
 
 <!-- Header with + Button -->
-{{-- In the index.blade.php, the header is already there. But we need to update the Add button logic there or here. 
-     The user asked to "allow to choose type of skill". 
-     We can assume the + button in the parent view calls a function or we add a dropdown here. 
-     Wait, the parent view has the + button. I should update index.blade.php for the + button dropdown. 
+{{-- In the index.blade.php, the header is already there. But we need to update the Add button logic there or here.
+     The user asked to "allow to choose type of skill".
+     We can assume the + button in the parent view calls a function or we add a dropdown here.
+     Wait, the parent view has the + button. I should update index.blade.php for the + button dropdown.
      Let's focus on the LIST here.
 --}}
 
