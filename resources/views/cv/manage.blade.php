@@ -6,24 +6,25 @@
     <style>
         :root {
             --bg-main: #f0f4f8;
-            --primary-blue: #155cb4;
-            --primary-blue-hover: #104a91;
             --text-dark: #111827;
             --text-muted: #6b7280;
+
+            /* --accent-color */
+            --accent-color-hover: #5B9426;
         }
 
         /* Custom Color Overrides */
-        .text-primary-custom { color: var(--primary-blue) !important; }
-        .bg-primary-custom { background-color: var(--primary-blue) !important; }
+        .text-primary-custom { color: var(--accent-color) !important; }
+        .bg-primary-custom { background-color: var(--accent-color) !important; }
         .btn-primary-custom {
-            background-color: var(--primary-blue);
-            border-color: var(--primary-blue);
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
             color: white;
             font-weight: 700;
         }
         .btn-primary-custom:hover {
-            background-color: var(--primary-blue-hover);
-            border-color: var(--primary-blue-hover);
+            background-color: var(--accent-color-hover);
+            border-color: var(--accent-color-hover);
             color: white;
         }
 
@@ -31,7 +32,7 @@
         .nav-avatar-ring {
             width: 32px;
             height: 32px;
-            border: 2px solid var(--primary-blue);
+            border: 2px solid var(--accent-color);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -49,10 +50,10 @@
         }
         .upload-area:hover, .upload-area:focus-within {
             background-color: #fff;
-            border-color: var(--primary-blue);
+            border-color: var(--accent-color);
         }
         .upload-area:hover i, .upload-area:focus-within i {
-            color: var(--primary-blue) !important;
+            color: var(--accent-color) !important;
         }
         
         /* Make the file input cover the area but invisible */
@@ -90,7 +91,7 @@
             border-bottom: none;
         }
         .cv-list-item:hover {
-            background-color: #f8fafc;
+             /* Handled by hover-shadow-sm */
         }
         .format-badge {
             font-size: 0.75rem;
@@ -98,12 +99,28 @@
             color: #6c757d;
             text-transform: uppercase;
         }
-        .btn-delete {
+        .btn-ghost-danger {
             color: #adb5bd;
-            transition: color 0.2s;
+            background: transparent;
+            transition: all 0.2s;
         }
-        .btn-delete:hover {
+        .btn-ghost-danger:hover {
             color: #dc3545;
+            background-color: #fee2e2;
+        }
+        .hover-shadow-sm:hover {
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+            border-color: var(--accent-color) !important;
+            transform: translateY(-1px);
+            transition: all 0.2s;
+        }
+        .title-hover:hover span {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+        .title-hover:hover i {
+            opacity: 1 !important;
+            color: var(--accent-color) !important;
         }
         .icon-file {
             color: #adb5bd;
@@ -219,40 +236,50 @@
                         <div class="card-header bg-white border-bottom-0 pt-4 px-4 pb-0">
                             <h2 class="h5 fw-bold mb-0 text-dark">{{ __('cv.your_cv') }}</h2>
                         </div>
-                        <div class="card-body p-0 d-flex flex-column h-100 mt-2">
+                        <div class="card-body d-flex flex-column h-100">
                             
                             <!-- List Container -->
                             <div class="cv-list d-flex flex-column flex-grow-1">
                                 
                                 @if($cvs->count() > 0)
                                     @foreach($cvs as $cv)
-                                        <div class="cv-list-item p-3 d-flex align-items-center justify-content-between">
+                                        <div class="cv-list-item p-3 mb-2 rounded border hover-shadow-sm d-flex align-items-center justify-content-between bg-white">
                                             <div class="d-flex align-items-center text-truncate pe-3" style="min-width: 0;">
-                                                <div class="me-3">
+                                                <!-- Icon Container with Color Background -->
+                                                <div class="me-3 d-flex align-items-center justify-content-center rounded-3 p-2" 
+                                                     style="width: 48px; height: 48px; background-color: {{ $cv->extension == 'pdf' ? '#fee2e2' : ($cv->extension == 'doc' || $cv->extension == 'docx' ? '#e0f2fe' : '#f3f4f6') }};">
                                                     @if($cv->extension == 'pdf')
-                                                        <i class="ti ti-file-type-pdf icon-file text-danger"></i>
+                                                        <i class="ti ti-file-type-pdf fs-2 text-danger"></i>
                                                     @elseif(in_array($cv->extension, ['doc', 'docx']))
-                                                        <i class="ti ti-file-type-doc icon-file text-primary"></i>
+                                                        <i class="ti ti-file-type-doc fs-2 text-primary"></i>
                                                     @else
-                                                        <i class="ti ti-file-text icon-file"></i>
+                                                        <i class="ti ti-file-text fs-2 text-secondary"></i>
                                                     @endif
                                                 </div>
+                                                
                                                 <div class="text-truncate">
-                                                     <a href="{{ $cv->url }}" target="_blank" class="fw-bold text-dark text-decoration-none text-truncate d-block" title="{{ $cv->document_title }}">
-                                                        {{ $cv->document_title }}
+                                                     <a href="{{ $cv->url }}" target="_blank" class="fw-bold text-dark text-decoration-none text-truncate d-flex align-items-center gap-2 mb-1 title-hover" title="{{ $cv->document_title }}">
+                                                        <span>{{ $cv->document_title }}</span>
+                                                        <i class="ti ti-external-link text-muted fs-6 opacity-50"></i>
                                                     </a>
-                                                    <small class="text-muted d-block text-truncate">{{ $cv->file_name_original }}</small>
+                                                    <div class="d-flex align-items-center text-muted small">
+                                                        <i class="ti ti-calendar me-1"></i> {{ $cv->created_at->format('d/m/Y') }}
+                                                        <span class="mx-2">•</span>
+                                                        <span class="text-truncate" style="max-width: 150px;">{{ $cv->file_name_original }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex align-items-center flex-shrink-0">
-                                                <span class="text-muted small me-3 d-none d-sm-block">{{ $cv->created_at->format('d/m/Y') }}</span>
-                                                <span class="format-badge me-3">{{ strtoupper($cv->extension) }}</span>
+
+                                            <div class="d-flex align-items-center flex-shrink-0 gap-3">
+                                                 <!-- Format Badge -->
+                                                <span class="badge bg-light text-secondary border fw-normal">{{ strtoupper($cv->extension) }}</span>
                                                 
+                                                <!-- Delete Button -->
                                                 <form action="{{ route('cv.delete', $cv->id) }}" method="POST" class="d-inline" onsubmit="return deleteCV(event, '{{ $cv->document_title }}');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-link btn-delete p-0" title="{{ __('cv.delete_cv') }}">
-                                                        <i class="ti ti-trash"></i>
+                                                    <button type="submit" class="btn btn-icon btn-ghost-danger btn-sm rounded-circle" title="{{ __('cv.delete_cv') }}">
+                                                        <i class="ti ti-trash fs-5"></i>
                                                     </button>
                                                 </form>
                                             </div>

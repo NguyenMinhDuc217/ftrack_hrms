@@ -53,7 +53,7 @@
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            overflow: hidden;
+            /* overflow: hidden; */
             margin: 0 auto 1.5rem;
             border: 8px solid white;
             box-shadow: 0 0 0 4px var(--accent-light);
@@ -246,7 +246,13 @@
     <div class="container">
         <div class="hero-section">
             <div class="profile-img-container">
-                <img alt="Profile" src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}"/>
+                <div class="position-relative d-inline-block">
+                    <img class="img-fluid rounded-circle border shadow-sm" alt="Profile" src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}"/>
+                    
+                    <div class="position-absolute bottom-0 end-0 bg-white rounded-circle border p-1" style="cursor: pointer; width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center;" onclick="openModal('summaryModal')">
+                        <i class="ti ti-camera fs-2 text-primary"></i>
+                    </div>
+            </div>
             </div>
             <h1 class="display-5 fw-bold mb-2">{{$profile->full_name ?? __('cv.user_name_default')}}</h1>
             <p class="fs-3 text-muted mb-4">{{$profile->title ?? __('cv.title_default')}}</p>
@@ -273,7 +279,10 @@
     
                     <!-- Contact Information -->
                     <div class="clean-card">
-                        <h2 class="section-title h5 fw-bold text-dark m-0 text-left">{{ __('cv.contact_info') }}</h2>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="section-title h5 fw-bold text-dark m-0 text-left">{{ __('cv.contact_info') }}</h2>
+                            <button onclick="openModal('summaryModal')"><i class="ti ti-pencil text-success"></i></button>
+                        </div>
                         <hr class="mb-2"/>
                         <div class="d-flex flex-column gap-3">
                             <div class="contact-item"><i class="ti ti-mail"></i> {{ $user->email ?? __('cv.email_default') }}</div>
