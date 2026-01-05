@@ -17,4 +17,13 @@ class Province extends Model
     ];
 
     protected $primaryKey = 'id';
+
+    protected $appends = ['localized_name'];
+
+    public function getLocalizedNameAttribute()
+    {
+        $locale = app()->getLocale();
+
+        return $locale === 'en' ? $this->name_en : $this->name;
+    }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug', 255)->nullable()->unique('slug');
             $table->longText('description')->nullable();
             $table->string('link', 255)->nullable(); // Website
+            $table->string('business_field', 255)->nullable();
             $table->string('phone_number', 11)->unique()->nullable();
             $table->string('email')->unique();
             $table->string('address', 255)->nullable();

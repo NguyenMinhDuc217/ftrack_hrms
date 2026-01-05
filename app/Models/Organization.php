@@ -25,6 +25,7 @@ class Organization extends Model
         'phone_number',
         'address',
         'link',
+        'business_field',
         'status',
     ];
 

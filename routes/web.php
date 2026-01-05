@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
 use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminMennuController;
+use App\Http\Controllers\Admin\AdminOrganizationController;
 use App\Http\Controllers\Admin\AdminPermissionController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -36,6 +37,9 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/google/callback', [LoginController::class, 'callback'])->name('google.callback');
 });
 
+Route::get('/sync-permissions', function () {
+    Artisan::call('permissions:sync-routes --assign-to-admin --middleware=check.permission');
+});
 Route::get('/clear-cache', function () {
     Artisan::call('optimize:clear');
 
@@ -65,17 +69,18 @@ Route::get('/clear-cache', function () {
     }
 });
 
-function updateVendorFolder() {
+function updateVendorFolder()
+{
     $zipPath = base_path('vendor.zip');
     $vendorPath = base_path('vendor');
 
     // 1. Check if the zip file was actually uploaded
-    if (!File::exists($zipPath)) {
-        return "Error: vendor.zip not found in the root directory.";
+    if (! File::exists($zipPath)) {
+        return 'Error: vendor.zip not found in the root directory.';
     }
 
     // 2. Increase execution time (unzipping thousands of files is slow)
-    set_time_limit(600); 
+    set_time_limit(600);
     ini_set('memory_limit', '512M');
 
     // 3. Remove the old vendor folder first
@@ -85,16 +90,16 @@ function updateVendorFolder() {
 
     // 4. Extract the new vendor zip
     $zip = new \ZipArchive;
-    if ($zip->open($zipPath) === TRUE) {
+    if ($zip->open($zipPath) === true) {
         $zip->extractTo(base_path()); // Extracts into 'vendor/'
         $zip->close();
 
         // 5. Clean up the zip file
         File::delete($zipPath);
 
-        return "Vendor folder updated successfully!";
+        return 'Vendor folder updated successfully!';
     } else {
-        return "Error: Could not open vendor.zip.";
+        return 'Error: Could not open vendor.zip.';
     }
 }
 
@@ -194,4 +199,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     // File Management
     Route::get('files/upload', [App\Http\Controllers\Admin\AdminFileController::class, 'index'])->name('files.upload');
     Route::post('files/store', [App\Http\Controllers\Admin\AdminFileController::class, 'store'])->name('files.store');
+
+    // Organization
+    // route blogs
+    Route::get('/orgs', [AdminOrganizationController::class, 'index'])->name('orgs.index');
+    Route::get('/org-add', [AdminOrganizationController::class, 'create'])->name('orgs.create');
+    Route::post('/org-add', [AdminOrganizationController::class, 'store'])->name('orgs.store');
+    Route::get('/orgs/{org_id}', [AdminOrganizationController::class, 'show'])->name('orgs.show');
+    Route::patch('/orgs/{org}', [AdminOrganizationController::class, 'update'])->name('orgs.update');
+    Route::post('/orgs/delete/{org}', [AdminOrganizationController::class, 'delete'])->name('orgs.delete');
+
+    Route::patch('upload/editor/image', [AdminOrganizationController::class, 'uploadEditorImage'])->name('upload.editor.image');
 });

@@ -73,6 +73,7 @@ return [
     'txt_description' => 'Mô tả công việc',
     'txt_requirements' => 'Yêu cầu công việc',
     'txt_otherwhere' => 'nơi khác',
+    'txt_and' => 'và',
 
     'txt_company_des' => 'CPM Việt Nam: The Power of Field Marketing - Bí quyết tăng trưởng doanh số bạn không thể bỏ qua.',
     'txt_company_address' => 'Tầng 12, Tòa nhà Rosana',

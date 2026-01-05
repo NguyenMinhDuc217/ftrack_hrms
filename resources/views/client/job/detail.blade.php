@@ -68,7 +68,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">{{ __('job.txt_location') }}</p>
-                                <p class="font-semibold text-gray-900">{{ $job->job_area->first()->province->name ?? '' }} {{ $job->job_area->count() > 1 ? 'và ' . ($job->job_area->count() - 1) . ' ' . __('job.txt_otherwhere') : '' }}</p>
+                                <p class="font-semibold text-gray-900">{{ $job->job_area->first()->province->localized_name ?? '' }} {{ $job->job_area->count() > 1 ? ' ' . __('job.txt_and') . ' ' . ($job->job_area->count() - 1) . ' ' . __('job.txt_otherwhere') : '' }}</p>
                             </div>
                         </div>
 
@@ -104,6 +104,31 @@
                     </button>
                 </div>
 
+                @if($job->images()->count() > 0)
+                    <div class="image-grid grid grid-cols-3 gap-3">
+                        @foreach($job->images() as $index => $img)
+                            @if($index < 3)
+                                <a href="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" 
+                                data-fancybox="gallery" 
+                                class="relative group block overflow-hidden rounded-xl aspect-square border border-gray-100 shadow-sm h-[150px] w-full" 
+                                data-caption="Image #{{ $index + 1 }}">
+                                    
+                                    <img src="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" alt="Job Image {{ $index + 1 }}" class="h-[150px] w-full object-contain transition-transform duration-500 group-hover:scale-110" />
+
+                                    @if($index == 2 && $job->images()->count() > 3)
+                                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center transition-colors group-hover:bg-black/40">
+                                            <span class="text-white text-2xl font-bold">+{{ $job->images()->count() - 3 }}</span>
+                                        </div>
+                                    @endif
+                                </a>
+                            @else
+                                {{-- Các ảnh từ thứ 4 trở đi sẽ bị ẩn nhưng vẫn nằm trong gallery để slide --}}
+                                <a href="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" data-fancybox="gallery" class="hidden"></a>
+                            @endif
+                        @endforeach
+                    </div>
+                @endif
+
                 <!-- Mô tả công việc -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
                     <h2 class="text-xl font-bold text-gray-900">{{ __('job.txt_description') }}</h2>
@@ -130,16 +155,15 @@
                 <!-- Card công ty -->
                 <div class="flex flex-col gap-4 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sticky">
                     <div class="flex items-start gap-4">
-                        <img src="https://picsum.photos/id/101/80/80" 
+                        <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}" 
                              alt="Logo công ty" 
                              class="w-20 h-20 rounded-xl object-contain border border-gray-200 shadow-sm flex-shrink-0" />
 
                         <div class="flex-1 min-w-0">
-                            <h3 class="text-xl font-bold text-gray-900">CPM VIETNAM</h3>
-                            <!-- <p class="text-sm text-gray-600 mt-1 line-clamp-2"> -->
-                            <p class="text-sm text-gray-600 mt-1">
-                                {{ __('job.txt_company_des') }}
-                            </p>
+                            <h3 class="text-xl font-bold text-gray-900">{{ $job->organization->name ?? 'N/A' }}</h3>
+                            <div class="text-sm text-gray-600 mt-1">
+                                {!! $job->organization->description ?? 'N/A' !!}
+                            </div>
                         </div>
                     </div>
 
@@ -160,7 +184,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">{{__('job.txt_business_field')}}</p>
-                                <p class="font-semibold">Marketing Services</p>
+                                <p class="font-semibold">{{ $job->organization->business_field ?? 'N/A' }}</p>
                             </div>
                         </div>
 
@@ -170,13 +194,13 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">{{ __('job.txt_location') }}</p>
-                                <p class="font-semibold text-sm">{{ __('job.txt_company_address') }}</p>
+                                <p class="font-semibold text-sm">{{ $job->organization->address ?? 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <a href="https://www.facebook.com/CPMVietnam/" target="_blank" class="inline-flex items-center gap-2 text-green-600 font-bold hover:text-green-700 transition">
+                        <a href="{{ $job->organization->link ?? 'N/A' }}" target="_blank" class="inline-flex items-center gap-2 text-green-600 font-bold hover:text-green-700 transition">
                             {{ __('job.txt_see_company_page') }}
                             <i class="bi bi-box-arrow-up-right"></i>
                         </a>
@@ -192,7 +216,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">{{ __('job.txt_number_of_recruitment') }}</p>
-                                <p class="font-semibold">{{ $job->headcount }}</p>
+                                <p class="font-semibold">{{ $job->job_area->first()->headcount }}</p> <!-- Tạm thời đổi của job areas đầu tiên -->
                             </div>
                         </div>
 
@@ -214,7 +238,7 @@
                             <i class="text-xl bi bi-geo-alt-fill text-[var(--accent-color)]"></i>
                             @foreach($job->job_area as $area)
                                 <span class="p-2 bg-gray-100 rounded-md text-xs">
-                                    {{ $area->province->name ?? '' }}
+                                    {{ $area->province->localized_name ?? '' }}
                                 </span>
                             @endforeach
                         </div>
@@ -347,6 +371,12 @@
         </div>
 
     </div>
+
+    <script>
+        Fancybox.bind("[data-fancybox='gallery']", {
+            // Cấu hình thêm nếu muốn
+        });
+    </script>
 
 
     <script>

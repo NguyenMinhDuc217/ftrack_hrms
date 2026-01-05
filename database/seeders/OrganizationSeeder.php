@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Organization;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class OrganizationSeeder extends Seeder
@@ -22,6 +21,7 @@ class OrganizationSeeder extends Seeder
             'phone_number' => '0900000000',
             'address' => 'Demo Address',
             'logo' => 'demo-logo.png',
+            'business_field' => 'Field Marketing',
             'status' => 'active',
         ]);
     }

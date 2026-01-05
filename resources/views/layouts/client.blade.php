@@ -41,6 +41,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <script src="{{ asset('client/assets/vendor/jquery/jquery.min.js') }}"></script>
 
+    <!-- Fancybox -->
+    <link rel="stylesheet" href="{{ asset('fancyapps/ui/dist/fancybox/fancybox.css') }}">
+    <script src="{{ asset('fancyapps/ui/dist/fancybox/fancybox.umd.js') }}"></script>
+
     <style>
         body{
             font-family: 'Mulish' !important;

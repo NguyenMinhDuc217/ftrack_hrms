@@ -92,6 +92,17 @@
                         </div>
                         @enderror
                     </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">{{ __('job.txt_business_field') }}</label>
+                        <input type="text" class="form-control @error('business_field') is-invalid @enderror" name="business_field"
+                            placeholder="{{ __('job.txt_business_field') }}" id="business_field" value="{{ old('business_field') }}">
+                        @error('business_field')
+                        <div class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                    </div>
 
                     <div class="form-group">
                         <label class="form-label">{{ __('org.txt_email') }}</label>
@@ -115,7 +126,7 @@
                         </div>
                         @enderror
                         <small class="form-text text-muted">09xxxxxxxx</small>
-                        <small>maxlength set to 10 numbers</small>
+                        <small>maxlength set to 10 or 11 numbers</small>
                     </div>
 
                     <div class="form-group">

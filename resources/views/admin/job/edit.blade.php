@@ -281,8 +281,8 @@
                         <label class="form-label">{{ __('user.txt_status') }}</label>
                         <select name="status" class="form-control @error('status') is-invalid @enderror">
                             <option value="" disabled selected>-{{ __('user.txt_status') }}-</option>
-                            <option value="1" @selected(old('status') == 1)>{{ __('default.txt_active') }}</option>
-                            <option value="0" @selected(old('status') == 0)>{{ __('default.txt_inactive') }}</option>
+                            <option value="1" @selected($job->status == 1)>{{ __('default.txt_active') }}</option>
+                            <option value="0" @selected($job->status == 0)>{{ __('default.txt_inactive') }}</option>
                         </select>
                         @error('status')
                         <div class="invalid-feedback" role="alert">
@@ -334,7 +334,6 @@
         uploadMultiple: true,
         parallelUploads: 20,
         paramName: "images", // Tên mảng file
-        acceptedFiles: 'image/*',
         addRemoveLinks: true,
         dictRemoveFile: "<i class='ti ti-x position-absolute top-0 end-0 bg-danger p-1 text-sm text-white rounded-circle'></i>",
         init: function() {

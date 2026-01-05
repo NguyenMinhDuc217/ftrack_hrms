@@ -50,7 +50,7 @@ class ClientController extends Controller
 
     public function buildQuery(Request $request)
     {
-        $query = JobHrms::query()->with('profession')->with('job_area')->with('job_area.province')->active();
+        $query = JobHrms::query()->with('profession')->with('job_area')->with('job_area.province')->with('organization')->active();
         if ($request->has('province_id')) {
             $query->whereHas('job_area', function ($q) use ($request) {
                 $q->where('province_id', (int) $request->province_id);
@@ -64,6 +64,9 @@ class ClientController extends Controller
                     ->orWhere('application_position', 'like', '%'.$key.'%')
                     ->orWhereHas('profession', function ($q) use ($key) {
                         $q->where('profession_name', 'like', '%'.$key.'%');
+                    })
+                    ->orWhereHas('organization', function ($q) use ($key) {
+                        $q->where('name', 'like', '%'.$key.'%');
                     });
             });
         }
