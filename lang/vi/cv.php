@@ -144,4 +144,8 @@ return [
     'txt_support_type_file' => 'Hỗ trợ: .pdf, .doc, .docx (tối đa 5MB)',
     'txt_skip_create_cv' => 'Để sau, tôi muốn xem việc làm trước',
 
+    // Detailed Empty State
+    'no_cv_uploaded_yet' => 'Chưa có CV nào được tải lên.',
+    'upload_cv_suggestion' => 'Sử dụng biểu mẫu bên trái để tải lên CV đầu tiên của bạn để bắt đầu.',
+
 ];

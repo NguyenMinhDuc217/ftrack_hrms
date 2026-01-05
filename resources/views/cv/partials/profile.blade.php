@@ -235,6 +235,11 @@
             opacity: 1;
             transform: scale(1.05);
         }
+
+        .invalid-note {
+            color: #dc3545;
+            font-size: 0.8rem;
+        }
     </style>
     
     <!-- Hero Section -->

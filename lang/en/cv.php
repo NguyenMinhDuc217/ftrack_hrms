@@ -143,4 +143,8 @@ return [
     'txt_create_cv_des' => 'Download your CV first to be ready to apply for thousands of attractive jobs!',
     'txt_support_type_file' => 'Support: .pdf, .doc, .docx (maximum 5MB)',
     'txt_skip_create_cv' => 'Later, I want to see the work first',
+
+    // Detailed Empty State
+    'no_cv_uploaded_yet' => 'No CVs Uploaded Yet.',
+    'upload_cv_suggestion' => 'Use the form on the left to upload your first CV to get started.',
 ];

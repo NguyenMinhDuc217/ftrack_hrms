@@ -2,105 +2,294 @@
 
 @section('title', __('cv.manage_cvs'))
 
+@push('styles')
+    <style>
+        :root {
+            --bg-main: #f0f4f8;
+            --primary-blue: #155cb4;
+            --primary-blue-hover: #104a91;
+            --text-dark: #111827;
+            --text-muted: #6b7280;
+        }
+
+        /* Custom Color Overrides */
+        .text-primary-custom { color: var(--primary-blue) !important; }
+        .bg-primary-custom { background-color: var(--primary-blue) !important; }
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+            font-weight: 700;
+        }
+        .btn-primary-custom:hover {
+            background-color: var(--primary-blue-hover);
+            border-color: var(--primary-blue-hover);
+            color: white;
+        }
+
+        /* Navigation */
+        .nav-avatar-ring {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            background-color: #f8fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            position: relative;
+        }
+        .upload-area:hover, .upload-area:focus-within {
+            background-color: #fff;
+            border-color: var(--primary-blue);
+        }
+        .upload-area:hover i, .upload-area:focus-within i {
+            color: var(--primary-blue) !important;
+        }
+        
+        /* Make the file input cover the area but invisible */
+        .upload-area input[type=file] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* File Input Group Styling */
+        .file-input-group .form-control {
+            border-right: 0;
+        }
+        .file-input-group .btn-file {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-left: 0;
+            color: #212529;
+            font-weight: 500;
+        }
+        .file-input-group .btn-file:hover {
+            background-color: #e9ecef;
+        }
+
+        /* CV List Styling */
+        .cv-list-item {
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .cv-list-item:last-child {
+            border-bottom: none;
+        }
+        .cv-list-item:hover {
+            background-color: #f8fafc;
+        }
+        .format-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+        .btn-delete {
+            color: #adb5bd;
+            transition: color 0.2s;
+        }
+        .btn-delete:hover {
+            color: #dc3545;
+        }
+        .icon-file {
+            color: #adb5bd;
+            font-size: 1.25rem;
+        }
+        
+        /* Layout Helper */
+       .card {
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+            height: 100%;
+        }
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.25rem 1.5rem;
+        }
+    </style>
+@endpush
+
 @section('content')
-<div class="container pt-4 pb-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h3 class="fw-bold mb-3">{{ __('cv.manage_cvs') }}</h3>
+    <!-- BEGIN: MainContent -->
+    <main class="flex-grow-1 py-4 py-md-5" style="background-color: #f0f4f8; min-height: 80vh;">
+        <div class="container-xl">
+            <!-- Page Title -->
+            <div class="mb-4">
+                 <h1 class="h3 fw-bold text-dark">{{ __('cv.manage_cvs') }}</h1>
+            </div>
 
-            <div class="card border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-bold mb-3">{{ __('cv.your_cv') }}</h5>
-
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="row g-4">
+                
+                <!-- BEGIN: UploadCard -->
+                <!-- Left Card: Upload New CV Form -->
+                <div class="col-lg-6">
+                    <section class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom-0 pt-4 px-4 pb-0">
+                            <h2 class="h5 fw-bold mb-0 text-dark">{{ __('cv.upload_cv') }}</h2>
                         </div>
-                    @endif
-                    
-                    @if(session('error'))
-                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
+                        <div class="card-body p-4">
+                            
+                            {{-- Success Message --}}
+                            @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+                            
+                            {{-- Error Message --}}
+                            @if(session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                                    {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
 
-                    @error('cv_file')
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ $message }}
-                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @enderror
+                             {{-- Validation Errors --}}
+                             @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
 
-                    @if($cvs->count() > 0)
-                        @foreach($cvs as $cv)
-                            <div class="d-flex align-items-center justify-content-between p-3 border rounded mb-3 bg-light">
-                                <div class="d-flex align-items-center">
-                                    @if($cv->extension == 'pdf')
-                                        <i class="ti ti-file-type-pdf fs-1 text-danger me-3"></i>
-                                    @elseif(in_array($cv->extension, ['doc', 'docx']))
-                                        <i class="ti ti-file-type-doc fs-1 text-primary me-3"></i>
-                                    @else
-                                        <i class="ti ti-file-text fs-1 text-secondary me-3"></i>
-                                    @endif
-                                    <div>
-                                        <h6 class="mb-0 fw-bold">
-                                            <a href="{{ $cv->url }}" target="_blank" class="text-decoration-none text-dark">{{ $cv->document_title }}</a>
-                                        </h6>
-                                        <div class="text-muted small">
-                                            <span class="me-2"><i class="ti ti-calendar me-1"></i>{{ $cv->created_at->format('d/m/Y') }}</span>
-                                            <span><i class="ti ti-file me-1"></i>{{ $cv->file_name_original }}</span>
+                            <form action="{{ route('cv.upload') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                
+                                <!-- CV Name Input Group -->
+                                <div class="mb-4">
+                                    <label for="cv_name" class="form-label fw-bold text-secondary small">{{ __('cv.cv_name') }} <span class="text-danger">*</span></label>
+                                    <div class="input-group file-input-group shadow-sm">
+                                        <input type="text" class="form-control" id="cv_name" name="cv_name" placeholder="{{ __('cv.placeholder_cv_name') }}" required>
+                                    </div>
+                                </div>
+
+                                <!-- Drag and Drop Area -->
+                                <div class="mb-4">
+                                    <div class="upload-area py-5 px-3 text-center position-relative">
+                                         <!-- Real file input (hidden/opacity 0 but works) -->
+                                        <input type="file" name="cv_file" id="cv_file" accept=".doc,.docx,.pdf" required onchange="updateFileName(this)">
+                                        
+                                        <div class="mb-2">
+                                            <!-- Cloud Icon -->
+                                            <!-- Cloud Icon -->
+                                            <i class="ti ti-cloud-upload fs-1 text-secondary" style="font-size: 3em !important;"></i>
+                                        </div>
+                                        <p class="mb-0 fw-medium text-secondary small" id="file-upload-text">Drag and drop your file here or click to browse</p>
+                                        <div class="mb-0 fw-medium text-secondary small mt-2">
+                                            {{ __('cv.upload_file_rules') }}
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <form action="{{ route('cv.delete', $cv->id) }}" method="POST" class="d-inline" onsubmit="return deleteCV(event, '{{ $cv->document_title }}');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="{{ __('cv.delete_cv') }}">
-                                        <i class="ti ti-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="text-secondary mb-4">
-                            <i class="ti ti-file-off me-2"></i> {{ __('cv.no_cv_attached') }}
-                        </div>
-                    @endif
 
-                    <form action="{{ route('cv.upload') }}" method="POST" enctype="multipart/form-data" class="mt-4">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="cv_name" class="form-label fw-bold">{{ __('cv.cv_name') }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="cv_name" name="cv_name" placeholder="{{ __('cv.placeholder_cv_name') }}" required>
-                        </div>
-                        <div class="mb-3">
-                             <label class="form-label fw-bold">{{ __('cv.upload_cv') }}</label>
-                             <div class="input-group">
-                                <input type="file" name="cv_file" id="cv_file" class="form-control" accept=".doc,.docx,.pdf" required>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="ti ti-upload me-2"></i> {{ __('cv.upload_cv') }}
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-primary-custom w-100 py-2 shadow-sm">
+                                    {{ __('cv.upload_cv') }}
                                 </button>
-                             </div>
+                            </form>
                         </div>
-                        <small class="text-muted">{{ __('cv.upload_file_rules') }}</small>
-                    </form>
-
+                    </section>
                 </div>
+                <!-- END: UploadCard -->
+
+                <!-- BEGIN: CurrentCVsCard -->
+                <!-- Right Card: List of Existing CVs -->
+                <div class="col-lg-6">
+                    <section class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom-0 pt-4 px-4 pb-0">
+                            <h2 class="h5 fw-bold mb-0 text-dark">{{ __('cv.your_cv') }}</h2>
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column h-100 mt-2">
+                            
+                            <!-- List Container -->
+                            <div class="cv-list d-flex flex-column flex-grow-1">
+                                
+                                @if($cvs->count() > 0)
+                                    @foreach($cvs as $cv)
+                                        <div class="cv-list-item p-3 d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center text-truncate pe-3" style="min-width: 0;">
+                                                <div class="me-3">
+                                                    @if($cv->extension == 'pdf')
+                                                        <i class="ti ti-file-type-pdf icon-file text-danger"></i>
+                                                    @elseif(in_array($cv->extension, ['doc', 'docx']))
+                                                        <i class="ti ti-file-type-doc icon-file text-primary"></i>
+                                                    @else
+                                                        <i class="ti ti-file-text icon-file"></i>
+                                                    @endif
+                                                </div>
+                                                <div class="text-truncate">
+                                                     <a href="{{ $cv->url }}" target="_blank" class="fw-bold text-dark text-decoration-none text-truncate d-block" title="{{ $cv->document_title }}">
+                                                        {{ $cv->document_title }}
+                                                    </a>
+                                                    <small class="text-muted d-block text-truncate">{{ $cv->file_name_original }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center flex-shrink-0">
+                                                <span class="text-muted small me-3 d-none d-sm-block">{{ $cv->created_at->format('d/m/Y') }}</span>
+                                                <span class="format-badge me-3">{{ strtoupper($cv->extension) }}</span>
+                                                
+                                                <form action="{{ route('cv.delete', $cv->id) }}" method="POST" class="d-inline" onsubmit="return deleteCV(event, '{{ $cv->document_title }}');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-link btn-delete p-0" title="{{ __('cv.delete_cv') }}">
+                                                        <i class="ti ti-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="text-center p-5">
+                                        <div class="mb-4">
+                                            <img src="{{ asset('files/cv/cv-empty.png') }}" alt="No CVs" class="img-fluid" style="max-width: 120px;margin: auto">
+                                        </div>
+                                        <h3 class="h5 fw-bold text-dark mb-2">{{ __('cv.no_cv_uploaded_yet') }}</h3>
+                                        <p class="text-muted mb-4">{{ __('cv.upload_cv_suggestion') }}</p>
+                                        <div class="small text-secondary">
+                                            {{ __('cv.upload_file_rules') }}
+                                        </div>
+                                    </div>
+                                @endif
+
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+                <!-- END: CurrentCVsCard -->
+
             </div>
         </div>
-    </div>
-</div>
+    </main>
+    <!-- END: MainContent -->
 @endsection
 
 @push('scripts')
     <script>
-    function deleteCV(e, cvname) {
+    async function deleteCV(e, cvname) {
         e.preventDefault();
         const title = '{{ __('cv.confirm_delete_cv', ['name' => ":cvname"]) }}';
-        const confirmResult = Swal.fire({
+        const confirmResult = await Swal.fire({
             title: title.replace(':cvname', cvname),
             icon: 'warning',
             showCancelButton: true,
@@ -111,6 +300,13 @@
 
         if (confirmResult.isConfirmed) {
             e.target.submit();
+        }
+    }
+
+    // Optional: Simple script to show selected filename
+    function updateFileName(input) {
+        if (input.files && input.files[0]) {
+            document.getElementById('file-upload-text').innerText = input.files[0].name;
         }
     }
     </script>
