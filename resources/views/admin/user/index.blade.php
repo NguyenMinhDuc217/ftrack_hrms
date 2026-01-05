@@ -36,18 +36,7 @@
                               <input type="date" name="hire_date" class="form-control form-control-sm" value="{{ request('hire_date') }}">
                             </div>
                           </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <select name="department_id" class="form-control form-control-sm" onchange="changeDepartment(this.value)">
-                                <option value="">-{{ __('user.txt_profession') }}-</option>
-                                @foreach ($departments as $department)
-                                <option value="{{$department->department_id}}" @selected(request('department_id') == $department->department_id)>
-                                  {{ $department->department_name }}
-                                </option>
-                                @endforeach
-                              </select>
-                            </div>
-                          </div>
+                         
                           <div class="col-sm-3">
                             <div class="form-group">
                               <select name="manager_id" class="form-control form-control-sm">
@@ -60,6 +49,13 @@
                               </select>
                             </div>
                           </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <button type="submit" onclick="filter()" class="btn btn-sm btn-success w-100">{{ __('default.button_filter') }}</button>
+                            </div>
+                          </div>
+
                         </div>
                         <div class="row">
                           <div class="col-sm-3">
@@ -86,11 +82,9 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <button type="submit" onclick="filter()" class="btn btn-sm btn-success w-100">{{ __('default.button_filter') }}</button>
-                            </div>
-                          </div>
+
+                          <div class="col-sm-3"></div>
+                         
                           <div class="col-sm-3">
                             <div class="form-group">
                               <a href="{{ route('admin.users') }}" class="btn btn-sm btn-secondary w-100 align-content-center">{{ __('default.button_reset') }}</a>
@@ -108,23 +102,16 @@
                 <table class="table table-hover" id="pc-dt-simple">
                   <thead>
                     <tr>
-                      <th></th>
-                      <th>{{ __('user.txt_user_id') }}</th>
+                      <th class="text-center">{{ __('user.txt_user_id') }}</th>
                       <th>{{ __('user.txt_username') }}</th>
                       <th>{{ __('user.txt_phone_number') }}</th>
-                      <th>{{ __('user.txt_profession') }}</th>
                       <th>{{ __('user.txt_status') }}</th>
                       <th class="text-center">{{ __('user.txt_actions') }}</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ($users as $user)
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                        </div>
-                      </td>
+                    <tr class="align-middle">
                       <td class="text-center">{{ $user->user_id }}</td>
                       <td>
                         <div class="row">
@@ -139,7 +126,6 @@
                         </div>
                       </td>
                       <td>{{ $user->phone_number }}</td>
-                      <td>{{ $user->department?->department_name }}</td>
                       <td>
                         @php
                           $status = $user->status->getLabelData();

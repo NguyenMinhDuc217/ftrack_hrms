@@ -16,6 +16,7 @@ class JobHrms extends Model
     protected $fillable = [
         'job_id',
         'name',
+        'image_ids',
         'profession_id',
         'employment_type',
         'description_md',
@@ -50,6 +51,10 @@ class JobHrms extends Model
 
     protected $primaryKey = 'job_id';
 
+    protected $casts = [
+        'image_ids' => 'array',
+    ];
+
     public function scopeActive($query)
     {
         return $query->where('start_date', '<=', today())
@@ -66,5 +71,21 @@ class JobHrms extends Model
     public function job_area()
     {
         return $this->hasMany(JobArea::class, 'job_id', 'job_id')->where('status', 'active')->where('deleted_at', null);
+    }
+
+    public function images()
+    {
+        if (empty($this->image_ids)) {
+            return collect();
+        }
+
+        return Image::whereIn('id', $this->image_ids)
+            ->where('status', 1)
+            ->where('deleted_at', null)
+            ->get();
+    }
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'org_id')->where('status', 'active')->where('deleted_at', null);
     }
 }

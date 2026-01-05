@@ -128,23 +128,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Department</label>
-                        <select class="form-control @error('department_id') is-invalid @enderror" name="department_id"
-                            onchange="changeDepartment(this.value)" required>
-                            <option label="--Department--"></option>
-                            @foreach ($departments as $department)
-                            <option value="{{$department->department_id}}" @selected($user->department_id ==
-                                $department->department_id)>{{$department->department_name}}</option>
-                            @endforeach
-                        </select>
-                        @error('department_id')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
                         <label class="form-label">Manager</label>
                         <select class="form-control @error('manager_id') is-invalid @enderror" name="manager_id"
                             required>

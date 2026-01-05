@@ -14,6 +14,7 @@ return [
     'txt_currency' => 'Loại tiền tệ',
     'txt_start_date' => 'Ngày bắt đầu',
     'txt_end_date' => 'Ngày kết thúc',
+    'txt_image' => 'Hình ảnh',
 
     // Validation
     'title_required' => 'Tiêu đề là bắt buộc.',
@@ -40,6 +41,13 @@ return [
     'end_date_date' => 'Ngày kết thúc phải là một ngày.',
     'end_date_date_format' => 'Ngày kết thúc phải có định dạng Y-m-d.',
     'end_date_after_or_equal' => 'Ngày kết thúc phải sau ngày bắt đầu.',
+    'images_array' => 'Hình ảnh phải là một mảng.',
+    'images.max' => 'Hình ảnh phải nhỏ hơn :max.',
+    'images_image' => 'Hình ảnh phải là một hình.',
+    'images_mimes' => 'Hình ảnh phải là một hình ảnh.',
+    'images_all_max' => 'Hình ảnh phải nhỏ hơn 2MB.',
+    'org_id_required' => 'Doanh nghiệp là bắt buộc',
+    'org_id_exists' => 'Doanh nghiệp không tồn tại',
     'status_boolean' => 'Trạng thái phải là một giá trị logic.',
     'job_not_exists' => 'Công việc không tồn tại',
     'province_not_exists' => 'Tỉnh thành không tồn tại',

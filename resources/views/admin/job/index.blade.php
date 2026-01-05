@@ -71,9 +71,9 @@
                                     </div>
                                 </td>
                                 <td>
-                                        <div class="col">
-                                            <h5 class="badge {{$statuses[$job->status]['color']}} rounded-pill f-12">{{ $statuses[$job->status]['lang'] }}</h5>
-                                            </div>
+                                    <div class="col">
+                                        <h5 class="badge {{$statuses[$job->status]['color']}} rounded-pill f-12">{{ $statuses[$job->status]['lang'] }}</h5>
+                                    </div>
                                 </td>
                                 <td class="text-center">
                                     <ul class="list-inline me-auto mb-0">

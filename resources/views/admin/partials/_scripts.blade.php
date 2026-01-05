@@ -15,6 +15,9 @@
 
 <script src="{{ asset('admin/assets/js/plugins/ckeditor/classic/ckeditor.js') }}"></script>
 
+ <!-- file-upload Js -->
+    <script src="{{ asset('admin/assets/js/plugins/dropzone-amd-module.min.js') }}"></script>
+
 
 <script>layout_change('light');</script>
 <script>change_box_container('false');</script>

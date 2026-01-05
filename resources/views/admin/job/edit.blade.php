@@ -1,3 +1,15 @@
+<style>
+    .dz-image-preview {
+        position: relative;
+    }
+
+    .dz-image-preview .dz-remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 21;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
@@ -5,13 +17,60 @@
                 <h3>{{ __('job.txt_edit_job') }}</h3>
             </div>
 
-            <form action="{{ route('admin.jobs.update', $job) }}" method="POST" class="form-horizontal">
+           
+
+            <form action="{{ route('admin.jobs.update', $job) }}" method="POST" id="job-edit-form" class="form-horizontal" enctype="multipart/form-data">
                 @csrf
                 @if (isset($job))
                 @method('PATCH')
                 @endif
 
                 <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label" for="image">{{ __('job.txt_image') }}</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div action="../assets/json/file-upload.php" id="multiImageUpload" class="dropzone">
+                                            <div class="fallback">
+                                                <i class="bi bi-cloud-upload text-4xl text-gray-400 mb-4"></i>
+                                            </div>
+                                        </div>
+
+                                        @if($job->images()->count() > 0)
+                                        <div id="existing-images" class="d-flex flex-wrap gap-2 mt-3">
+                                            @foreach($job->images() as $img) <!-- Giả sử bạn có quan hệ images -->
+                                                <div class="image-preview-container position-relative" id="old-img-{{ $img->id }}">
+                                                    <img src="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" class="img-thumbnail object-fit-contain" style="height: 100px !important; width: 100px;">
+                                                    <input type="hidden" name="existing_images[]" value="{{ $img->id }}">
+                                                    <i class="ti ti-x position-absolute top-0 end-0 bg-danger p-1  text-sm text-white rounded-circle" onclick="removeOldImage({{ $img->id }})"></i>
+                                                </div>
+                                            @endforeach
+                                        </div>          
+                                        @endif
+
+                                        <!-- Input ẩn để Dropzone gán file vào (Tên là images[]) -->
+                                        <input type="file" name="images[]" id="real-file-input" multiple class="d-none is-invalid">
+
+                                         @if ($errors->has('images.*'))
+                                            @foreach ($errors->get('images.*') as $file_errors)
+                                                <div class="invalid-feedback" role="alert">
+                                                    <strong>{{ $file_errors[0] }}</strong>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @error('image')
+                        <div class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label" for="name">{{ __('job.txt_title') }}</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
@@ -106,18 +165,6 @@
                         <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <label class="form-label"></label>
-                        <textarea class="form-control @error('description_md') is-invalid @enderror"
-                            name="description_md"
-                            placeholder="{{ __('job.txt_description') }}">{{ $job->description_md }}</textarea>
-                        @error('description_md')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div> -->
-
                     <div class="form-group">
                         <label class="form-label">{{ __('job.txt_description') }}</label>
                         <textarea name="description_md" id="editor-description">{{ $job->description_md }}</textarea>
@@ -139,21 +186,6 @@
                         @enderror
                     </div>
 
-                    <!-- <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_requirements') }}</label>
-                        <textarea class="form-control @error('requirements_md') is-invalid @enderror"
-                            name="requirements_md"
-                            placeholder="{{ __('job.txt_requirements') }}">{{ $job->requirements_md }}</textarea>
-                        @error('requirements_md')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div> -->
-
-                    
-
-                    
                     <div class="d-flex flex-column flex-sm-row gap-2 my-3">
                         <div class="flex-fill my-0 form-group">
                             <label class="form-label">{{ __('job.txt_min_salary') }}</label>
@@ -229,17 +261,21 @@
                         @enderror
                     </div>
 
-                    <!-- <div class="form-group">
-                        <label class="form-label">Organization</label>
-                        <input type="text" class="form-control @error('organization') is-invalid @enderror" name="organization"
-                            placeholder="{{ __('job.txt_organization') }}" value="{{ $job->organization }}">
-                        @error('organization')
+                    <div class="form-group">
+                        <label class="form-label">{{ __('org.txt_org') }}</label>
+                        <select name="org_id" class="form-control @error('org_id') is-invalid @enderror">
+                            <option value="" disabled selected>-{{ __('org.txt_org') }}-</option>
+                            @foreach ($organizations as $organization)
+                                <option value="{{ $organization->org_id }}" @selected($job->org_id == $organization->org_id)>{{ $organization->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('org_id')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </div>
                         @enderror
                         <small>{{ __('default.enter_a') }} {{ __('default.text') }}</small>
-                    </div> -->
+                    </div>
 
                     <div class="form-group">
                         <label class="form-label">{{ __('user.txt_status') }}</label>
@@ -268,15 +304,64 @@
 </div>
 
 <script>
+    let descEditor, reqEditor; 
     (function () {
-        ClassicEditor.create(document.querySelector('#editor-description')).catch((error) => {
+        ClassicEditor.create(document.querySelector('#editor-description'))
+        .then(editor => {
+            descEditor = editor;
+        })
+        .catch((error) => {
             console.error(error);
         });
     })();
 
     (function () {
-        ClassicEditor.create(document.querySelector('#editor-requirements')).catch((error) => {
+        ClassicEditor.create(document.querySelector('#editor-requirements'))
+        .then(editor => {
+            reqEditor = editor;
+        })
+        .catch((error) => {
             console.error(error);
         });
     })();
+</script>
+
+<script>
+    Dropzone.autoDiscover = false;
+    let myDropzone = new Dropzone("#multiImageUpload", {
+        url: "{{ route('admin.jobs.update', $job) }}",
+        autoProcessQueue: false, // Không cho tự động upload lên URL của dropzone
+        uploadMultiple: true,
+        parallelUploads: 20,
+        paramName: "images", // Tên mảng file
+        acceptedFiles: 'image/*',
+        addRemoveLinks: true,
+        dictRemoveFile: "<i class='ti ti-x position-absolute top-0 end-0 bg-danger p-1 text-sm text-white rounded-circle'></i>",
+        init: function() {
+            let dz = this;
+            let form = document.getElementById('job-edit-form');
+            let realInput = document.getElementById('real-file-input');
+            form.addEventListener("submit", function(e) {
+                // Sử dụng DataTransfer để gom file
+                const dataTransfer = new DataTransfer();
+                
+                // Lấy toàn bộ file hiện có trong Dropzone bỏ vào DataTransfer
+                dz.getAcceptedFiles().forEach(file => {
+                    dataTransfer.items.add(file);
+                });
+
+                // Gán danh sách file này vào input file thật
+                realInput.files = dataTransfer.files;
+
+                // Đồng bộ CKEditor trước khi submit truyền thống
+                if (descEditor) document.querySelector('#editor-description').value = descEditor.getData();
+                if (reqEditor) document.querySelector('#editor-requirements').value = reqEditor.getData();
+
+            });
+        }
+    });
+
+    function removeOldImage(id) {
+        document.getElementById('old-img-' + id).remove();
+    }
 </script>

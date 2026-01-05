@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('organizations', function (Blueprint $table) {
             $table->id('org_id');
             $table->string('name', 255);
+            $table->bigInteger('image_id')->nullable();
             $table->string('slug', 255)->nullable()->unique('slug');
-            $table->string('description', 255)->nullable();
-            $table->string('logo', 255)->nullable();
-            $table->string('link', 255)->nullable();//Website
-            $table->string('phone_number',11)->unique()->nullable();
+            $table->longText('description')->nullable();
+            $table->string('link', 255)->nullable(); // Website
+            $table->string('phone_number', 11)->unique()->nullable();
             $table->string('email')->unique();
-            $table->string('address',255)->nullable();
-            $table->string('status',50)->nullable();
+            $table->string('address', 255)->nullable();
+            $table->string('status', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

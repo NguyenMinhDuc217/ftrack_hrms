@@ -47,6 +47,9 @@ class JobPostRequest extends FormRequest
             'start_date' => 'required|date|date_format:Y-m-d',
             'end_date' => 'required|date|date_format:Y-m-d|after_or_equal:start_date',
             'experience' => 'string|max:50',
+            'images' => 'nullable|array|max:5',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'org_id' => 'required|exists:organizations,org_id',
             'status' => 'boolean',
         ];
     }
@@ -78,6 +81,13 @@ class JobPostRequest extends FormRequest
             'end_date.date' => __('job.end_date_date'),
             'end_date.date_format' => __('job.end_date_date_format'),
             'end_date.after_or_equal' => __('job.end_date_after_or_equal'),
+            'images.array' => __('job.images_array'),
+            'images.max' => __('job.images_max'),
+            'images.*.image' => __('job.images_image'),
+            'images.*.mimes' => __('job.images_mimes'),
+            'images.*.max' => __('job.images_all_max'),
+            'org_id.required' => __('job.org_id_required'),
+            'org_id.exists' => __('job.org_id_exists'),
             'status.boolean' => __('job.status_boolean'),
         ];
     }

@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\EmploymentType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobPostRequest;
+use App\Models\Image;
 use App\Models\JobArea;
 use App\Models\JobHrms;
+use App\Models\Organization;
 use App\Models\Profession;
 use App\Models\Province;
+use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -46,6 +49,8 @@ class AdminJobController extends Controller
         $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
             return [$type->value => $type->getLabelData()['label']];
         })->toArray();
+        $organizations = Organization::active()->get();
+
         $data['breadcrumbs'] = [
             ['label' => __('role.heading_title_create'), 'url' => route('admin.role.index')],
             ['label' => __('role.create')], // Use a more general 'create' key for the last breadcrumb
@@ -60,6 +65,7 @@ class AdminJobController extends Controller
                 'professions' => $professions,
                 'provinces' => $provinces,
                 'employment_types' => $employment_types,
+                'organizations' => $organizations,
                 'data' => $data,
             ]
         );
@@ -68,7 +74,8 @@ class AdminJobController extends Controller
     public function show($job_id)
     {
         $job = JobHrms::with('profession')->with('job_area', 'job_area.province')->findOrFail($job_id);
-        // dd($job);
+        $organizations = Organization::active()->get();
+        // dd($job->images());
 
         $breadcrumbs = [
             ['label' => __('job.txt_edit_job'), 'url' => route('admin.jobs.index')],
@@ -90,21 +97,48 @@ class AdminJobController extends Controller
                 'professions' => $professions,
                 'provinces' => $provinces,
                 'employment_types' => $employment_types,
+                'organizations' => $organizations,
             ]
         );
     }
 
-    public function update(JobPostRequest $request, ?JobHrms $job = null): RedirectResponse
+    public function update(JobPostRequest $request, ?JobHrms $job, ImageService $imageService): RedirectResponse
     {
         $data = $request->validated();
 
         DB::beginTransaction();
         try {
             // ADD
-            if (! $job) {
+            if (empty($job->job_id)) {
                 $province_ids = $data['province_id'];
                 unset($data['province_id']);
+                unset($data['image_ids']);
                 $job = JobHrms::create($data);
+
+                if ($request->hasFile('images')) {
+                    $images = $request->file('images');
+                    $existing_images = $request->input('existing_images', []);
+                    $image_ids = [];
+                    foreach ($images as $image) {
+
+                        $new_image = new Image([
+                            'name' => $image->getClientOriginalName(),
+                            'type' => 'job',
+                            'file_name_original' => $image->getClientOriginalName(),
+                            'size' => $image->getSize(),
+                            'mime_type' => $image->getMimeType(),
+                            'status' => 1,
+
+                        ]);
+                        $file = $imageService->upload($image, $new_image, 'jobs');
+                        $image_ids[] = $file->id;
+                    }
+                    if ($existing_images) {
+                        $image_ids = array_merge($image_ids, $existing_images);
+                    }
+                    $job->image_ids = $image_ids;
+                    $job->save();
+                }
 
                 if ($province_ids) {
                     foreach ($province_ids as $province_id) {
@@ -154,6 +188,42 @@ class AdminJobController extends Controller
                 unset($data['province_id'], $data['headcount']);
                 $job->update($data);
 
+                // Handle Avatar Upload
+                $new_image_ids = [];
+                if ($request->hasFile('images')) {
+                    $images = $request->file('images');
+                    foreach ($images as $image) {
+
+                        $new_image = new Image([
+                            'name' => $image->getClientOriginalName(),
+                            'type' => 'job',
+                            'file_name_original' => $image->getClientOriginalName(),
+                            'size' => $image->getSize(),
+                            'mime_type' => $image->getMimeType(),
+                            'status' => 1,
+
+                        ]);
+                        $file = $imageService->upload($image, $new_image, 'jobs');
+                        $new_image_ids[] = $file->id;
+                    }
+                }
+
+                $existing_images = [];
+                if ($request->has('existing_images')) {
+                    $existing_images = $request->input('existing_images', []);
+                }
+                $image_ids = array_merge($new_image_ids, $existing_images);
+                $current_image_ids = $job->image_ids;
+                if ($current_image_ids && $image_ids) { // delete image not in list new
+                    foreach ($current_image_ids as $image_id) {
+                        if (! in_array($image_id, $image_ids)) {
+                            $imageService->deletebyId($image_id);
+                        }
+                    }
+                }
+                $job->image_ids = $image_ids;
+                $job->save();
+
                 DB::commit();
 
                 return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
@@ -165,14 +235,31 @@ class AdminJobController extends Controller
         }
     }
 
-    public function delete($job_id): RedirectResponse
+    public function delete($job_id, ImageService $imageService): RedirectResponse
     {
-        $job = JobHrms::where('job_id', $job_id)->first();
-        if (! $job) {
-            return redirect()->route('admin.jobs.index')->with('error', 'Job not found.');
-        }
-        $job->delete();
+        DB::beginTransaction();
+        try {
+            $job = JobHrms::where('job_id', $job_id)->first();
+            if (! $job) {
+                return redirect()->route('admin.jobs.index')->with('error', 'Job not found.');
+            }
+            $image_ids = $job->image_ids;
+            $job->delete();
+            $job->job_area()->delete();
+            foreach ($image_ids as $image_id) { // TẠM THỜI XÓA LUÔN TRÊN SERVER
+                $image = Image::find($image_id);
+                if ($image) {
+                    $image->delete();
+                    $imageService->deletebyId($image_id);
+                }
+            }
+            DB::commit();
 
-        return redirect()->route('admin.jobs.index')->with('success', 'Job deleted successfully.');
+            return redirect()->route('admin.jobs.index')->with('success', 'Job deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('admin.jobs.index')->with('error', 'Job delete failed: '.$e->getMessage());
+        }
     }
 }

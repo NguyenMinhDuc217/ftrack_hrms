@@ -71,10 +71,10 @@
                 </div>
 
                 <div class="w-full md:w-1/4">
-                    <a onclick="getCurrentLocation()" class="text-sm underline text-gray-400 cursor-pointer hover:text-primary transition-colors flex items-center">
+                    <button onclick="getCurrentLocation()" class="text-sm underline text-gray-400 cursor-pointer hover:text-primary transition-colors flex items-center">
                         <i class="bi bi-geo-alt text-[var(--accent-color)] mr-1"></i>
                         {{ __('default.txt_get_current_location') }}
-                    </a>
+                    </button>
                 </div>
 
                 <div class="hidden md:block w-[200px]"></div> 

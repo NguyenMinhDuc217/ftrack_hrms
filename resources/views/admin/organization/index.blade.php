@@ -11,8 +11,8 @@
           <div class="card table-card">
             <div class="card-body">
               <div class="text-end p-4 pb-0">
-                <a href="{{ route('admin.users.create') }}" class="btn btn-success d-inline-flex align-item-center">
-                  <i class="ti ti-plus f-18"></i> Add User
+                <a href="{{ route('admin.orgs.create') }}" class="btn btn-success d-inline-flex align-item-center">
+                  <i class="ti ti-plus f-18"></i> {{ __('org.txt_add_org') }}
                 </a>
               </div>
               <div class="table-responsive">
@@ -20,54 +20,59 @@
                   <thead>
                     <tr>
                       <th></th>
-                      <th>User ID</th>
-                      <th>Username</th>
+                      <th>ID</th>
+                      <th>Name</th>
                       <th>Phone number</th>
-                      <th>Department</th>
                       <th>Status</th>
                       <th class="text-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($users as $user)
+                    @foreach ($orgs as $org)
                     <tr>
                       <td>
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox">
                         </div>
                       </td>
-                      <td>{{ $user->user_id }}</td>
+                      <td>{{ $org->org_id }}</td>
                       <td>
                         <div class="row">
-                          <!-- <div class="col-auto pe-0">
-                            <img src="../assets/images/user/avatar-1.jpg" alt="user-image"
-                              class="wid-40 rounded-circle">
-                          </div> -->
-                          <div class="col">
-                            <h5 class="mb-0">{{ $user->username }}</h5>
-                            <p class="text-muted f-12 mb-0">{{ $user->email }}</p>
+                          <div class="col-auto pe-0">
+                            @php $img = $org->image @endphp
+                            <img src="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" class="img-thumbnail object-fit-contain" id="logo-preview" style="height: 60px !important; width: 60px;">
+                          </div>
+                          <div class="col d-flex flex-column justify-content-center">
+                            <h5 class="mb-0">{{ $org->name }}</h5>
+                            <p class="text-muted f-12 mb-0">{{ $org->address }}</p>
                           </div>
                         </div>
                       </td>
-                      <td>{{ $user->phone_number }}</td>
-                      <td>{{ $user->department?->department_name }}</td>
                       <td>
-                        @php
-                          $status = $user->status->getLabelData();
-                        @endphp
-                        <span class="badge {{$status['color']}} rounded-pill f-12">{{ $status['label'] }}</span>
+                        <div>
+                          <p class="text-muted f-12 mb-0">{{ $org->phone_number }}</p>
+                            <p class="text-muted f-12 mb-0">{{ $org->email }}</p>
+                        </div>
+                      </td>
+                      <td>
+                          <div class="col">
+                              <h5 class="badge {{$statuses[$org->status]['color']}} rounded-pill f-12">{{ $statuses[$org->status]['lang'] }}</h5>
+                          </div>
                       </td>
                       <td class="text-center">
                         <ul class="list-inline me-auto mb-0">
                           <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Edit">
-                            <a href="{{ route('admin.users.show', $user->user_id) }}" class="avtar avtar-xs btn-link-primary">
+                            <a href="{{ route('admin.orgs.show', $org->org_id) }}" class="avtar avtar-xs btn-link-primary">
                               <i class="ti ti-edit-circle f-18"></i>
                             </a>
                           </li>
                           <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
-                            <a href="#" class="avtar avtar-xs btn-link-danger">
-                              <i class="ti ti-trash f-18"></i>
-                            </a>
+                            <form action="{{ route('admin.orgs.delete', $org->org_id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này không?');" style="display: inline;">
+                              @csrf
+                              <button type="submit" class="avtar avtar-xs btn-link-danger">
+                                <i class="ti ti-trash f-18"></i>
+                              </button>
+                            </form>
                           </li>
                         </ul>
                       </td>
@@ -78,9 +83,7 @@
               </div>
             </div>
 
-                  <!-- {{ $users->links() }} -->
-
-                  {{ $users->links('vendor.pagination.bootstrap-5') }}
+                  {{ $orgs->links('vendor.pagination.bootstrap-5') }}
 
           </div>
         </div>

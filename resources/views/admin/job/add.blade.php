@@ -1,4 +1,15 @@
+<style>
+    .dz-image-preview {
+        position: relative;
+    }
 
+    .dz-image-preview .dz-remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 21;
+    }
+</style>
 <!-- [ Main Content ] start -->
 <div class="row">
     <!-- [ sample-page ] start -->
@@ -8,13 +19,42 @@
                 <h3>{{ __('job.txt_add_job') }}</h3>
             </div>
 
-            <form action="{{ route('admin.jobs.store') }}" method="POST" class="form-horizontal">
+            <form action="{{ route('admin.jobs.store') }}" method="POST" id="job-add-form" class="form-horizontal" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
+
+                    <div class="form-group">
+                        <label class="form-label" for="image">{{ __('job.txt_image') }}</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div action="../assets/json/file-upload.php" id="multiImageUpload" class="dropzone">
+                                            <div class="fallback">
+                                                <i class="bi bi-cloud-upload text-4xl text-gray-400 mb-4"></i>
+                                            </div>
+                                        </div>
+
+                                        <!-- Input ẩn để Dropzone gán file vào (Tên là images[]) -->
+                                        <input type="file" name="images[]"  id="real-file-input" multiple class="d-none is-invalid" accept="image/*">
+
+                                        @if ($errors->has('images.*'))
+                                            @foreach ($errors->get('images.*') as $file_errors)
+                                                <div class="invalid-feedback" role="alert">
+                                                    <strong>{{ $file_errors[0] }}</strong>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label" for="name">{{ __('job.txt_title') }}</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            placeholder="{{ __('job.txt_title') }}" id="name" value="">
+                            placeholder="{{ __('job.txt_title') }}" id="name" value="{{ old('name') }}">
                         @error('name')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -106,7 +146,7 @@
 
                     <div class="form-group">
                         <label class="form-label">{{ __('job.txt_description') }}</label>
-                        <textarea name="description_md" id="editor-description">{{ old('description_md') }}</textarea>
+                        <textarea name="description_md" id="editor-description" class="form-control @error('description_md') is-invalid @enderror">{{ old('description_md') }}</textarea>
                         @error('description_md')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -114,10 +154,9 @@
                         @enderror
                     </div>
 
-
                     <div class="form-group">
                         <label class="form-label">{{ __('job.txt_requirements') }}</label>
-                        <textarea name="requirements_md" id="editor-requirements">{{ old('requirements_md') }}</textarea>
+                        <textarea name="requirements_md" id="editor-requirements" class="form-control @error('requirements_md') is-invalid @enderror">{{ old('requirements_md') }}</textarea>
                         @error('requirements_md')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -201,6 +240,22 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">{{ __('org.txt_org') }}</label>
+                        <select name="org_id" class="form-control @error('org_id') is-invalid @enderror">
+                            <option value="" disabled selected>-{{ __('org.txt_org') }}-</option>
+                            @foreach ($organizations as $organization)
+                                <option value="{{ $organization->org_id }}" @selected(old('org_id') == $organization->org_id)>{{ $organization->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('org_id')
+                        <div class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                        <small>{{ __('default.enter_a') }} {{ __('default.text') }}</small>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">{{ __('user.txt_status') }}</label>
                         <select name="status" class="form-control @error('status') is-invalid @enderror">
                             <option value="" disabled selected>-{{ __('user.txt_status') }}-</option>
@@ -221,185 +276,6 @@
                     <button type="reset" class="btn btn-light">Reset</button>
                 </div>
             </form>
-            
-            <!-- <form action="{{ route('admin.jobs.store') }}" method="POST" class="form-horizontal">
-                @csrf
-                <div class="card-body">
-                    <div class="form-group">
-                        <label class="form-label" for="title">{{ __('job.txt_title') }}</label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" name="title"
-                            placeholder="{{ __('job.txt_title') }}" id="title" value="{{ old('title') }}">
-                        @error('title')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                        <small>{{ __('default.maxlength_set_to_characters', ['length' => 100]) }}</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('user.txt_profession') }}</label>
-                        <select class="form-control @error('profession_id') is-invalid @enderror" name="profession_id">
-                            <option label="-{{ __('user.txt_profession') }}-"></option>
-                            @foreach ($professions as $profession)
-                            <option value="{{$profession->profession_id}}" @selected(old('profession_id')==$profession->
-                                profession_id)>
-                                {{$profession->profession_name}}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('profession_id')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_province') }}</label>
-                        <select onchange="addProvince()" class="form-control @error('province_code') is-invalid @enderror" id="province_code">
-                            <option label="-{{ __('job.txt_province') }}-"></option>
-                            @foreach ($provinces as $province)
-                            <option value="{{$province->code}}" @selected(old('province_code')==$province->code)>
-                                {{$province->name}}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('code')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-
-                        <select name="province_code[]" multiple style="display: none;" id="area_application_hidden">
-                        </select>
-
-                        <div id="province_tags" class="d-flex flex-wrap gap-2 mt-3">
-                            @foreach($job->area_application ?? [] as $area)
-                                @if($area)
-                                    <span class="badge rounded-pill bg-success d-flex flex-row align-items-center gap-1 p-2" id="province_tag_{{ $area->province->code }}">
-                                        <span class="text-white">{{ $area->province->name }}</span>
-                                        <button onclick="removeProvince('{{ $area->province->code }}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition d-flex align-items-center justify-content-center">
-                                            <i class="ti ti-x"></i>
-                                        </button>
-                                    </span>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('user.txt_employment_type') }}</label>
-                        <select name="employment_type"
-                            class="form-control @error('employment_type') is-invalid @enderror">
-                            <option value="">-{{ __('user.txt_employment_type') }}-</option>
-                            @foreach($employment_types as $key => $value)
-                            <option value="{{ $key }}" @selected(old('employment_type')==$key)>
-                                {{ $value }}
-                            </option>
-                            @endforeach`
-                        </select>
-                        @error('employment_type')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_headcount') }}</label>
-                        <input type="number" class="form-control @error('headcount') is-invalid @enderror"
-                            name="headcount" placeholder="{{ __('job.txt_headcount') }}" value="{{ old('headcount') }}">
-                        @error('headcount')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                        <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_description') }}</label>
-                        <textarea class="form-control @error('description_md') is-invalid @enderror"
-                            name="description_md"
-                            placeholder="{{ __('job.txt_description') }}">{{ old('description_md') }}</textarea>
-                        @error('description_md')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_requirements') }}</label>
-                        <textarea class="form-control @error('requirements_md') is-invalid @enderror"
-                            name="requirements_md"
-                            placeholder="{{ __('job.txt_requirements') }}">{{ old('requirements_md') }}</textarea>
-                        @error('requirements_md')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_min_salary') }}</label>
-                        <input type="number" class="form-control @error('min_salary') is-invalid @enderror"
-                            name="min_salary" placeholder="{{ __('job.txt_min_salary') }}"
-                            value="{{ old('min_salary') }}">
-                        @error('min_salary')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                        <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_max_salary') }}</label>
-                        <input type="number" class="form-control @error('max_salary') is-invalid @enderror"
-                            name="max_salary" placeholder="{{ __('job.txt_max_salary') }}"
-                            value="{{ old('max_salary') }}">
-                        @error('max_salary')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                        <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('job.txt_currency') }}</label>
-                        <input type="text" class="form-control @error('currency') is-invalid @enderror" name="currency"
-                            placeholder="{{ __('job.txt_currency') }}" value="{{ old('currency') }}">
-                        @error('currency')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                        <small>{{ __('default.enter_a') }} {{ __('default.text') }}</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">{{ __('user.txt_status') }}</label>
-                        <select name="status" class="form-control @error('status') is-invalid @enderror">
-                            <option value="" disabled selected>-{{ __('user.txt_status') }}-</option>
-                            <option value="1" @selected(old('status')==1)>Hoạt động</option>
-                            <option value="0" @selected(old('status')==0)>Không hoạt động</option>
-                        </select>
-                        @error('status')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @enderror
-                    </div>
-
-                </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-success me-2">{{__('default.button_add')}}</button>
-                    <button type="reset" class="btn btn-light">{{__('default.button_reset')}}</button>
-                </div>
-            </form> -->
         </div>
 
     </div>
@@ -408,15 +284,61 @@
 <!-- [ Main Content ] end -->
 
 <script>
+    let descEditor, reqEditor; 
     (function () {
-        ClassicEditor.create(document.querySelector('#editor-description')).catch((error) => {
+        ClassicEditor.create(document.querySelector('#editor-description'))
+        .then(editor => {
+            descEditor = editor;
+        })
+        .catch((error) => {
             console.error(error);
         });
     })();
 
     (function () {
-        ClassicEditor.create(document.querySelector('#editor-requirements')).catch((error) => {
+        ClassicEditor.create(document.querySelector('#editor-requirements'))
+        .then(editor => {
+            reqEditor = editor;
+        })
+        .catch((error) => {
             console.error(error);
         });
     })();
+</script>
+
+<script>
+    Dropzone.autoDiscover = false;
+    let myDropzone = new Dropzone("#multiImageUpload", {
+        url: "{{ route('admin.jobs.store') }}",
+        autoProcessQueue: false, // Không cho tự động upload lên URL của dropzone
+        uploadMultiple: true,
+        parallelUploads: 20,
+        paramName: "images", // Tên mảng file
+        acceptedFiles: 'image/*',
+        addRemoveLinks: true,
+        dictRemoveFile: "<i class='ti ti-x position-absolute top-0 end-0 bg-danger p-1 text-sm text-white rounded-circle'></i>",
+        init: function() {
+            let dz = this;
+            let form = document.getElementById('job-add-form');
+            let realInput = document.getElementById('real-file-input');
+            form.addEventListener("submit", function(e) {
+                // Sử dụng DataTransfer để gom file
+                const dataTransfer = new DataTransfer();
+                
+                // Lấy toàn bộ file hiện có trong Dropzone bỏ vào DataTransfer
+                dz.getAcceptedFiles().forEach(file => {
+                    dataTransfer.items.add(file);
+                });
+
+                // Gán danh sách file này vào input file thật
+                realInput.files = dataTransfer.files;
+
+                // Đồng bộ CKEditor trước khi submit truyền thống
+                if (descEditor) document.querySelector('#editor-description').value = descEditor.getData();
+                if (reqEditor) document.querySelector('#editor-requirements').value = reqEditor.getData();
+
+            });
+
+        }
+    });
 </script>

@@ -15,3 +15,9 @@
 <link rel="stylesheet" href="{{ asset('admin/assets/css/style-preset.css') }}">
 <!-- SweetAlert2 CSS -->
 <link rel="stylesheet" href="{{ asset('admin/assets/css/plugins/sweetalert2.css') }}">
+<!-- fileupload-custom css -->
+<link rel="stylesheet" href="{{ asset('admin/assets/css/plugins/dropzone.min.css') }}">
+
+
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}" id="main-style-link" >>

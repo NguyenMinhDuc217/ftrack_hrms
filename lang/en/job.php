@@ -14,6 +14,7 @@ return [
     'txt_currency' => 'Currency',
     'txt_start_date' => 'Start date',
     'txt_end_date' => 'End date',
+    'txt_image' => 'Image',
 
     // Validation
     'title_required' => 'Title is required.',
@@ -40,6 +41,13 @@ return [
     'end_date_date' => 'End date must be a date.',
     'end_date_date_format' => 'End date must be in the format Y-m-d.',
     'end_date_after_or_equal' => 'End date must be after or equal to start date.',
+    'images_array' => 'Images must be an array.',
+    'imagesmax' => 'Images must be less than :max.',
+    'images_image' => 'Images must be a image.',
+    'images_mimes' => 'Images must be a valid image.',
+    'images_all_max' => 'Images must be less than 2MB.',
+    'org_id_required' => 'Organization is required.',
+    'org_id_exists' => 'Selected organization does not exist.',
     'status_boolean' => 'Status must be a boolean.',
     'job_not_exists' => 'Job does not exist.',
     'province_not_exists' => 'Province does not exist.',
