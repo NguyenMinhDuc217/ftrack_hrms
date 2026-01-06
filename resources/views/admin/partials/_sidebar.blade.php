@@ -4,7 +4,7 @@
     <div class="m-header">
       <a href="{{ route('admin.dashboard') }}" class="b-brand text-primary">
         <!-- ========   Change your logo from here   ============ -->
-        <img src="{{ asset('admin/assets/images/logo-dark.svg') }}" class="img-fluid logo-lg" alt="logo">
+        <img src="{{ asset('client/assets/img/cpm-logo.webp') }}" class="img-fluid logo-lg" alt="logo">
       </a>
     </div>
     <div class="navbar-content">

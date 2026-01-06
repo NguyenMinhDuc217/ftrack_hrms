@@ -298,7 +298,7 @@
                                     @if($cvs && $cvs->count() > 0)
                                         @foreach($cvs as $cv)
                                             <div id="cv-item-{{ $cv->id }}" class="cv-item text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
-                                                <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold">{{ $cv->document_title }}</a>
+                                                <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold underline">{{ $cv->document_title }}</a>
                                                 <span onclick="chooseCV({{ $cv->id }}, this )" class="cv-select-btn btn bg-[var(--accent-color)] text-white hover:outline-[var(--accent-color)] hover:border-2 hover:border-[var(--accent-color)] hover:bg-transparent hover:!text-[var(--accent-color)] hover:cursor-pointer">{{__('job.txt_choose_cv')}}</span>
                                             </div>
                                         @endforeach

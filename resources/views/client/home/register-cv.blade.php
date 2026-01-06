@@ -12,7 +12,7 @@
                 <p class="text-gray-600 mb-8 max-w-lg leading-relaxed">
                     {{ __('default.txt_register_cv_des') }}
                 </p>
-                <button class="bg-[var(--accent-color)] hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group">
+                <button id="register_cv" class="bg-[var(--accent-color)] hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group">
                     {{ __('default.txt_register_cv_btn') }}
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-right-dashed"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12h.5m3 0h1.5m3 0h6" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" /></svg>
                 </button>
@@ -35,4 +35,16 @@
             </div>
         </div>
     </div>
+
+    @auth
+    <x-client.create-cv />
+    @endauth
+
+<script>
+    $(document).ready(function() {
+        $('#register_cv').click(function() {
+            $('#CreateCVModal').modal('show');
+        });
+    });
+</script>
 </section>

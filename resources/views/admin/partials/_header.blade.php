@@ -85,7 +85,7 @@
           </a>
           <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
             <div class="dropdown-header d-flex align-items-center justify-content-between">
-              <h5 class="m-0">Message</h5>
+              <h5 class="m-0">Notifications</h5>
               <a href="#!" class="pc-head-link bg-transparent"><i class="ti ti-x text-danger"></i></a>
             </div>
             <div class="dropdown-divider"></div>
@@ -167,18 +167,29 @@
                   <img src="{{ asset('admin/assets/images/user/avatar-2.jpg') }}" alt="user-image" class="user-avtar wid-35">
                 </div>
                 <div class="flex-grow-1 ms-3">
-                  <h6 class="mb-1">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</h6>
-                  <span>Admin</span> {{-- You might dynamically get the user role here --}}
+                  <h6 class="mb-1">{{ Auth::check() ? Auth::user()->username : 'Guest' }}</h6>
+                  <span>{{ Auth::check() ? Auth::user()->roles->first()->name : 'Guest' }}</span> {{-- You might dynamically get the user role here --}}
                 </div>
-                <a href="#!" class="pc-head-link bg-transparent">
-                    <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                <span onclick="document.getElementById('logout-form').submit();" class="pc-head-link bg-transparent">
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display:inline;">
                         @csrf
                         <button type="submit" class="ti ti-power text-danger" style="background:none; border:none; padding:0;"></button>
                     </form>
-                </a>
+                </span>
               </div>
+              <a href="{{ route('client.home') }}" class="bg-transparent d-flex justify-content-between align-items-center mb-1 text-secondary">
+                <div class="flex-shrink-0" style="width: 50px !important;"></div>
+                <div class=" flex-grow-1 ms-3">
+                  <h7 class="mb-1">
+                    View Client
+                  </h7>
+                </div>
+                <span class="pc-head-link bg-transparent">
+                  <span class="ti ti-arrow-right"></span>
+                </span>
+              </a>
             </div>
-            <ul class="nav drp-tabs nav-fill nav-tabs" id="mydrpTab" role="tablist">
+            <!-- <ul class="nav drp-tabs nav-fill nav-tabs" id="mydrpTab" role="tablist">
               <li class="nav-item" role="presentation">
                 <button
                   class="nav-link active"
@@ -254,7 +265,7 @@
                   <span>History</span>
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
         </li>
       </ul>
