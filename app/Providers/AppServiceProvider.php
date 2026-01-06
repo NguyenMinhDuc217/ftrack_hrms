@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
             return $filter->apply($this);
         });
         //
-        RedirectIfAuthenticated::redirectUsing(fn () => route('client.dashboard'));
+        // RedirectIfAuthenticated::redirectUsing(fn () => route('client.dashboard'));
+        RedirectIfAuthenticated::redirectUsing(fn () => route('client.home'));
     }
 }

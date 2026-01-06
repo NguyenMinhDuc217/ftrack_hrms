@@ -36,7 +36,7 @@ class LoginController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            $backUrl = $request->session()->get('_previous', ['url' => route('client.dashboard')]);
+            $backUrl = $request->session()->get('_previous', ['url' => route('client.home')]);
 
             $cvs = UserDocument::where('user_id', $user->user_id)
                 ->where('document_type', 'cv_file')
@@ -46,9 +46,6 @@ class LoginController extends Controller
             if ($cvs === 0) {
                 session(['show_create_cv_modal' => true]);
             }
-
-            // Redirect to the client dashboard after successful login
-            // return redirect()->intended(route('client.dashboard'));
 
             return redirect()->intended($backUrl['url']);
         }
