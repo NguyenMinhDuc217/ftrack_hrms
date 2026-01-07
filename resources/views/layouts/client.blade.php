@@ -39,6 +39,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
     <script src="{{ asset('client/assets/vendor/jquery/jquery.min.js') }}"></script>
 
     <!-- Fancybox -->
@@ -49,6 +51,11 @@
         body{
             font-family: 'Mulish' !important;
         }
+        :root {
+            --accent-color: #6DB12D;
+            --red-color: #E3501F;
+            --blue-color: #1F7DBC;
+        }
     </style>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -57,8 +64,8 @@
         theme: {
             extend: {
                 colors: {
-                    primary: '#65a30d', // lime-600
-                    'primary-hover': '#4d7c0f', // lime-700
+                    primary: '#1F7DBC', // lime-600
+                    'primary-hover': '#1F7DBC', // lime-700
                     secondary: '#1e40af', // blue-800
                     footer: '#2f4f18', // custom dark green
                 }
@@ -122,7 +129,7 @@
   @endif
 
     <!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center bg-black"><i
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Preloader -->

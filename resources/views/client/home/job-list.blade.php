@@ -1,9 +1,9 @@
-<section class="py-6 bg-gray-50">
+<section class="py-6 bg-background">
     <div class="container mx-auto px-4">
 
         <!-- Filters -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <div class="sm:w-1/5 w-max flex items-center space-x-2 px-4 py-1.5 bg-white rounded-full border border-gray-200 text-sm text-gray-600 w-full md:w-auto">
+            <div class="sm:w-1/5 w-max flex items-center space-x-2 px-4 py-1.5 bg-white rounded-0 border border-gray-200 text-sm text-gray-600 w-full md:w-auto">
                 <span class="whitespace-nowrap font-medium text-gray-900">{{ __('job.txt_filter_by') }}:</span>
                 <select class="border-none bg-transparent font-semibold text-gray-900 focus:ring-0 cursor-pointer outline-none">
                     @foreach($filters as $key => $value)
@@ -24,10 +24,10 @@
         <div id="job-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 
             @foreach($jobs as $job)
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300 group cursor-pointer h-full flex flex-col">
+            <div class="bg-white rounded-0 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300 group cursor-pointer h-full flex flex-col">
                 <a href="{{ route('client.job.detail', $job->job_id) }}" class="job-card p-4 pb-2" id="job-{{ $job->id }}">
                     <div class="flex items-start gap-4 flex-1">
-                        <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}" alt="Company Logo" class="w-16 h-16 object-contain rounded-lg flex-shrink-0" />
+                        <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}" alt="Company Logo" class="w-16 h-16 object-contain rounded-0 flex-shrink-0" />
     
                         <div class="flex flex-col flex-1 min-w-0">
                             <h3 class="text-base font-bold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 h-[3rem]">
@@ -43,7 +43,7 @@
                             </div>
                             @endif
     
-                            <div class="text-green-600">
+                            <div class="text-gray-500">
                                 <i class="bi bi-coin mr-2"></i>
                                 {{ __('job.txt_salary_rank', ['min' => number_format($job->min_salary / 1000000, 1), 'max' => number_format($job->max_salary / 1000000, 1)]) }}
                             </div>
@@ -59,7 +59,7 @@
                         @if($job->job_area->count() > 0)
                         <div class="text-sm text-gray-600">
                             <span class="px-2 py-1 bg-gray-100 rounded-md text-xs">
-                                <i class="bi bi-geo-alt-fill w-4 h-4 text-[var(--accent-color)]"></i>
+                                <i class="bi bi-geo-alt-fill w-4 h-4 text-[var(--blue-color)]"></i>
                                 {{ $job->job_area->first()->province->localized_name ?? '' }} {{ $job->job_area->count() > 1 ? ' ' . __('job.txt_and') . ' ' . ($job->job_area->count() - 1) . ' ' . __('job.txt_otherwhere') : '' }}
                             </span>
                         </div>

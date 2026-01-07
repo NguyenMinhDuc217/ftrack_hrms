@@ -36,9 +36,9 @@
     }
 
     .filter-btn.active {
-        background-color: var(--accent-color) !important;
+        background-color: var(--blue-color) !important;
         color: white !important;
-        border-color: var(--accent-color) !important;
+        border-color: var(--blue-color) !important;
     }
 </style>
 @if(!$filters->isEmpty())
@@ -50,9 +50,9 @@
 
     <div class="flex items-center gap-2 overflow-x-auto scrollbar-hidden scrollable-no-select scroll-smooth w-full md:w-auto scrollable">
     <!-- <div class="flex items-center scrollable"> -->
-            <button class="filter-btn flex-shrink-0 px-4 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors border bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 scrollable-item" data-loc="Tất cả">Tất cả</button>
+            <button class="filter-btn flex-shrink-0 px-4 py-1.5 rounded-0 text-sm whitespace-nowrap transition-colors border bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 scrollable-item" data-loc="Tất cả">Tất cả</button>
             @foreach($filters as $filter)
-            <button onclick="filterJobs('{{ $type }}', '{{ $filter->id }}')" class="filter-btn flex-shrink-0 px-4 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors border bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 scrollable-item {{ (isset($val) && $val == $filter->id) ? 'active' : '' }}">{{ $filter->name }}</button>
+            <button onclick="filterJobs('{{ $type }}', '{{ $filter->id }}')" class="filter-btn flex-shrink-0 px-4 py-1.5 rounded-0 text-sm whitespace-nowrap transition-colors border bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 scrollable-item {{ (isset($val) && $val == $filter->id) ? 'active' : '' }}">{{ $filter->name }}</button>
             @endforeach
     </div>
     
