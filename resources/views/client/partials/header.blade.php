@@ -1,5 +1,5 @@
 <header id="header" class="header d-flex align-items-center sticky-top">
-  <div class="container-fluid container-xl position-relative d-flex align-items-center">
+  <div class="container-fluid container-xl position-relative d-flex align-items-center container mx-auto px-4">
 
     <a href="{{ route('client.home') }}" class="logo d-flex align-items-center me-auto">
       <!-- <h1 class="sitename">eNno</h1> -->

@@ -7,6 +7,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8">
+                    <div class="card p-4 rounded-0">
+                        <h3 class="card-title text-center mb-4">Register for an Account</h3>
                     <div class="card p-4">
                         <h3 class="card-title text-center mb-4 h3">Register for an Account</h3>
                         <form method="POST" action="{{ route('register') }}" class="">
@@ -68,7 +70,7 @@
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn bg-[var(--accent-color)] hover:bg-[--accent-color] rounded-0 text-white">Register</button>
+                                <x-client.elements.button type="submit" text="Register" />
                             </div>
 
                             <div class="text-center mt-3">

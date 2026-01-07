@@ -1,7 +1,7 @@
 <div class="modal fade" id="CreateCVModal" tabindex="-1" aria-labelledby="createFirstCvModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered lg:max-w-[40%]">
         <div class="modal-content overflow-hidden">
-            <div class="modal-header border-0 pb-3 bg-[var(--accent-color)] text-white">
+            <div class="modal-header border-0 pb-3 bg-black text-white">
                 <h3 class="modal-title text-xl font-bold w-full text-center text-white">
                     🎉 {{ __('cv.txt_welcome') }}
                 </h3>
@@ -10,7 +10,7 @@
 
             <div class="modal-body">
                 <div class="text-center flex flex-col items-center gap-2">
-                    <i class="bi bi-file-earmark-person text-6xl text-[var(--accent-color)]"></i>
+                    <i class="bi bi-file-earmark-person text-6xl text-black"></i>
                     <h4 class="text-lg font-bold text-gray-800">
                         {{ __('cv.txt_you_not_cv') }}
                     </h4>
@@ -49,7 +49,7 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                        <button type="submit" class="btn btn-success w-full">{{ __('job.txt_create_cv') }}</button>
+                        <button type="submit" class="btn rounded-0 bg-black text-white hover:!bg-white hover:!text-black hover:border-2 hover:border-black w-full">{{ __('job.txt_create_cv') }}</button>
                     </form>
 
                     <!-- Bỏ qua tạm thời -->

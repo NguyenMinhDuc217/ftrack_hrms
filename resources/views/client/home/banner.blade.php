@@ -52,9 +52,9 @@
                 </div>
     
                 <div class="w-full md:w-auto flex gap-3 h-[53.6px]">
-                    <button class="flex-1 px-12 py-auto border border-transparent text-sm font-medium rounded-0 bg-black text-white hover:!bg-white hover:!text-black hover:border-1 hover:border-black hover:shadow-xl transition-all duration-200" onclick="filterJobs()">
+                    <x-client.elements.button type="button" class="flex-1 px-12 py-auto text-sm font-medium  hover:shadow-xl transition-all duration-200" onclick="filterJobs()">
                         <i class="ti ti-search text-xl"></i>
-                    </button>
+                    </x-client.elements.button>
         
                     <a href="{{ route('client.home') }}" class="w-1/3 py-3 px-4 flex justify-center items-center border border-transparent text-sm font-medium rounded-0 bg-light hover:bg-gray-100  hover:text-primary hover:shadow-xl transition-all duration-200"><i class="ti ti-eraser text-xl"></i></a>
                 </div>

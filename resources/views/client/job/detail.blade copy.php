@@ -99,9 +99,10 @@
                         </p>
                     </div>
                     <!-- Hạn nộp + Nút ứng tuyển -->
-                    <x-client.elements.button type="button" class="h-12 w-full flex justify-center items-center gap-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl" data-bs-toggle="modal" data-bs-target="#applyModal" onclick="saveCurrentUrl()">
+                     
+                    <button class="h-12 btn bg-black text-white rounded-0 w-full flex justify-center items-center gap-2 hover:!bg-white hover:!text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200" data-bs-toggle="modal" data-bs-target="#applyModal" onclick="saveCurrentUrl()">
                         <i class="bi bi-send-plus"></i><span>{{ __('job.txt_apply_now') }}</span>
-                    </x-client.elements.button>
+                    </button>
                 </div>
 
                 @if($job->images()->count() > 0)
@@ -299,9 +300,7 @@
                                         @foreach($cvs as $cv)
                                             <div id="cv-item-{{ $cv->id }}" class="cv-item text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
                                                 <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold underline">{{ $cv->document_title }}</a>
-                                                <x-client.elements.button type="button" class="cv-select-btn" onclick="chooseCV({{ $cv->id }}, this )">
-                                                    {{__('job.txt_choose_cv')}}
-                                                </x-client.elements.button>
+                                                <span onclick="chooseCV({{ $cv->id }}, this )" class="cv-select-btn btn rounded-0 bg-black text-white hover:!bg-white  hover:!outline-[var(--accent-color)] hover:border-2 hover:border-[var(--accent-color)] hover:bg-transparent hover:!text-[var(--accent-color)] hover:cursor-pointer">{{__('job.txt_choose_cv')}}</span>
                                             </div>
                                         @endforeach
                                     @else
@@ -326,12 +325,10 @@
                                             <label class="form-label fw-bold">{{ __('cv.upload_cv') }}</label>
                                             <div class="input-group">
                                                 <input type="file" name="cv_file" id="cv_file" class="form-control" accept=".doc,.docx,.pdf">
-                                        
-                                                <x-client.elements.button type="button" class="!rounded-r-[var(--bs-border-radius)]" onclick="uploadCV()">
+                                                <button type="button" onclick="uploadCV()" class="btn bg-black text-white hover:!bg-white hover:!text-black hover:border-black">
                                                     <i class="ti ti-upload me-2"></i> {{ __('cv.upload_cv') }}
-                                                </x-client.elements.button>
+                                                </button>
                                             </div>
-                                            <span class="text-danger" id="cv_file_error"></span>
                                         </div>
                                         <input type="hidden" id="user_document_id">
                                         <small class="text-muted">{{ __('cv.upload_file_rules') }}</small>
@@ -362,9 +359,7 @@
                             </div>
                         </div>
                         <div class="modal-footer grid grid-cols-5 justify-center items-center gap-2">
-                            <x-client.elements.button type="submit" class="col-span-4 h-12 flex justify-center items-center gap-2  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">
-                                {{__('job.txt_apply')}}
-                            </x-client.elements.button>
+                            <button type="submit" class="col-span-4 h-12 btn bg-black rounded-0 text-white flex justify-center items-center gap-2 hover:!bg-white hover:!text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">{{__('job.txt_apply')}}</button>
                             <button type="button" class="col-span-1 h-12 btn border border-transparent text-sm font-medium rounded-0 bg-light hover:bg-gray-100  hover:text-primary hover:shadow-xl" data-bs-dismiss="modal">{{__('default.btn_close')}}</button>
                         </div>
                     </form>
@@ -479,7 +474,6 @@
                             title: response.message
                         });
                     } else {
-                        $('#cv_file_error').text(response.message);
                         Toast.fire({
                             icon: 'error',
                             title: response.message
@@ -487,7 +481,6 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    $('#cv_file_error').text(error);
                     console.log(error);
                 }
             });

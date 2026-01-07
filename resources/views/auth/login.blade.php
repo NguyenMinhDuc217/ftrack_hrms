@@ -7,11 +7,14 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8">
+                    <div class="card p-4 rounded-0">
+                        <h3 class="card-title text-center mb-4">Login to Your Account</h3>
                     <div class="card p-4">
                         <h3 class="card-title text-center mb-4 h3">Login to Your Account</h3>
                         {{-- GOOGLE LOGIN BUTTON --}}
                         <div class="d-grid gap-2 mb-3">
                             <a href="{{ route('google.redirect') }}"
+                                class="btn btn-light rounded-0 border d-flex align-items-center justify-content-center gap-2 py-2">
                                 class="btn btn-light border rounded-0 d-flex align-items-center justify-content-center gap-2 py-2">
 
                                 {{-- Google SVG Icon --}}
@@ -52,7 +55,7 @@
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn bg-[var(--accent-color)] hover:bg-[var(--accent-color)] rounded-0 text-white">Login</button>
+                                <x-client.elements.button type="submit" text="Login" />
                             </div>
 
                             <div class="text-center mt-3">
