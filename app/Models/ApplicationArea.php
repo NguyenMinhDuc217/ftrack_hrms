@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\GeneralStatus;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ApplicationArea extends Model
+class ApplicationArea extends Pivot
 {
     use SoftDeletes;
 
@@ -19,7 +20,16 @@ class ApplicationArea extends Model
         'status',
     ];
 
-    protected $primaryKey = ['application_id', 'job_area_id'];
+    protected function casts(): array
+    {
+        return [
+            'status' => GeneralStatus::class,
+        ];
+    }
+
+    public $incrementing = false;
+    protected $primaryKey = null;
+    // protected $primaryKey = ['application_id', 'job_area_id'];
 
     public function application()
     {

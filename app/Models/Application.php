@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GeneralStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $job_area_count
  * @property-read \App\Models\User|null $user
  * @property-read \App\Models\UserDocument|null $user_document
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Application newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Application newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Application onlyTrashed()
@@ -33,6 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Application whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Application withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Application withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Application extends Model
@@ -66,11 +69,23 @@ class Application extends Model
 
     public function job()
     {
-        return $this->belongsTo(JobHrms::class, 'job_id')->where('job_hrms.status', 1)->where('job_hrms.deleted_at', null);
+        return $this->belongsTo(JobHrms::class, 'job_id')->where('jobs_hrms.status', 1)->where('jobs_hrms.deleted_at', null);
     }
 
     public function job_area()
     {
-        return $this->belongsToMany(JobArea::class, 'application_areas', 'application_id', 'job_area_id')->where('job_area.status', 1)->where('job_area.deleted_at', null)->withTimestamps();
+        return $this->belongsToMany(
+            JobArea::class,
+            'application_areas',
+            'application_id',
+            'job_area_id',
+            'application_id',
+            'job_area_id'
+        )
+            ->where('job_areas.status', GeneralStatus::ACTIVE)
+            ->where('job_areas.deleted_at', null)
+            ->where('application_areas.status', GeneralStatus::ACTIVE)
+            ->where('application_areas.deleted_at', null)
+            ->withTimestamps();
     }
 }

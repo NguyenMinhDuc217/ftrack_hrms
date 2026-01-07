@@ -64,7 +64,7 @@
                 <li class="pc-item">
                     <a href="{{ route("admin.applications.index") }}" class="pc-link">
                         <span class="pc-micon"><i class="ti ti-receipt"></i></span>
-                        <span class="pc-mtext">Applications</span>
+                        <span class="pc-mtext">{{ __('default.txt_apply') }}</span>
                     </a>
                 </li>
                 @endcan

@@ -36,7 +36,7 @@ class ClientController extends Controller
 
         $filters = [
             'profession' => __('job.txt_category'),
-            'salary' => __('job.txt_salary'),
+            // 'salary' => __('job.txt_salary'),
         ];
         $provinces = Province::select('id', 'name')->get();
 

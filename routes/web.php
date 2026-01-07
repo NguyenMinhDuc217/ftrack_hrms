@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminApplicationController;
 use App\Http\Controllers\Admin\AdminBlogController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
@@ -210,4 +211,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     Route::post('/orgs/delete/{org}', [AdminOrganizationController::class, 'delete'])->name('orgs.delete');
 
     Route::patch('upload/editor/image', [AdminOrganizationController::class, 'uploadEditorImage'])->name('upload.editor.image');
+
+    // Apply
+    Route::get('/applications', [AdminApplicationController::class, 'index'])->name('applications.index');
+    Route::get('/applications/{id}', [AdminApplicationController::class, 'show'])->name('applications.show');
 });

@@ -30,6 +30,7 @@ return [
     'txt_get_current_location' => 'Get current location',
     'txt_users' => 'Users',
     'txt_home' => 'Home',
+    'txt_apply' => 'Apply',
 
     // Pagination
     'showing' => 'Showing',

@@ -30,6 +30,7 @@ return [
     'txt_get_current_location' => 'Lấy vị trí hiện tại',
     'txt_users' => 'Người dùng',
     'txt_home' => 'Trang chủ',
+    'txt_apply' => 'Ứng tuyển',
 
     // Pagination
     'showing' => 'Hiển thị',
