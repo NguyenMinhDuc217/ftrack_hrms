@@ -4,6 +4,11 @@
 
 @section('content')
 
+<style>
+    :root {
+        --bs-border-radius: 0;
+    }
+</style>
 <div id="container-profile">
     
 @include('cv.partials.profile', ['profile' => $profile])

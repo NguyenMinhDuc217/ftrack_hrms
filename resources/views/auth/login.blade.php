@@ -8,11 +8,11 @@
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8">
                     <div class="card p-4">
-                        <h3 class="card-title text-center mb-4">Login to Your Account</h3>
+                        <h3 class="card-title text-center mb-4 h3">Login to Your Account</h3>
                         {{-- GOOGLE LOGIN BUTTON --}}
                         <div class="d-grid gap-2 mb-3">
                             <a href="{{ route('google.redirect') }}"
-                                class="btn btn-light border d-flex align-items-center justify-content-center gap-2 py-2">
+                                class="btn btn-light border rounded-0 d-flex align-items-center justify-content-center gap-2 py-2">
 
                                 {{-- Google SVG Icon --}}
                                 <svg class="me-2" width="20" height="20" viewBox="0 0 48 48">
@@ -30,7 +30,7 @@
 
                             <div class="mb-3">
                                 <label for="email" class="pb-2">Email Address</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="rounded-0 form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -38,25 +38,25 @@
 
                             <div class="mb-3">
                                 <label for="password" class="pb-2">Password</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <input id="password" type="password" class="rounded-0 form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <input class="rounded-0 form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 <label class="form-check-label" for="remember">
                                     Remember Me
                                 </label>
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn bg-[var(--accent-color)] hover:bg-[--accent-color] text-white">Login</button>
+                                <button type="submit" class="btn bg-[var(--accent-color)] hover:bg-[var(--accent-color)] rounded-0 text-white">Login</button>
                             </div>
 
                             <div class="text-center mt-3">
-                                Don't have an account? <a href="{{ route('register') }}">Register here</a>
+                                Don't have an account? <a class="text-[var(--accent-color)]" href="{{ route('register') }}">Register here</a>
                             </div>
                             {{-- Optionally add forgot password link if you implement it later --}}
                             {{-- <div class="text-center mt-2">

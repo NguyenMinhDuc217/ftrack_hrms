@@ -28,7 +28,6 @@
         /* Card kiểu sạch - rất ít shadow */
         .clean-card {
             background: var(--card-bg);
-            border-radius: 1.5rem;
             border: 1px solid var(--border-light);
             padding: 2rem;
             transition: all 0.3s ease;
@@ -42,7 +41,6 @@
         /* Hero Header - sạch và nổi bật */
         .hero-section {
             background: linear-gradient(to bottom right, #ffffff, var(--accent-light));
-            border-radius: 2rem;
             padding: 4rem 2rem;
             text-align: center;
             margin-bottom: 4rem;
@@ -70,7 +68,6 @@
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 9999px;
             padding: 0.875rem 2rem;
             font-weight: 600;
             font-size: 1rem;
@@ -86,7 +83,6 @@
             background: transparent;
             color: var(--text-secondary);
             border: 1.5px solid var(--border-medium);
-            border-radius: 9999px;
             padding: 0.875rem 2rem;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -125,7 +121,6 @@
             color: var(--accent);
             font-weight: 500;
             padding: 0.625rem 1.25rem;
-            border-radius: 9999px;
             font-size: 0.925rem;
             border: 1px solid #bfdbfe;
         }
@@ -206,7 +201,6 @@
     
         /* Project card */
         .project-card {
-            border-radius: 1rem;
             overflow: hidden;
             border: 1px solid var(--border-light);
             transition: all 0.3s ease;
@@ -317,7 +311,7 @@
                                 </div>
                                 <div class="d-flex flex-wrap gap-2 mb-3">
                                     @foreach($groupSkills as $skill)
-                                        <span class="badge badge-soft-blue px-3 py-2 rounded-3 fw-normal">
+                                        <span class="badge badge-soft-blue px-3 py-2 rounded-0 fw-normal">
                                             {{ $skill->name }}
                                             @if($skill->year_of_experience)
                                                 <small class="fw-bold">({{ trans_choice('cv.years_count', $skill->year_of_experience) }})</small>
@@ -367,7 +361,7 @@
                     <div class="clean-card">
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="section-title h4 fw-bold text-dark m-0">Work Experience</h2>
-                            <button class="btn btn-light text-success bg-success-subtle rounded-3 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('experienceModal')">
+                            <button class="btn btn-light text-success bg-success-subtle rounded-0 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('experienceModal')">
                                 <i class="ti ti-plus"></i> Add Experience
                             </button>
                         </div>
@@ -406,7 +400,7 @@
                     <div class="clean-card">
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="section-title h4 fw-bold text-dark m-0">{{ __('cv.education') }}</h2>
-                            <button class="btn btn-light text-success bg-success-subtle rounded-3 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('educationModal')">
+                            <button class="btn btn-light text-success bg-success-subtle rounded-0 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('educationModal')">
                                 <i class="ti ti-plus"></i> Add Education
                             </button>
                         </div>
@@ -447,7 +441,7 @@
                     <div class="clean-card">
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="section-title h4 fw-bold text-dark m-0">{{ __('cv.projects') }}</h2>
-                            <button class="btn btn-light text-success bg-success-subtle rounded-3 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('projectModal')">
+                            <button class="btn btn-light text-success bg-success-subtle rounded-0 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('projectModal')">
                                 <i class="ti ti-plus"></i> Add Project
                             </button>
                         </div>
