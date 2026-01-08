@@ -44,6 +44,10 @@
 <script>
     $(document).ready(function() {
         $('#register_cv').click(function() {
+            if (!{{ auth()->check() ? 'true' : 'false' }}) {
+                window.location.href = '/login';
+                return;
+            }
             $('#CreateCVModal').modal('show');
         });
     });

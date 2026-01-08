@@ -8,7 +8,7 @@
     </a>
 
     <nav id="navmenu" class="navmenu">
-      <ul>
+      <ul class="max-h-max">
         <li><a href="{{ route('client.home') }}" class="{{ request()->routeIs('client.home') ? 'active' : '' }} alumni-font">Home</a></li>
         {{-- Other static links --}}
 
