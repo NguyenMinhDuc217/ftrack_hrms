@@ -22,7 +22,7 @@ use Symfony\Component\Process\Process;
 
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
-Route::get('/job/{id}', [JobController::class, 'detail'])->name('client.job.detail');
+Route::get('/job/{job:slug}', [JobController::class, 'detail'])->name('client.job.detail');
 Route::get('/current-location', [ClientController::class, 'getCurrentLocation'])->name('client.current.location');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');

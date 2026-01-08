@@ -30,8 +30,6 @@
                             value="{{ $search ?? '' }}"
                             />
                     </div>
-                    
-                    
                 </div>
     
                 <div class="w-full md:w-1/4 relative group flex flex-col gap-2">
@@ -40,7 +38,7 @@
                         >
                             <option value="">{{__('default.txt_location')}}</option>
                             @foreach($provinces  as $province)
-                            <option value="{{ $province->id }}" {{ isset($province_id) && $province->id == $province_id ? 'selected' : '' }}>{{ $province->name }}</option>
+                            <option value="{{ $province->code_name }}" {{ isset($province_code_name) && $province->code_name == $province_code_name ? 'selected' : '' }}>{{ $province->name }}</option>
                             @endforeach
                         </select>
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
@@ -62,10 +60,14 @@
 
             <div class="flex flex-col md:flex-row gap-3 mt-2">
                 <div class="flex-1 flex flex-wrap gap-2 md:gap-4">
-                    <a id="profession_id_1" onclick="setSearchAndFocus(event,'profession_id', '1')" class="text-sm underline {{!empty($profession_id) && $profession_id == '1' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">{{ __('job.txt_sales_staff') }}</a>
-                    <a id="profession_id_2" onclick="setSearchAndFocus(event,'profession_id', '2')" class="text-sm underline {{!empty($profession_id) && $profession_id == '2' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">{{ __('job.txt_display_staff') }}</a>
-                    <a id="profession_id_3" onclick="setSearchAndFocus(event,'profession_id', '3')" class="text-sm underline {{!empty($profession_id) && $profession_id == '3' ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">{{ __('job.txt_marketing_staff') }}</a>
-                    <input type="hidden" id="profession_id" value="{{!empty($profession_id) ? $profession_id : ''}}">
+                    @foreach ($professions_tips as $profession_tip)
+                        <a id="profession_slug_{{ $profession_tip->slug }}" 
+                            onclick="setSearchAndFocus(event,'profession_slug', '{{ $profession_tip->slug }}')" 
+                            class="text-sm underline {{!empty($profession_slug) && $profession_slug == $profession_tip->slug ? 'profession_selected' : 'text-gray-400'}} cursor-pointer hover:text-primary transition-colors">
+                            {{ $profession_tip->localized_name }}
+                        </a>
+                    @endforeach
+                    <input type="hidden" id="profession_slug" value="{{!empty($profession_slug) ? $profession_slug : ''}}">
                 </div>
 
                 <div class="w-full md:w-1/4">
@@ -112,8 +114,9 @@
                     },
                     success: function(response) {
                         if (response.status == 'success') {
-                            const province_id = response.province_id;
-                            $('#listProvince').find('option[value="' + province_id + '"]').prop('selected', true).trigger('change');
+                            const code_name = response.code_name;
+                            console.log(response)
+                            $('#listProvince').find('option[value="' + code_name + '"]').prop('selected', true).trigger('change');
                             filterJobs();
                         } else {
                             Toast.fire({

@@ -20,6 +20,7 @@ class JobSeeder extends Seeder
 
         DB::table('jobs_hrms')->insert([
             'name' => 'NHÂN VIÊN TREO BANNER - HANGER - POSTER TẾT KÊNH TẠP HÓA, QUÁN ĂN',
+            'slug' => vietnamese_slug('NHÂN VIÊN TREO BANNER - HANGER - POSTER TẾT KÊNH TẠP HÓA, QUÁN ĂN'),
             'profession_id' => $faker->randomElement($profession_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'description_md' => '💰 LƯƠNG từ 500k lên tới 1 TRIỆU/ Ngày hoặc hơn chỉ với 3 bước đơn giản:
@@ -44,6 +45,7 @@ class JobSeeder extends Seeder
         ]);
         DB::table('jobs_hrms')->insert([
             'name' => 'CHUYÊN VIÊN KHẢO SÁT THỊ TRƯỜNG',
+            'slug' => vietnamese_slug('CHUYÊN VIÊN KHẢO SÁT THỊ TRƯỜNG'),
             'profession_id' => $faker->randomElement($profession_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'description_md' => '- Khảo sát thông tin tại các cửa hàng & NPP theo tuyến được giao
@@ -63,6 +65,7 @@ class JobSeeder extends Seeder
         ]);
         DB::table('jobs_hrms')->insert([
             'name' => 'COMMUNITY SPECIALIST (CS) - NGÀNH ĐIỆN TỬ TIÊU DÙNG',
+            'slug' => vietnamese_slug('COMMUNITY SPECIALIST (CS) - NGÀNH ĐIỆN TỬ TIÊU DÙNG'),
             'profession_id' => $faker->randomElement($profession_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'description_md' => '– Quản lý & hỗ trợ bán hàng tại cụm 8–14 cửa hàng
@@ -83,6 +86,7 @@ class JobSeeder extends Seeder
         ]);
         DB::table('jobs_hrms')->insert([
             'name' => 'NHÂN VIÊN KINH DOANH THỨC ĂN THÚ CƯNG KÊNH GT',
+            'slug' => vietnamese_slug('NHÂN VIÊN KINH DOANH THỨC ĂN THÚ CƯNG KÊNH GT'),
             'profession_id' => $faker->randomElement($profession_ids),
             'employment_type' => $faker->randomElement(EmploymentType::cases())->value,
             'description_md' => '– Tư vấn sản phẩm tại điểm bán (Các cửa hàng thú cưng chuyên biệt như phòng khám thú y, spa, khách sạn thú cưng, v.v.)

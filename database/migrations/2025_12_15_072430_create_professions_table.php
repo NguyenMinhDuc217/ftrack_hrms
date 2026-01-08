@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('professions', function (Blueprint $table) {
             $table->id('profession_id');
             $table->string('profession_name')->nullable();
+            $table->string('slug', '255')->unique()->nullable();
             $table->string('description')->nullable();
             $table->string('type', 50)->nullable();
             $table->string('status', 50)->nullable();

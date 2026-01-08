@@ -15,4 +15,9 @@ class Profession extends Model
     ];
 
     protected $primaryKey = 'profession_id';
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active')->where('deleted_at', null);
+    }
 }

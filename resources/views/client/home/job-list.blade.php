@@ -25,7 +25,7 @@
 
             @foreach($jobs as $job)
             <div class="bg-white rounded-0 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300 group cursor-pointer h-full flex flex-col">
-                <a href="{{ route('client.job.detail', $job->job_id) }}" class="job-card p-4 pb-2" id="job-{{ $job->id }}">
+                <a href="{{ route('client.job.detail', $job->slug) }}" class="job-card p-4 pb-2" id="job-{{ $job->id }}">
                     <div class="flex items-start gap-4 flex-1">
                         <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}" alt="Company Logo" class="w-16 h-16 object-contain rounded-0 flex-shrink-0" />
     

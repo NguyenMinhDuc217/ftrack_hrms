@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobHrms;
+use App\Models\Profession;
 use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,17 +14,17 @@ class ClientController extends Controller
     public function buildFilter(Request $request)
     {
         $data = [];
-        $data['type'] = 'profession_id';
+        $data['type'] = 'profession_slug';
 
-        if ($request->has('province_id')) {
-            $data['province_id'] = $request->province_id;
+        if ($request->has('province_code_name')) {
+            $data['province_code_name'] = $request->province_code_name;
         }
         if ($request->has('search')) {
             $data['search'] = $request->search;
         }
-        if ($request->has('profession_id')) {
-            $data['profession_id'] = $data['val'] = $request->profession_id;
-            $data['type'] = 'profession_id';
+        if ($request->has('profession_slug')) {
+            $data['profession_slug'] = $data['val'] = $request->profession_slug;
+            $data['type'] = 'profession_slug';
             $data['active'] = 1;
         }
 
@@ -34,16 +35,32 @@ class ClientController extends Controller
     {
         $jobs = $this->buildQuery($request)->paginate(10);
 
+        $professions_tips = Profession::active()->whereIn('profession_id', [1, 2, 10])->get(); // Sales, Merchandising, Marketing
+        foreach ($professions_tips as $profession_tip) {
+            switch ($profession_tip->profession_id) {
+                case 1:
+                    $profession_tip->localized_name = __('job.txt_sales_staff');
+                    break;
+                case 2:
+                    $profession_tip->localized_name = __('job.txt_display_staff');
+                    break;
+                case 10:
+                    $profession_tip->localized_name = __('job.txt_marketing_staff');
+                    break;
+            }
+        }
+
         $filters = [
             'profession' => __('job.txt_category'),
             // 'salary' => __('job.txt_salary'),
         ];
-        $provinces = Province::select('id', 'name')->get();
+        $provinces = Province::select('id', 'name', 'code_name')->get();
 
         $data = $this->buildFilter($request);
-        $data['jobs'] = $jobs;
-        $data['filters'] = $filters;
-        $data['provinces'] = $provinces;
+        $data['jobs'] = $jobs ?? [];
+        $data['filters'] = $filters ?? [];
+        $data['provinces'] = $provinces ?? [];
+        $data['professions_tips'] = $professions_tips ?? [];
 
         return view('client.index', $data);
     }
@@ -51,9 +68,9 @@ class ClientController extends Controller
     public function buildQuery(Request $request)
     {
         $query = JobHrms::query()->with('profession')->with('job_area')->with('job_area.province')->with('organization')->active();
-        if ($request->has('province_id')) {
-            $query->whereHas('job_area', function ($q) use ($request) {
-                $q->where('province_id', (int) $request->province_id);
+        if ($request->has('province_code_name')) {
+            $query->whereHas('job_area.province', function ($q) use ($request) {
+                $q->where('code_name', $request->province_code_name);
             });
         }
         if ($request->has('search')) {
@@ -70,8 +87,12 @@ class ClientController extends Controller
                     });
             });
         }
-        if ($request->has('profession_id')) {
-            $query->where('profession_id', $request->profession_id);
+
+        if ($request->has('profession_slug')) {
+            $profession_ids = Profession::select('profession_id')->where('slug', 'LIKE', '%'.$request->profession_slug.'%')->get()->toArray();
+            $query->whereHas('profession', function ($q) use ($profession_ids) {
+                $q->whereIn('profession_id', $profession_ids);
+            });
         }
 
         return $query;
@@ -107,7 +128,7 @@ class ClientController extends Controller
                 if ($province) {
                     return response()->json([
                         'status' => 'success',
-                        'province_id' => $province->id,
+                        'code_name' => $province->code_name,
                     ]);
                 }
             }

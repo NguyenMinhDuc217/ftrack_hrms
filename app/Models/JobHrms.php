@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Str;
 
 class JobHrms extends Model
 {
@@ -16,6 +17,7 @@ class JobHrms extends Model
     protected $fillable = [
         'job_id',
         'name',
+        'slug',
         'image_ids',
         'profession_id',
         'employment_type',
@@ -35,6 +37,7 @@ class JobHrms extends Model
     {
         return [
             'name',
+            'slug',
             'profession_id',
             'province_id',
             'employment_type',
@@ -63,6 +66,7 @@ class JobHrms extends Model
             ->where('deleted_at', null);
     }
 
+    // RELATIONSHIP
     public function profession()
     {
         return $this->belongsTo(Profession::class, 'profession_id')->where('status', 'active')->where('deleted_at', null);
@@ -84,8 +88,52 @@ class JobHrms extends Model
             ->where('deleted_at', null)
             ->get();
     }
+
     public function organization()
     {
         return $this->belongsTo(Organization::class, 'org_id')->where('status', 'active')->where('deleted_at', null);
+    }
+
+    // BOOT
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($job) {
+            if (empty($job->slug)) {
+                $job->slug = static::generateUniqueSlug($job->name);
+            }
+        });
+
+        static::updating(function ($job) {
+            if ($job->isDirty('name')) { // isDirty('name') kiểm tra name có bị thay đổi k ấy mà! mấy con gà đã đọc được dòng này
+                $job->slug = static::generateUniqueSlug($job->name);
+            }
+            // if (empty($job->slug)) {
+            //     $job->slug = static::generateUniqueSlug($job->name);
+            // }
+        });
+    }
+
+    public static function generateUniqueSlug($name, $job_id = null)
+    {
+        $slug = Str::slug($name);
+
+        $count = static::where('slug', 'LIKE', "{$slug}%")
+            ->when($job_id, function ($query) use ($job_id) {
+                return $query->where('job_id', '!=', $job_id);
+            })->count();
+
+        return $count ? "{$slug}-{$count}" : $slug;
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('client.job.detail', $this->slug);
     }
 }

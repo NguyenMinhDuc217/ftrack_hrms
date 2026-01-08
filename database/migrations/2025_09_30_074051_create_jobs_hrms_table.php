@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jobs_hrms', function (Blueprint $table) {
             $table->id('job_id');
             $table->string('name', 255)->nullable();
+            $table->string('slug', 255)->unique()->nullable();
             $table->string('image_ids')->nullable();
             $table->bigInteger('profession_id')->nullable();
             $table->string('employment_type', 255)->nullable();

@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
-    public function detail($id)
+    public function detail(JobHrms $job)
     {
+        $id = $job->job_id;
         try {
             $job = JobHrms::active()->with('profession')->with('job_area', 'job_area.province')->findOrFail($id);
             if (Auth::check()) {
