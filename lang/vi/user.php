@@ -62,6 +62,8 @@ return [
     'txt_male' => 'Nam',
     'txt_female' => 'Nữ',
     'txt_other' => 'Khác',
+    'txt_password' => 'Mật khẩu',
+    'txt_confirm_password' => 'Xác nhận mật khẩu',
 
     // Error
     'txt_user_not_exists' => 'Người dùng không tồn tại',

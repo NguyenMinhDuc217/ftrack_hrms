@@ -63,6 +63,8 @@ return [
     'txt_male' => 'Male',
     'txt_female' => 'Female',
     'txt_other' => 'Other',
+    'txt_password' => 'Password',
+    'txt_confirm_password' => 'Confirm Password',
 
     // Error
     'txt_user_not_exists' => 'User not exists',

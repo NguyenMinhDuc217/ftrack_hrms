@@ -8,14 +8,11 @@
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8">
                     <div class="card p-4 rounded-0">
-                        <h3 class="card-title text-center mb-4">Login to Your Account</h3>
-                    <div class="card p-4">
-                        <h3 class="card-title text-center mb-4 h3">Login to Your Account</h3>
+                        <h3 class="card-title text-center mb-4 h3">{{ __('auth.txt_login_to_your_account') }}</h3>
                         {{-- GOOGLE LOGIN BUTTON --}}
                         <div class="d-grid gap-2 mb-3">
                             <a href="{{ route('google.redirect') }}"
                                 class="btn btn-light rounded-0 border d-flex align-items-center justify-content-center gap-2 py-2">
-                                class="btn btn-light border rounded-0 d-flex align-items-center justify-content-center gap-2 py-2">
 
                                 {{-- Google SVG Icon --}}
                                 <svg class="me-2" width="20" height="20" viewBox="0 0 48 48">
@@ -25,14 +22,14 @@
                                     <path fill="#34A853" d="M24 48c6.41 0 11.82-2.11 15.76-5.73l-7.63-5.93C29.95 37.78 27.17 38.5 24 38.5c-6.26 0-11.53-3.52-13.45-8.93l-8.02 6.25C6.51 42.62 14.62 48 24 48z"/>
                                 </svg>
 
-                                Login with Google
+                                {{ __('auth.txt_login_with_google') }}
                             </a>
                         </div>
                         <form method="POST" action="{{ route('login') }}" class="">
                             @csrf
 
                             <div class="mb-3">
-                                <label for="email" class="pb-2">Email Address</label>
+                                <label for="email" class="pb-2">{{ __('user.txt_email') }}</label>
                                 <input id="email" type="email" class="rounded-0 form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -40,7 +37,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="pb-2">Password</label>
+                                <label for="password" class="pb-2">{{ __('user.txt_password') }}</label>
                                 <input id="password" type="password" class="rounded-0 form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -50,16 +47,18 @@
                             <div class="form-check mb-3">
                                 <input class="rounded-0 form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 <label class="form-check-label" for="remember">
-                                    Remember Me
+                                    {{ __('auth.txt_remember_me') }}
                                 </label>
                             </div>
 
                             <div class="d-grid gap-2">
-                                <x-client.elements.button type="submit" text="Login" />
+                                <x-client.elements.button type="submit">
+                                    {{ __('auth.txt_login') }}
+                                </x-client.elements.button>
                             </div>
 
                             <div class="text-center mt-3">
-                                Don't have an account? <a class="text-[var(--accent-color)]" href="{{ route('register') }}">Register here</a>
+                                {{ __('auth.txt_dont_have_account') }} <a class="text-[var(--accent-color)]" href="{{ route('register') }}">{{ __('auth.txt_register_here') }}</a>
                             </div>
                             {{-- Optionally add forgot password link if you implement it later --}}
                             {{-- <div class="text-center mt-2">
