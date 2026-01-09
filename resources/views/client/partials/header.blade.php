@@ -2,8 +2,6 @@
   <div class="container-fluid container-xl position-relative d-flex align-items-center container mx-auto px-4">
 
     <a href="{{ route('client.home') }}" class="logo d-flex align-items-center me-auto">
-      <!-- <h1 class="sitename">eNno</h1> -->
-      <!-- <img src="{{ asset('client/assets/img/logo.png') }}" alt="Logo"> -->
       <img src="{{ asset('client/assets/img/cpm-logo.webp') }}" alt="Logo">
     </a>
 
@@ -52,6 +50,16 @@
           <a class="p-2 px-4 rounded-0 bg-black text-white border-1 hover:!bg-white hover:!text-black hover:border-1 hover:border-black alumni-font " href="{{ route('admin.dashboard') }}">Admin</a>
         </li>
         @endcan
+
+        <li>
+          <div class="p-2 d-flex justify-content-center">
+            <a class="p-2 px-4 rounded-circle alumni-font border-gradient-btn justify-content-center align-items-center" target="_blank" href="https://cpmvietnam.com/">
+              <span class="text-[var(--blue-color)]">C</span>
+              <span class="text-[var(--accent-color)]">P</span>
+              <span class="text-[var(--red-color)]">M</span>
+            </a>
+          </div>
+        </li>
       </ul>
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
     </nav>
@@ -60,3 +68,67 @@
 
   </div>
 </header>
+<style>
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .border-gradient-btn {
+    width: 50px !important;
+    height: 50px !important;
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 0;
+    background: transparent;
+    z-index: 1;
+  }
+
+  .border-gradient-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0px; /* Điều chỉnh để glow lệch ra ngoài - tăng số để glow xa hơn (offset) */
+    border-radius: inherit;
+    padding: 6px;
+    background: conic-gradient(
+      from var(--angle),
+      var(--blue-color, #0000ff),
+      var(--accent-color, #ff00ff),
+      var(--red-color, #ff0000),
+      #ff8000,
+      #ffff00,
+      #00ff00,
+      #00ffff,
+      #8000ff,
+      var(--blue-color, #0000ff)
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor; /* Cho Safari */
+    animation: rotate 2s linear infinite;
+    filter: blur(8px); /* Tạo glow phát sáng - chỉnh số để mạnh/yếu hơn */
+    opacity: 0.8; /* Độ trong suốt glow - chỉnh tùy thích */
+    z-index: -1;
+  }
+
+  /* Optional: chạy nhanh hơn khi hover */
+  .border-gradient-btn:hover {
+    animation-duration: 4s;
+    animation-direction: reverse;
+    transition: all 0.5s ease-in-out;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes rotate {
+    to {
+      --angle: 360deg;
+    }
+  }
+  @keyframes pulse {
+    50% {
+      transform: scale(1.25);
+    }
+  }
+</style>

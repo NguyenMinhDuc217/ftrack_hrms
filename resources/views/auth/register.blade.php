@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8">
                     <div class="card p-4 rounded-0">
-                        <h3 class="card-title text-center mb-4 h3">{{ __('auth.txt_register_for_an_acc') }}</h3>
+                        <h3 class="card-title text-center mb-4 h3 alumni-font !text-3xl">{{ __('auth.txt_register_for_an_acc') }}</h3>
                         <form method="POST" action="{{ route('register') }}" class="">
                             @csrf
 

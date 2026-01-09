@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-8">
                     <div class="card p-4 rounded-0">
-                        <h3 class="card-title text-center mb-4 h3">{{ __('auth.txt_login_to_your_account') }}</h3>
+                        <h3 class="card-title text-center mb-4 h3 alumni-font !text-3xl">{{ __('auth.txt_login_to_your_account') }}</h3>
                         {{-- GOOGLE LOGIN BUTTON --}}
                         <div class="d-grid gap-2 mb-3">
                             <a href="{{ route('google.redirect') }}"

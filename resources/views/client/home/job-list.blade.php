@@ -30,7 +30,7 @@
                         <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}" alt="Company Logo" class="w-16 h-16 object-contain rounded-0 flex-shrink-0" />
     
                         <div class="flex flex-col flex-1 min-w-0">
-                            <h3 class="text-base font-bold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 h-[3rem]">
+                            <h3 class="text-base font-bold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 h-[3rem] alumni-font">
                                 {{ $job->name ?? 'N/A' }}
                             </h3>
     
@@ -39,6 +39,7 @@
                             </div> -->
                             @if($job->organization)
                             <div class="text-gray-500">
+                                <i class="ti ti-building-community mr-2"></i>
                                 {{ $job->organization->name }}
                             </div>
                             @endif

@@ -75,18 +75,27 @@
     </script>
 
     <style>
-    body {
-        font-family: 'Inter', sans-serif;
-    }
+        :root {
+            max-height: 100vh;
+            overflow-y: scroll;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        :root::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
-    .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-    }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
 
-    .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 
     @stack('styles') {{-- For page-specific CSS --}}

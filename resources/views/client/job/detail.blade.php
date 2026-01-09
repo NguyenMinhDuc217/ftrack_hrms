@@ -43,7 +43,7 @@
 
                 <!-- Card thông tin nhanh + nút ứng tuyển -->
                 <div class="flex flex-col gap-3 bg-white rounded-0 shadow-sm border border-gray-100 p-4 hover:shadow-xl transition-shadow">
-                    <h1 class="text-lg font-bold text-gray-900 mb-4">
+                    <h1 class="text-lg font-bold text-gray-900 mb-4 alumni-font">
                         {{ $job->name }}
                     </h1>
 
@@ -131,7 +131,7 @@
 
                 <!-- Mô tả công việc -->
                 <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-4">
-                    <h2 class="text-xl font-bold text-gray-900">{{ __('job.txt_description') }}</h2>
+                    <h2 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_description') }}</h2>
                     <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line">
                         {!! $job->description_md !!}
                     </div>
@@ -139,7 +139,7 @@
 
                 <!-- Yêu cầu công việc -->
                 <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-4">
-                    <h2 class="text-xl font-bold text-gray-900">{{ __('job.txt_requirements') }}</h2>
+                    <h2 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_requirements') }}</h2>
                     <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line">
                         {!! $job->requirements_md !!}
                     </div>
@@ -153,21 +153,21 @@
             <div class="lg:col-span-4 flex flex-col gap-4">
 
                 <!-- Card công ty -->
-                <div class="flex flex-col gap-4 bg-white rounded-0 shadow-sm border border-gray-100 p-4 sticky">
+                <div class="flex flex-col gap-3 bg-white rounded-0 shadow-sm border border-gray-100 p-4 sticky">
                     <div class="flex items-start gap-4">
                         <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}" 
                              alt="Logo công ty" 
                              class="w-20 h-20 rounded-0 object-contain border border-gray-200 shadow-sm flex-shrink-0" />
 
                         <div class="flex-1 min-w-0">
-                            <h3 class="text-xl font-bold text-gray-900">{{ $job->organization->name ?? 'N/A' }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 alumni-font">{{ $job->organization->name ?? 'N/A' }}</h3>
                             <div class="text-sm text-gray-600 mt-1">
                                 {!! $job->organization->description ?? 'N/A' !!}
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-2">
                         <div class="flex items-center gap-2">
                             <div class="">
                                 <i class="w-10 h-10 bi bi-people text-gray-600 text-xl"></i>
@@ -207,10 +207,10 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-4 bg-white rounded-0 shadow-sm border border-gray-100 p-4 sticky">
-                    <div class="space-y-4">
-                        <h3 class="text-xl font-bold text-gray-900">{{ __('job.txt_recruitment_info') }}</h3>
-                        <div class="flex items-center gap-2">
+                <div class="flex flex-col gap-3 bg-white rounded-0 shadow-sm border border-gray-100 p-4 sticky">
+                    <div class="space-y-2">
+                        <h3 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_recruitment_info') }}</h3>
+                        <div class="flex items-center gap-2 mt-1">
                             <div class="">
                                 <i class="w-10 h-10 bi bi-people text-gray-600 text-xl"></i>
                             </div>
@@ -220,7 +220,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 mt-1">
                             <div class="">
                                 <i class="w-10 h-10 bi bi-briefcase text-gray-600 text-xl"></i>
                             </div>
@@ -232,8 +232,8 @@
                     </div>
 
                     @if($job->job_area->count() > 0)
-                    <div class="space-y-4">
-                        <h3 class="text-xl font-bold text-gray-900">{{ __('job.txt_area_recruitment') }}</h3>
+                    <div class="space-y-2">
+                        <h3 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_area_recruitment') }}</h3>
                         <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
                             <i class="text-xl bi bi-geo-alt-fill text-[var(--blue-color)]"></i>
                             @foreach($job->job_area as $area)
