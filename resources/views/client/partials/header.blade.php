@@ -1,4 +1,4 @@
-<header id="header" class="header d-flex align-items-center sticky-top">
+<header id="header" class="header d-flex align-items-center sticky-top py-2">
   <div class="container-fluid container-xl position-relative d-flex align-items-center container mx-auto px-4">
 
     <a href="{{ route('client.home') }}" class="logo d-flex align-items-center me-auto">
@@ -53,12 +53,12 @@
 
         <li>
           <div class="p-2 d-flex justify-content-center">
-            <a class="p-2 px-4 rounded-circle alumni-font border-gradient-btn justify-content-center align-items-center" target="_blank" href="https://cpmvietnam.com/">
-              <span class="text-[var(--blue-color)]">C</span>
-              <span class="text-[var(--accent-color)]">P</span>
-              <span class="text-[var(--red-color)]">M</span>
+            <!-- <a class="p-2 px-4 rounded-circle alumni-font border-gradient-btn justify-content-center align-items-center" target="_blank" href="https://cpmvietnam.com/"> -->
+            <a class="p-2 px-4 rounded-circle alumni-font justify-content-center align-items-center btn-link-cpm" target="_blank" href="https://cpmvietnam.com/">
+              <img src="{{asset('client/assets/img/icon-web-cpm-01.svg') }}" alt="CPM VIETNAM" class="h-9 w-auto" ></img>
             </a>
           </div>
+          
         </li>
       </ul>
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -114,7 +114,7 @@
   }
 
   /* Optional: chạy nhanh hơn khi hover */
-  .border-gradient-btn:hover {
+  .border-gradient-btn:hover, .btn-link-cpm:hover {
     animation-duration: 4s;
     animation-direction: reverse;
     transition: all 0.5s ease-in-out;

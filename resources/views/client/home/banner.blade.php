@@ -34,7 +34,7 @@
     
                 <div class="w-full md:w-1/4 relative group flex flex-col gap-2">
                     <div class="flex items-center relative group">
-                        <select id="listProvince" class="block w-full pl-3 pr-10 py-3 border border-gray-200 rounded-0 leading-5 bg-gray-50 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm appearance-none transition-colors text-gray-700"
+                        <select id="listProvince" class="js-example-basic-single form-control block w-full pl-3 pr-10 py-3 !border !border-gray-200 rounded-0 leading-5 bg-gray-50 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm appearance-none transition-colors text-gray-700"
                         >
                             <option value="">{{__('default.txt_location')}}</option>
                             @foreach($provinces  as $province)

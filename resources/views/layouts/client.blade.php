@@ -20,6 +20,7 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet">
 
+    <script src="{{ asset('client/assets/vendor/jquery/jquery.min.js') }}"></script>
     <!-- Vendor CSS Files -->
     <link href="{{ asset('client/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('client/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
@@ -41,11 +42,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 
-    <script src="{{ asset('client/assets/vendor/jquery/jquery.min.js') }}"></script>
 
     <!-- Fancybox -->
     <link rel="stylesheet" href="{{ asset('fancyapps/ui/dist/fancybox/fancybox.css') }}">
     <script src="{{ asset('fancyapps/ui/dist/fancybox/fancybox.umd.js') }}"></script>
+
+    <!--Select2 -->
+    <link href="{{ asset('client/assets/vendor/select2/dist/css/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('client/assets/vendor/select2/dist/css/select2-bootstrap-5-theme.css') }}" rel="stylesheet">
 
     <style>
         body{
@@ -159,6 +163,20 @@
 
     <!-- Main JS File -->
     <script src="{{ asset('client/assets/js/main.js') }}"></script>
+
+    <script src="{{ asset('client/assets/vendor/select2/dist/js/select2.js') }}"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('.js-example-basic-single').select2({
+            placeholder: "{{ __('default.txt_location') }}",
+            allowClear: true,
+            width: '100%',
+            theme: "bootstrap-5" // Tùy chỉnh theme cho Bootstrap 5
+        });
+    });
+</script>
+
 
     @include('client.partials._scripts')
     @stack('scripts') {{-- For page-specific JavaScript --}}

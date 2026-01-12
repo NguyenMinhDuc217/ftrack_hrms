@@ -19,5 +19,8 @@
 <link rel="stylesheet" href="{{ asset('admin/assets/css/plugins/dropzone.min.css') }}">
 
 
-    <!-- [Template CSS Files] -->
-    <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}" id="main-style-link" >>
+<!-- [Template CSS Files] -->
+<link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}" id="main-style-link" >
+
+<!-- [Bootstrap Icons FIle] -->
+<link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap-icons/bootstrap-icons.css') }}">
