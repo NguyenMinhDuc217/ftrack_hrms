@@ -83,4 +83,71 @@
         }
     };
 </script>
+
+<script>
+    // Danh sách tỉnh đã chọn (lấy từ hidden select)
+    function getSelectedProfession() {
+        const select = document.getElementById('profession_hidden');
+        return Array.from(select.selectedOptions).map(opt => opt.value);
+    }
+
+    let professionSelected = getSelectedProfession();
+
+    // Thêm tỉnh mới
+    function addProfession() {
+        const code = $('#profession_id').val();
+        const name = $('#profession_id').find('option:selected').text();
+
+        if (!code) return;
+
+        const selected = getSelectedProfession();
+        
+        // Nếu chưa có thì mới thêm
+        if (!selected.includes(code) && !professionSelected.includes(code)) {
+            professionSelected.push(code);
+            // Thêm vào hidden select
+            const hiddenSelect = document.getElementById('profession_hidden');
+            const option = new Option(name, code, true, true);
+            hiddenSelect.add(option);
+
+            // Thêm tag vào giao diện
+            const tag = document.createElement('span');
+            tag.className = 'badge rounded-pill bg-success d-flex flex-row align-items-center gap-1 p-2';
+            tag.id = `province_tag_${code}`;
+            tag.innerHTML = `
+                <span class="text-white">${name}</span>
+                <div onclick="removeProvince('${code}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition d-flex align-items-center justify-content-center">
+                    <i class="ti ti-x"></i>
+                </div>
+            `;
+            $('#profession_tags').append(tag);
+        }
+
+        // Reset select
+        this.value = '';
+    };
+
+    // Xóa tỉnh
+    function removeProfession(code) {
+        // Xóa khỏi hidden select
+       const hiddenSelect = document.getElementById('profession_hidden');
+       const option = hiddenSelect.querySelector(`option[value="${code}"]`);
+       if (option) {
+           hiddenSelect.removeChild(option);
+       }
+       
+        for (let i = 0; i < professionSelected.length; i++) {
+            if (professionSelected[i] === code) {
+                professionSelected.splice(i, 1);
+                break;
+            }
+        }
+
+        // Xóa tag khỏi giao diện
+        const tag = $(`#profession_tag_${code}`);
+        if (tag) {
+            tag.remove();
+        }
+    };
+</script>
 @endsection

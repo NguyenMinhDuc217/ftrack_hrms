@@ -25,6 +25,10 @@ File: style.css
   --pc-card-box-shadow: none;
   --pc-header-submenu-background: #ffffff;
   --pc-header-submenu-color: #6c757d;
+  --accent-color: #6DB12D;
+  --red-color: #E3501F;
+  --blue-color: #1F7DBC;
+  --bg-color: #F8FAFB;
 }
 
 [data-pc-theme_contrast=true] {
@@ -22207,6 +22211,37 @@ select.form-control[data-multiselectsplitter-firstselect-selector], select.form-
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.bg-accent {
+  background-color: var(--accent-color) !important;
+}
+.text-accent {
+  color: var(--accent-color) !important;
+}
+.border-accent {
+  border-color: var(--accent-color) !important;
+}
+.bg-red {
+  background-color: var(--red-color) !important;
+}
+.text-red {
+  color: var(--red-color) !important;
+}
+.border-red {
+  border-color: var(--red-color) !important;
+}
+.bg-blue {
+  background-color: var(--blue-color) !important;
+}
+.text-blue {
+  color: var(--blue-color) !important;
+}
+.border-blue {
+  border-color: var(--blue-color) !important;
+}
+.bg-color {
+  background-color: var(--bg-color) !important;
 }
 
 /**  =====================

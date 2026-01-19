@@ -11,6 +11,7 @@ use App\Models\JobHrms;
 use App\Models\Organization;
 use App\Models\Profession;
 use App\Models\Province;
+use App\Models\Tag;
 use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,7 +38,7 @@ class AdminJobController extends Controller
     {
         $user = auth()->guard()->user();
 
-        $jobs = JobHrms::whereNull('deleted_at')->paginate(10);
+        $jobs = JobHrms::whereNull('deleted_at')->paginate(20);
 
         return view('admin.job.index', ['jobs' => $jobs, 'statuses' => $this->statuses]);
     }
@@ -50,6 +51,8 @@ class AdminJobController extends Controller
             return [$type->value => $type->getLabelData()['label']];
         })->toArray();
         $organizations = Organization::active()->get();
+
+        $tags = Tag::active()->get();
 
         $data['breadcrumbs'] = [
             ['label' => __('role.heading_title_create'), 'url' => route('admin.role.index')],
@@ -66,6 +69,7 @@ class AdminJobController extends Controller
                 'provinces' => $provinces,
                 'employment_types' => $employment_types,
                 'organizations' => $organizations,
+                'tags' => $tags,
                 'data' => $data,
             ]
         );
@@ -73,9 +77,8 @@ class AdminJobController extends Controller
 
     public function show($job_id)
     {
-        $job = JobHrms::with('profession')->with('job_area', 'job_area.province')->findOrFail($job_id);
+        $job = JobHrms::with('job_area', 'job_area.province')->findOrFail($job_id);
         $organizations = Organization::active()->get();
-        // dd($job->images());
 
         $breadcrumbs = [
             ['label' => __('job.txt_edit_job'), 'url' => route('admin.jobs.index')],
@@ -88,6 +91,8 @@ class AdminJobController extends Controller
             return [$type->value => $type->getLabelData()['label']];
         })->toArray();
 
+        $tags = Tag::active()->get();
+
         return view(
             'admin.job.form',
             [
@@ -98,6 +103,7 @@ class AdminJobController extends Controller
                 'provinces' => $provinces,
                 'employment_types' => $employment_types,
                 'organizations' => $organizations,
+                'tags' => $tags,
             ]
         );
     }
@@ -108,11 +114,30 @@ class AdminJobController extends Controller
 
         DB::beginTransaction();
         try {
+            $tag_ids = $data['tag_ids'];
+            if ($tag_ids) {
+                $tag_id_final = [];
+                foreach ($tag_ids as $name) {
+                    $tag = Tag::where('name', $name)->orWhere('id', $name)->first();
+                    if ($tag) {
+                        $tag_id_final[] = $tag->id;
+                    } else {
+                        $tag = Tag::create([
+                            'name' => $name,
+                            'status' => 'active',
+                        ]);
+                        $tag_id_final[] = $tag->id;
+                    }
+                }
+            }
+
             // ADD
             if (empty($job->job_id)) {
                 $province_ids = $data['province_id'];
+                $tag_ids = $data['tag_ids'];
                 unset($data['province_id']);
                 unset($data['image_ids']);
+                unset($data['tag_ids']);
                 $job = JobHrms::create($data);
 
                 if ($request->hasFile('images')) {
@@ -150,6 +175,11 @@ class AdminJobController extends Controller
                     }
                 }
 
+                if ($tag_id_final) {
+                    $job->tag_ids = $tag_id_final;
+                }
+                $job->save();
+
                 DB::commit();
 
                 return redirect()->route('admin.jobs.index')->with('success', 'Job added successfully.');
@@ -186,6 +216,11 @@ class AdminJobController extends Controller
 
                 $job = JobHrms::where('job_id', $job->job_id)->first();
                 unset($data['province_id'], $data['headcount']);
+
+                if ($tag_id_final) {
+                    $data['tag_ids'] = $tag_id_final;
+                }
+
                 $job->update($data);
 
                 // Handle Avatar Upload
@@ -246,11 +281,13 @@ class AdminJobController extends Controller
             $image_ids = $job->image_ids;
             $job->delete();
             $job->job_area()->delete();
-            foreach ($image_ids as $image_id) { // TẠM THỜI XÓA LUÔN TRÊN SERVER
-                $image = Image::find($image_id);
-                if ($image) {
-                    $image->delete();
-                    $imageService->deletebyId($image_id);
+            if ($image_ids) {
+                foreach ($image_ids as $image_id) { // TẠM THỜI XÓA LUÔN TRÊN SERVER
+                    $image = Image::find($image_id);
+                    if ($image) {
+                        $image->delete();
+                        $imageService->deletebyId($image_id);
+                    }
                 }
             }
             DB::commit();

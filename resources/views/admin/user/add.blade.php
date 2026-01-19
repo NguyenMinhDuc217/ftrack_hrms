@@ -181,7 +181,7 @@
               @enderror
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="form-label">{{ __('user.txt_applicant') }}</label>
               <input type="number" class="form-control @error('applicant') is-invalid @enderror" name="applicant" placeholder="{{ __('user.txt_applicant') }}" value ="{{ old('applicant') }}">
               @error('applicant')
@@ -190,7 +190,7 @@
                 </div>
               @enderror
               <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
-            </div>
+            </div> -->
 
             <div class="form-group">
               <label class="form-label">{{ __('user.txt_status') }}</label>

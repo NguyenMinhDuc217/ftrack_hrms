@@ -11,12 +11,17 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AdminUserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::query()->filter(new UserFilter($request))->paginate(10);
+        $query = User::query();
+        if (Auth::user()->role_id != 1) {
+            $query->where('role_id', '!=', 1);
+        }
+        $users = $query->filter(new UserFilter($request))->paginate(10);
         $users->appends($request->all());
 
         $statuses = collect(UserStatus::cases())->mapWithKeys(function ($status) {
@@ -24,7 +29,11 @@ class AdminUserController extends Controller
                 $status->value => $status->getLabelData(),
             ];
         })->toArray();
-        $managers = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value)->get();
+        $query_managers = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value);
+        if (Auth::user()->role_id != 1) {
+            $query_managers->where('role_id', '!=', 1);
+        }
+        $managers = $query_managers->get();
         $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
             return [
                 $type->value => $type->getLabelData(),
@@ -41,7 +50,11 @@ class AdminUserController extends Controller
 
     public function create()
     {
-        $users = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value)->get();
+        $query_users = User::select('user_id', 'username')->where('status', UserStatus::ACTIVE->value);
+        if (Auth::user()->role_id != 1) {
+            $query_users->where('role_id', '!=', 1);
+        }
+        $users = $query_users->get();
         $employment_types = collect(EmploymentType::cases())->mapWithKeys(function ($type) {
             return [$type->value => $type->getLabelData()['label']];
         })->toArray();

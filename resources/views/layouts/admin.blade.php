@@ -18,6 +18,10 @@
 
   <script src="{{ asset('admin/assets/js/jquery.min.js') }}"></script>
   <!-- @vite(['resources/js/app.js']) -->
+
+  <!--Select2 -->
+    <link href="{{ asset('client/assets/vendor/select2/dist/css/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('client/assets/vendor/select2/dist/css/select2-bootstrap-5-theme.css') }}" rel="stylesheet">
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
@@ -107,6 +111,19 @@
       })
     }
   </script>
+
+  <script src="{{ asset('client/assets/vendor/select2/dist/js/select2.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('.select2-single').select2({
+                placeholder: "{{ __('default.txt_location') }}",
+                allowClear: true,
+                width: '100%',
+                theme: "bootstrap-5" // Tùy chỉnh theme cho Bootstrap 5
+            });
+        });
+    </script>
 
 </body>
 <!-- [Body] end -->

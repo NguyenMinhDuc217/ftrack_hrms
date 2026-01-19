@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enums\EmploymentType;
-use App\Enums\UserStatus;
 use App\Enums\Gender;
+use App\Enums\UserStatus;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -36,22 +36,23 @@ class UserPostRequest extends FormRequest
     public function rules(): array
     {
         $user = $this->route('user');
+
         return [
             'username' => 'required|string|max:255',
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
-            'email' => [ 
+            'email' => [
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignore($user?->user_id, 'user_id'), 
+                Rule::unique('users', 'email')->ignore($user?->user_id, 'user_id'),
             ],
-            'phone_number' => [ 
+            'phone_number' => [
                 'numeric',
                 'digits:10',
-                Rule::unique('users', 'phone_number')->ignore($user?->user_id, 'user_id'), 
+                Rule::unique('users', 'phone_number')->ignore($user?->user_id, 'user_id'),
             ],
-            'gender' => ['required','string','max:100', new Enum(Gender::class)],
+            'gender' => ['required', 'string', 'max:100', new Enum(Gender::class)],
             'date_of_birth' => 'date|before:today',
             'hire_date' => 'date|after:date_of_birth',
             'department_id' => 'exists:departments,department_id',
@@ -59,9 +60,9 @@ class UserPostRequest extends FormRequest
             // 'document_id' => 'exists:documents,document_id',
             'document_id' => 'integer',
             'org_id' => 'integer',
-            'employment_type' => ['string','max:255',new Enum(EmploymentType::class)],
-            'applicant' => 'boolean',
-            'status' => ['string','max:100', new Enum(UserStatus::class)],
+            'employment_type' => ['string', 'max:255', new Enum(EmploymentType::class)],
+            // 'applicant' => 'boolean',
+            'status' => ['string', 'max:100', new Enum(UserStatus::class)],
         ];
     }
 
@@ -97,7 +98,7 @@ class UserPostRequest extends FormRequest
             'document_id.integer' => __('user.document_id_integer'),
             'employment_type.string' => __('user.employment_type_string'),
             'employment_type.enum' => __('user.employment_type_enums'),
-            'applicant.boolean' => __('user.applicant_boolean'),
+            // 'applicant.boolean' => __('user.applicant_boolean'),
             'status.string' => __('user.status_string'),
             'status.enum' => __('user.status_enums'),
         ];

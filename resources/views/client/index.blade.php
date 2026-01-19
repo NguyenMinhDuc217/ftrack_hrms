@@ -13,15 +13,14 @@
         const province_code_name = $('#listProvince option:selected').val();
         let profession_slug = $('#profession_slug').val();
 
-        if (key == 'profession_slug' && val != null) {
-          profession_slug = val;
-        }
-
         let url = new URL(window.location.href)
-        
-        if (profession_slug) {
-            url.searchParams.set('profession_slug', profession_slug);
+        let slugs = [];
+
+        console.log(profession_slug);
+        if (key == 'profession_slug' && val != null) {
+          slugs.push(val);
         }
+        
         if (province_code_name) {
             url.searchParams.set('province_code_name', province_code_name);
         }
@@ -29,6 +28,21 @@
             url.searchParams.set('search', search);
         }
 
+        $list_profession = $('#list-filter-profession').children();
+        if ($list_profession.length > 0) {
+          $list_profession.each(function() {
+            var id = $(this).attr('id').replace('profession_tag_', '');
+            if (id) {
+              slugs.push(id);
+            }
+          });
+        }
+        if (slugs.length > 0) {
+          let uniqueSLugs = [...new Set(slugs)];
+          url.searchParams.set('profession_slug', uniqueSLugs.join(','));
+        } else {
+          url.searchParams.delete('profession_slug');
+        }
         window.location.href = url.toString();
       }
     </script>

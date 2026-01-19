@@ -88,4 +88,9 @@ class Application extends Model
             ->where('application_areas.deleted_at', null)
             ->withTimestamps();
     }
+
+    public function application_area()
+    {
+        return $this->belongsToMany(ApplicationArea::class, 'application_id')->where('application_areas.status', 'active')->where('application_areas.deleted_at', null);
+    }
 }

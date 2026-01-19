@@ -65,17 +65,23 @@
 
                     <div class="form-group">
                         <label class="form-label">{{ __('user.txt_profession') }}</label>
-                        <select class="form-control @error('profession_id') is-invalid @enderror" name="profession_id">
+                        <select onchange="addProfession()" class="form-control @error('profession_ids') is-invalid @enderror" name="profession_id" id="profession_id">
                             <option label="-{{ __('user.txt_profession') }}-"></option>
                             @foreach ($professions as $profession)
                             <option value="{{$profession->profession_id}}" @selected(old('profession_id')==$profession->profession_id)>{{$profession->profession_name}}</option>
                             @endforeach
                         </select>
-                        @error('profession_id')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                        @if($errors->has('profession_ids'))
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->get('profession_ids')[0] }}</strong>
+                            </div>
+                        @endif
+
+                        <select name="profession_ids[]" multiple style="display: none;" id="profession_hidden">
+                        </select>
+
+                        <div id="profession_tags" class="d-flex flex-wrap gap-2 mt-3">
                         </div>
-                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -256,6 +262,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Tags</label>
+                        <select name="tag_ids[]" multiple id="tag_select" class="form-control @error('tag_ids') is-invalid @enderror">
+                            @if ($tags->count() > 0)
+                            @foreach ($tags as $tag)
+                                <option value="{{ $tag->id }}" @selected(in_array($tag->id, old('tag_ids', [])))>{{ $tag->name }}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                        @if($errors->has('tag_ids'))
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->get('tag_ids')[0] }}</strong>
+                            </div>
+                        @endif
+                        <small>{{ __('job.txt_tag_example') }}</small>
+
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">{{ __('user.txt_status') }}</label>
                         <select name="status" class="form-control @error('status') is-invalid @enderror">
                             <option value="" disabled selected>-{{ __('user.txt_status') }}-</option>
@@ -341,4 +365,16 @@
 
         }
     });
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#tag_select').select2({
+        tags: true, // Cho phép tạo tag mới
+        tokenSeparators: [',', ' '], // Cho phép tạo tag bằng dấu phẩy hoặc dấu cách
+        placeholder: "- Chọn hoặc nhập tags -",
+        allowClear: true,
+        width: '100%'
+    });
+});
 </script>

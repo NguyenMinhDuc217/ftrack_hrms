@@ -23,7 +23,16 @@ class ClientController extends Controller
             $data['search'] = $request->search;
         }
         if ($request->has('profession_slug')) {
-            $data['profession_slug'] = $data['val'] = $request->profession_slug;
+            $slugs = explode(',', $request->profession_slug);
+            $slugs = array_unique($slugs);
+            if (! empty($slugs) && is_array($slugs)) {
+                foreach ($slugs as $slug) {
+                    $profession = Profession::where('slug', $slug)->first();
+                    $data['list_filter_profession'][] = $profession;
+                }
+            } else {
+                $data['profession_slug'] = $data['val'] = $request->profession_slug;
+            }
             $data['type'] = 'profession_slug';
             $data['active'] = 1;
         }
@@ -33,7 +42,7 @@ class ClientController extends Controller
 
     public function index(Request $request)
     {
-        $jobs = $this->buildQuery($request)->paginate(10);
+        $jobs = $this->buildQuery($request)->paginate(9);
 
         $professions_tips = Profession::active()->whereIn('profession_id', [1, 2, 10])->get(); // Sales, Merchandising, Marketing
         foreach ($professions_tips as $profession_tip) {
@@ -67,7 +76,7 @@ class ClientController extends Controller
 
     public function buildQuery(Request $request)
     {
-        $query = JobHrms::query()->with('profession')->with('job_area')->with('job_area.province')->with('organization')->active();
+        $query = JobHrms::query()->with('job_area')->with('job_area.province')->with('organization')->active();
         if ($request->has('province_code_name')) {
             $query->whereHas('job_area.province', function ($q) use ($request) {
                 $q->where('code_name', $request->province_code_name);
@@ -79,9 +88,6 @@ class ClientController extends Controller
                 $q->where('name', 'like', '%'.$key.'%')
                     ->orWhere('description_md', 'like', '%'.$key.'%')
                     ->orWhere('application_position', 'like', '%'.$key.'%')
-                    ->orWhereHas('profession', function ($q) use ($key) {
-                        $q->where('profession_name', 'like', '%'.$key.'%');
-                    })
                     ->orWhereHas('organization', function ($q) use ($key) {
                         $q->where('name', 'like', '%'.$key.'%');
                     });
@@ -89,9 +95,22 @@ class ClientController extends Controller
         }
 
         if ($request->has('profession_slug')) {
-            $profession_ids = Profession::select('profession_id')->where('slug', 'LIKE', '%'.$request->profession_slug.'%')->get()->toArray();
-            $query->whereHas('profession', function ($q) use ($profession_ids) {
-                $q->whereIn('profession_id', $profession_ids);
+            $slugs = explode(',', $request->profession_slug);
+            $slugs = array_unique($slugs);
+            $query->whereRaw('JSON_VALID(profession_ids)');
+
+            $query->where(function ($q) use ($slugs) {
+                foreach ($slugs as $slug) {
+                    $profession_ids = Profession::select('profession_id')->where('slug', $slug)->pluck('profession_id')->toArray();
+                    if (! empty($profession_ids)) {
+                        $q->orWhere(function ($subQ) use ($profession_ids) {
+                            foreach ($profession_ids as $id) {
+                                $subQ->orWhereJsonContains('profession_ids', (string) $id)
+                                    ->orWhereJsonContains('profession_ids', (int) $id);
+                            }
+                        });
+                    }
+                }
             });
         }
 

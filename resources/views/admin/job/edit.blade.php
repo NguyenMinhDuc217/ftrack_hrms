@@ -53,7 +53,7 @@
                                         <!-- Input ẩn để Dropzone gán file vào (Tên là images[]) -->
                                         <input type="file" name="images[]" id="real-file-input" multiple class="d-none is-invalid">
 
-                                         @if ($errors->has('images.*'))
+                                        @if ($errors->has('images.*'))
                                             @foreach ($errors->get('images.*') as $file_errors)
                                                 <div class="invalid-feedback" role="alert">
                                                     <strong>{{ $file_errors[0] }}</strong>
@@ -85,18 +85,37 @@
 
                     <div class="form-group">
                         <label class="form-label">{{ __('user.txt_profession') }}</label>
-                        <select class="form-control @error('profession_id') is-invalid @enderror" name="profession_id">
+                        <select onchange="addProfession()" class="form-control @error('profession_ids') is-invalid @enderror" name="profession_id" id="profession_id">
                             <option label="-{{ __('user.txt_profession') }}-"></option>
                             @foreach ($professions as $profession)
                             <option value="{{$profession->profession_id}}" @selected($job->profession_id ==
                                 $profession->profession_id)>{{$profession->profession_name}}</option>
                             @endforeach
                         </select>
-                        @error('profession_id')
-                        <div class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                        @if($errors->has('profession_ids'))
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->get('profession_ids')[0] }}</strong>
+                            </div>
+                        @endif
+
+                        <select name="profession_ids[]" multiple style="display: none;" id="profession_hidden">
+                            @foreach($job->professions() ?? [] as $profession)
+                                <option value="{{ $profession->profession_id }}" @selected(old('profession_id')==$profession->profession_id) selected></option>
+                            @endforeach
+                        </select>
+
+                        <div id="profession_tags" class="d-flex flex-wrap gap-2 mt-3">
+                            @foreach($job->professions() ?? [] as $profession)
+                                @if($profession)
+                                    <span class="badge rounded-pill bg-success d-flex flex-row align-items-center gap-1 p-2" id="profession_tag_{{ $profession->profession_id }}">
+                                        <span class="text-white">{{ $profession->profession_name }}</span>
+                                        <button onclick="removeProfession('{{ $profession->profession_id }}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-x"></i>
+                                        </button>
+                                    </span>
+                                @endif
+                            @endforeach
                         </div>
-                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -278,6 +297,23 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Tags</label>
+                        <select name="tag_ids[]" multiple id="tag_select_edit" class="form-control @error('tag_ids') is-invalid @enderror">
+                            @if ($tags->count() > 0)
+                            @foreach ($tags as $tag)
+                                <option value="{{ $tag->id }}" @selected(!empty($job->tag_ids) && in_array($tag->id, $job->tag_ids))>{{ $tag->name }}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                        @if($errors->has('tag_ids'))
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->get('tag_ids')[0] }}</strong>
+                            </div>
+                        @endif
+                        <small>{{ __('job.txt_tag_example') }}</small>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">{{ __('user.txt_status') }}</label>
                         <select name="status" class="form-control @error('status') is-invalid @enderror">
                             <option value="" disabled selected>-{{ __('user.txt_status') }}-</option>
@@ -363,4 +399,16 @@
     function removeOldImage(id) {
         document.getElementById('old-img-' + id).remove();
     }
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#tag_select_edit').select2({
+        tags: true, // Cho phép tạo tag mới
+        tokenSeparators: [',', ' '], // Cho phép tạo tag bằng dấu phẩy hoặc dấu cách
+        placeholder: "- Chọn hoặc nhập tags -",
+        allowClear: true,
+        width: '100%'
+    });
+});
 </script>

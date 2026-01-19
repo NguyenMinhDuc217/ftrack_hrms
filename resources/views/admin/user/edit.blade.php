@@ -178,7 +178,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="form-label">Applicant</label>
                         <input type="number" class="form-control @error('applicant') is-invalid @enderror"
                             name="applicant" placeholder="Enter Aplicant" value="{{$user->applicant}}">
@@ -188,7 +188,7 @@
                         </div>
                         @enderror
                         <small>Enter a number</small>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label class="form-label">Status</label>

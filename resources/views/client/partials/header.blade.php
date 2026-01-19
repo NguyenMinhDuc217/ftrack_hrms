@@ -54,7 +54,7 @@
         <li>
           <div class="p-2 d-flex justify-content-center">
             <!-- <a class="p-2 px-4 rounded-circle alumni-font border-gradient-btn justify-content-center align-items-center" target="_blank" href="https://cpmvietnam.com/"> -->
-            <a class="p-2 px-4 rounded-circle alumni-font justify-content-center align-items-center btn-link-cpm" target="_blank" href="https://cpmvietnam.com/">
+            <a class="p-2 px-4 rounded-circle alumni-font justify-content-center align-items-center btn-link-cpm" target="_blank" title="CPM Vietnam" href="https://cpmvietnam.com/">
               <img src="{{asset('client/assets/img/icon-web-cpm-01.svg') }}" alt="CPM VIETNAM" class="h-9 w-auto" ></img>
             </a>
           </div>

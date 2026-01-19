@@ -19,7 +19,8 @@ class JobHrms extends Model
         'name',
         'slug',
         'image_ids',
-        'profession_id',
+        'profession_ids',
+        'tag_ids',
         'employment_type',
         'description_md',
         'requirements_md',
@@ -56,6 +57,8 @@ class JobHrms extends Model
 
     protected $casts = [
         'image_ids' => 'array',
+        'profession_ids' => 'array',
+        'tag_ids' => 'array',
     ];
 
     public function scopeActive($query)
@@ -67,9 +70,27 @@ class JobHrms extends Model
     }
 
     // RELATIONSHIP
-    public function profession()
+    public function professions()
     {
-        return $this->belongsTo(Profession::class, 'profession_id')->where('status', 'active')->where('deleted_at', null);
+        if (empty($this->profession_ids)) {
+            return collect();
+        }
+
+        return Profession::whereIn('profession_id', $this->profession_ids)
+            ->where('status', 'active')
+            ->where('deleted_at', null)
+            ->get();
+    }
+
+    public function tags()
+    {
+        if (empty($this->tag_ids)) {
+            return collect();
+        }
+
+        return Tag::whereIn('id', $this->tag_ids)
+            ->where('deleted_at', null)
+            ->get();
     }
 
     public function job_area()

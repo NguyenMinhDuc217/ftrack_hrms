@@ -15,18 +15,25 @@ return [
     'txt_start_date' => 'Start date',
     'txt_end_date' => 'End date',
     'txt_image' => 'Image',
+    'txt_tag' => 'Tag',
+    'txt_tag_example' => 'Example: requires-smart-mobile-device',
 
     // Validation
     'title_required' => 'Title is required.',
     'title_string' => 'Title must be a string.',
     'title_max' => 'Title cannot be longer than 255 characters.',
     'profession_id_exists' => 'Selected profession does not exist.',
+    'profession_id_required' => 'Profession is required.',
+    'profession_id_max' => 'Profession too much',
     'province_code_required' => 'Province code is required.',
     'province_code_string' => 'Province code must be a string.',
     'province_code_max' => 'Province code cannot be longer than 255 characters.',
     'province_code_in' => 'Selected province code is invalid.',
     'employment_type_string' => 'Employment type must be a string.',
     'employment_type_enum' => 'Selected employment type is invalid.',
+    'tag_ids_required' => 'Tag is required.',
+    'tag_ids_max' => 'Tag too much',
+    'tag_ids_array' => 'Tag must be an array.',
     'headcount_integer' => 'Headcount must be an integer.',
     'description_md_string' => 'Description must be a string.',
     'requirements_md_string' => 'Requirements must be a string.',
@@ -106,8 +113,8 @@ return [
     'txt_create_cv' => 'Create CV',
 
     // Banner
-    'txt_sales_staff' => 'Sales staff',
-    'txt_display_staff' => 'Display staff',
-    'txt_marketing_staff' => 'Marketing staff',
+    'txt_sales_staff' => 'Sales',
+    'txt_display_staff' => 'Merchandiser',
+    'txt_marketing_staff' => 'PG',
 
 ];

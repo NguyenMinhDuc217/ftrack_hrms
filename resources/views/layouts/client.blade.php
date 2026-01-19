@@ -64,18 +64,18 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    primary: '#1F7DBC', // lime-600
-                    'primary-hover': '#1F7DBC', // lime-700
-                    secondary: '#1e40af', // blue-800
-                    footer: '#2f4f18', // custom dark green
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1F7DBC', // lime-600
+                        'primary-hover': '#1F7DBC', // lime-700
+                        secondary: '#1e40af', // blue-800
+                        footer: '#2f4f18', // custom dark green
+                    }
                 }
             }
         }
-    }
     </script>
 
     <style>
@@ -103,6 +103,8 @@
     </style>
 
     @stack('styles') {{-- For page-specific CSS --}}
+
+    @stack('seo_tags')
 </head>
 
 <body class="index-page">
@@ -167,15 +169,15 @@
     <script src="{{ asset('client/assets/vendor/select2/dist/js/select2.js') }}"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('.js-example-basic-single').select2({
-            placeholder: "{{ __('default.txt_location') }}",
-            allowClear: true,
-            width: '100%',
-            theme: "bootstrap-5" // Tùy chỉnh theme cho Bootstrap 5
+        document.addEventListener('DOMContentLoaded', function () {
+            $('.select2-single').select2({
+                placeholder: "{{ __('default.txt_location') }}",
+                allowClear: true,
+                width: '100%',
+                theme: "bootstrap-5" // Tùy chỉnh theme cho Bootstrap 5
+            });
         });
-    });
-</script>
+    </script>
 
 
     @include('client.partials._scripts')

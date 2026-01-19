@@ -2,7 +2,7 @@
 <section class="py-12 bg-background">
     <div class="container mx-auto px-4">
         <!-- <div class="bg-gradient-to-r from-emerald-50 to-green-100 rounded-3xl p-8 md:p-12 shadow-sm border border-green-100 flex flex-col md:flex-row items-center relative overflow-hidden"> -->
-        <div class="bg-[#f0f0f0] rounded-3xl p-8 md:p-12 shadow-sm border border-green-100 flex flex-col md:flex-row items-center relative overflow-hidden">
+        <div class="bg-[#f0f0f0] p-8 md:p-12 shadow-sm border border-green-100 flex flex-col md:flex-row items-center relative overflow-hidden">
 
             <!-- Decorative Circle -->
             <div class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/4 w-[500px] h-[500px] bg-white rounded-full opacity-40 blur-3xl pointer-events-none"></div>

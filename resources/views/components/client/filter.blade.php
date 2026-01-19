@@ -52,7 +52,7 @@
     <!-- <div class="flex items-center scrollable"> -->
             <button class="filter-btn flex-shrink-0 px-4 py-1.5 rounded-0 text-sm whitespace-nowrap transition-colors border bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 scrollable-item" data-loc="Tất cả">Tất cả</button>
             @foreach($filters as $filter)
-            <button onclick="filterJobs('{{ $type }}', '{{ $filter->slug }}')" class="filter-btn flex-shrink-0 px-4 py-1.5 rounded-0 text-sm whitespace-nowrap transition-colors border bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 scrollable-item {{ (isset($val) && $val == $filter->slug) ? 'active' : '' }}">{{ $filter->name }}</button>
+            <button onclick="chooseProfession('{{ $type }}', '{{ $filter->slug }}', '{{ $filter->name }}')" class="filter-btn flex-shrink-0 px-4 py-1.5 rounded-0 text-sm whitespace-nowrap transition-colors border bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 scrollable-item {{ (isset($val) && $val == $filter->slug) ? 'active' : '' }}">{{ $filter->name }}</button>
             @endforeach
     </div>
     

@@ -16,7 +16,7 @@ class JobController extends Controller
     {
         $id = $job->job_id;
         try {
-            $job = JobHrms::active()->with('profession')->with('job_area', 'job_area.province')->findOrFail($id);
+            $job = JobHrms::active()->with('job_area', 'job_area.province')->findOrFail($id);
             if (Auth::check()) {
                 $user = auth()->user();
                 $cvs = UserDocument::where('user_id', $user->user_id)

@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4">
 
         <!-- Filters -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
             <div class="sm:w-1/5 w-max flex items-center space-x-2 px-4 py-1.5 bg-white rounded-0 border border-gray-200 text-sm text-gray-600 w-full md:w-auto">
                 <span class="whitespace-nowrap font-medium text-gray-900">{{ __('job.txt_filter_by') }}:</span>
                 <select class="border-none bg-transparent font-semibold text-gray-900 focus:ring-0 cursor-pointer outline-none">
@@ -17,7 +17,26 @@
                     :type="$type"
                     :val="isset($val) ? $val : ''"
                     id="filter" />
-             </div>
+
+            </div>
+        </div>
+        <div class="bg-white p-3 border-2 border-dotted mb-6 rounded-0 flex flex-col gap-2 {{ empty($list_filter_profession) ? 'hidden' : '' }}" id="list-tags">
+            <div class="flex justify-between pb-2">
+                <span>Active Filter (<span id="count_tags">{{ !empty($list_filter_profession) ? count($list_filter_profession) : 0 }}</span>)</span>
+                <button onclick="clearFilter()" class="flex items-center gap-1 hover:text-[var(--blue-color)]"><i class="ti ti-x"></i> Clear</button>
+            </div>
+            <div id="list-filter-profession" class="flex flex-wrap gap-2 ">
+                @if(!empty($list_filter_profession))
+                @foreach($list_filter_profession as $profession)
+                    <span class="badge rounded-sm bg-[var(--blue-color)] d-flex flex-row align-items-center gap-1 p-2" id="profession_tag_{{ $profession->slug }}">
+                        <span class="text-white">{{ $profession->profession_name }}</span>
+                        <button onclick="removeProfession('{{ $profession->slug }}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition flex items-center justify-center">
+                            <i class="ti ti-x"></i>
+                        </button>
+                    </span>
+                @endforeach
+                @endif
+            </div>
         </div>
 
         <!-- Job Grid -->
@@ -34,9 +53,6 @@
                                 {{ $job->name ?? 'N/A' }}
                             </h3>
     
-                            <!-- <div class="text-base text-black tracking-wide font-medium my-2 leading-6 line-clamp-3 h-[10vh]">
-                                {{ Str::limit(strip_tags($job->description_md), 120, '...') }}
-                            </div> -->
                             @if($job->organization)
                             <div class="text-gray-500">
                                 <i class="ti ti-building-community mr-2"></i>
@@ -78,6 +94,32 @@
         {{ $jobs->links('vendor.pagination.custom') }}
     </div>
     <script>
+        function chooseProfession(type, slug, name) {
+            if ($('#profession_tag_' + slug).length > 0) {
+                return;
+            }
+
+            var bagde = `<span class="badge rounded-sm bg-[var(--blue-color)] flex flex-row items-center gap-1 p-2" id="profession_tag_${slug}">
+            <span class="text-white">${name}</span>
+                        <button onclick="removeProfession('${slug}')" class="btn btn-sm p-0 text-white rounded-full hover:bg-blue-300 transition flex items-center justify-center">
+                            <i class="ti ti-x"></i>
+                        </button>
+                    </span>`
+            $('#list-filter-profession').append(bagde)
+            $('#count_tags').text($('#list-filter-profession').children().length)
+            $('#list-tags').removeClass('hidden')
+        }
+        function removeProfession(slug) {
+            $('#profession_tag_' + slug).remove()
+            $('#count_tags').text($('#list-filter-profession').children().length)
+            if ($('#list-filter-profession').children().length == 0) {
+                $('#list-tags').addClass('hidden')
+            }
+        }
+        function clearFilter() {
+            $('#list-filter-profession').empty()
+            $('#list-tags').addClass('hidden')
+        }
         function changeFilter($key) {
             $('#filter').attr('key', $key);
         }
