@@ -31,6 +31,14 @@ class JobPostRequest extends FormRequest
         // dd($validator->errors()->all());
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'min_salary' => str_replace('.', '', $this->min_salary),
+            'max_salary' => str_replace('.', '', $this->max_salary),
+        ]);
+    }
+
     public function rules(): array
     {
         return [

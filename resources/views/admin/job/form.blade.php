@@ -149,5 +149,25 @@
             tag.remove();
         }
     };
+
+    // Format salary
+    const inputMinSalary = document.getElementById('min_salary');
+    const inputMaxSalary = document.getElementById('max_salary');
+
+    function formatNumberDot(num) {
+            num = num.replace(/\D/g, ""); // chỉ giữ số 
+            if (num) { 
+                num = Number(num).toLocaleString("vi-VN"); 
+            }
+            return num;
+    }
+
+    inputMinSalary.addEventListener('input', function() {
+        this.value = formatNumberDot(this.value);
+    });
+
+    inputMaxSalary.addEventListener('input', function() {
+        this.value = formatNumberDot(this.value);
+    });
 </script>
 @endsection

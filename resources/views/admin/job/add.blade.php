@@ -173,40 +173,43 @@
                     <div class="d-flex flex-column flex-sm-row gap-2 my-3">
                         <div class="flex-fill my-0 form-group">
                             <label class="form-label">{{ __('job.txt_min_salary') }}</label>
-                            <input type="number" class="form-control @error('min_salary') is-invalid @enderror"
-                                name="min_salary" placeholder="{{ __('job.txt_min_salary') }}"
+                            <input type="text" class="form-control @error('min_salary') is-invalid @enderror"
+                                name="min_salary" id="min_salary" placeholder="{{ __('job.txt_min_salary') }}"
                                 value="{{ old('min_salary') }}">
                             @error('min_salary')
                             <div class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </div>
                             @enderror
-                            <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
+                            <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small><br/>
+                            <small>Ex: 9000000</small>
                         </div>
 
                         <div class="flex-fill my-0 form-group">
                             <label class="form-label">{{ __('job.txt_max_salary') }}</label>
-                            <input type="number" class="form-control @error('max_salary') is-invalid @enderror"
-                                name="max_salary" placeholder="{{ __('job.txt_max_salary') }}"
+                            <input type="text" class="form-control @error('max_salary') is-invalid @enderror"
+                                name="max_salary" id="max_salary" placeholder="{{ __('job.txt_max_salary') }}"
                                 value="{{ old('max_salary') }}">
                             @error('max_salary')
                             <div class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </div>
                             @enderror
-                            <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
+                            <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small><br/>
+                            <small>Ex: 15000000</small>
                         </div>
     
                         <div class="flex-fill my-0 form-group">
                             <label class="form-label">{{ __('job.txt_currency') }}</label>
-                            <input type="text" class="form-control @error('currency') is-invalid @enderror" name="currency"
+                            <input type="text" class="form-control @error('currency') is-invalid @enderror" name="currency" id="currency"
                                 placeholder="{{ __('job.txt_currency') }}" value="{{ old('currency') }}">
                             @error('currency')
                             <div class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </div>
                             @enderror
-                            <small>{{ __('default.enter_a') }} {{ __('default.text') }}</small>
+                            <small>{{ __('default.enter_a') }} {{ __('default.text') }}</small><br/>
+                            <small>Ex: VND</small>
                         </div>
                     </div>
 
