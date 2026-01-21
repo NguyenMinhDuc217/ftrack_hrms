@@ -85,7 +85,7 @@
 </script>
 
 <script>
-    // Danh sách tỉnh đã chọn (lấy từ hidden select)
+    // Danh sách loại công việc đã chọn (lấy từ hidden select)
     function getSelectedProfession() {
         const select = document.getElementById('profession_hidden');
         return Array.from(select.selectedOptions).map(opt => opt.value);
@@ -169,5 +169,150 @@
     inputMaxSalary.addEventListener('input', function() {
         this.value = formatNumberDot(this.value);
     });
+
+    
+</script>
+
+<script>
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+        ['link', 'image', 'video', 'formula'],
+
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+
+        ['clean']                                         // remove formatting button
+    ];
+
+    const quill = new Quill('#description-editor', {
+        modules: {
+            toolbar: {
+                container: toolbarOptions,
+                handlers: {
+                    image: function() {
+                        imageHander(this.quill);
+                    },
+                },
+            },
+            resize: {
+            embedTags: ["VIDEO", "IFRAME"],
+            tools: [
+                {
+                text: "Alt",
+                attrs: {
+                    title: "Set image alt",
+                    class: "btn-alt",
+                },
+                verify(activeEle) {
+                    return activeEle && activeEle.tagName === "IMG";
+                },
+                handler(evt, button, activeEle) {
+                    let alt = activeEle.alt || "";
+                    alt = window.prompt("Alt for image", alt);
+                    if (alt == null) return;
+                    activeEle.setAttribute("alt", alt);
+                },
+                },
+            ],
+            },
+        },
+        theme: 'snow'
+    });
+
+    const quill2 = new Quill('#requirements-editor', {
+        modules: {
+            toolbar: {
+                container: toolbarOptions,
+                handlers: {
+                    image: function() {
+                        imageHander(this.quill);
+                    },
+                },
+            },
+            resize: {
+            embedTags: ["VIDEO", "IFRAME"],
+            tools: [
+                {
+                    text: "Alt",
+                    attrs: {
+                        title: "Set image alt",
+                        class: "btn-alt",
+                    },
+                    verify(activeEle) {
+                        return activeEle && activeEle.tagName === "IMG";
+                    },
+                    handler(evt, button, activeEle) {
+                        let alt = activeEle.alt || "";
+                        alt = window.prompt("Alt for image", alt);
+                        if (alt == null) return;
+                        activeEle.setAttribute("alt", alt);
+
+                        
+                    },
+                },
+            ],
+            },
+        },
+        theme: 'snow'
+    });
+
+    function imageHander(quillInstance) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+
+        input.addEventListener('change', async function(e) {
+            const file = input.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('upload', file);
+
+                try {
+                    const response = await fetch('{{ route("admin.jobs.upload-editor-image") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                        },
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                   
+                    const imageUrl = data.url;
+
+                   // Lấy vị trí con trỏ hiện tại trong editor
+                    const range = quillInstance.getSelection();
+                    // Chèn hình ảnh vào đúng vị trí đó
+                    quillInstance.insertEmbed(range ? range.index : 0, 'image', imageUrl);
+                    
+                    // Di chuyển con trỏ xuống sau hình ảnh
+                    quillInstance.setSelection((range ? range.index : 0) + 1);
+
+                }  catch (error) {
+                    console.error('Error:', error);
+                    alert('Lỗi upload: ' + error.message);
+                }
+            };
+        });
+
+        input.click();
+    }
+
 </script>
 @endsection

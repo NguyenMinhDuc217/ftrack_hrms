@@ -10,13 +10,19 @@
 <script src="{{ asset('admin/assets/js/pcoded.js') }}"></script>
 <script src="{{ asset('admin/assets/js/plugins/feather.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/jquery.min.js') }}"></script>
+
 <script src="{{ asset('admin/assets/js/plugins/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/plugins/sweetalert2.js') }}"></script>
 
 <script src="{{ asset('admin/assets/js/plugins/ckeditor/classic/ckeditor.js') }}"></script>
 
- <!-- file-upload Js -->
-    <script src="{{ asset('admin/assets/js/plugins/dropzone-amd-module.min.js') }}"></script>
+<!-- file-upload Js -->
+<script src="{{ asset('admin/assets/js/plugins/dropzone-amd-module.min.js') }}"></script>
+
+<!-- quill -->
+ <script src="{{ asset('admin/assets/js/plugins/quill.js') }}"></script>
+<script src="{{ asset('admin/assets/js/plugins/resize.js') }}"></script>
+
 
 
 <script>layout_change('light');</script>

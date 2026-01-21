@@ -24,34 +24,6 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label class="form-label" for="image">{{ __('job.txt_image') }}</label>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div action="../assets/json/file-upload.php" id="multiImageUpload" class="dropzone">
-                                            <div class="fallback">
-                                                <i class="bi bi-cloud-upload text-4xl text-gray-400 mb-4"></i>
-                                            </div>
-                                        </div>
-
-                                        <!-- Input ẩn để Dropzone gán file vào (Tên là images[]) -->
-                                        <input type="file" name="images[]"  id="real-file-input" multiple class="d-none is-invalid" accept="image/*">
-
-                                        @if ($errors->has('images.*'))
-                                            @foreach ($errors->get('images.*') as $file_errors)
-                                                <div class="invalid-feedback" role="alert">
-                                                    <strong>{{ $file_errors[0] }}</strong>
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label class="form-label" for="name">{{ __('job.txt_title') }}</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                             placeholder="{{ __('job.txt_title') }}" id="name" value="{{ old('name') }}">
@@ -150,9 +122,12 @@
                         <small>{{ __('default.enter_a') }} {{ __('default.number') }}</small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label class="form-label">{{ __('job.txt_description') }}</label>
-                        <textarea name="description_md" id="editor-description" class="form-control @error('description_md') is-invalid @enderror">{{ old('description_md') }}</textarea>
+                        <div id="description-editor">
+                            {!! old('description_md') !!}
+                        </div>
+                        <input type="hidden" name="description_md" id="description_md_hidden">
                         @error('description_md')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -160,16 +135,19 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label class="form-label">{{ __('job.txt_requirements') }}</label>
-                        <textarea name="requirements_md" id="editor-requirements" class="form-control @error('requirements_md') is-invalid @enderror">{{ old('requirements_md') }}</textarea>
+                        <div id="requirements-editor">
+                            {!! old('requirements_md') !!}
+                        </div>
+                        <input type="hidden" name="requirements_md" id="requirements_md_hidden">
                         @error('requirements_md')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </div>
                         @enderror
                     </div>
-                    
+
                     <div class="d-flex flex-column flex-sm-row gap-2 my-3">
                         <div class="flex-fill my-0 form-group">
                             <label class="form-label">{{ __('job.txt_min_salary') }}</label>
@@ -311,63 +289,17 @@
 <!-- [ Main Content ] end -->
 
 <script>
-    let descEditor, reqEditor; 
-    (function () {
-        ClassicEditor.create(document.querySelector('#editor-description'))
-        .then(editor => {
-            descEditor = editor;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    })();
+    const form = document.getElementById('job-add-form');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const descriptionMd = quill.root.innerHTML;
+        $('#description_md_hidden').val(descriptionMd);
 
-    (function () {
-        ClassicEditor.create(document.querySelector('#editor-requirements'))
-        .then(editor => {
-            reqEditor = editor;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    })();
-</script>
+        const requirementsMd = quill2.root.innerHTML;
+        $('#requirements_md_hidden').val(requirementsMd);
 
-<script>
-    Dropzone.autoDiscover = false;
-    let myDropzone = new Dropzone("#multiImageUpload", {
-        url: "{{ route('admin.jobs.store') }}",
-        autoProcessQueue: false, // Không cho tự động upload lên URL của dropzone
-        uploadMultiple: true,
-        parallelUploads: 20,
-        paramName: "images", // Tên mảng file
-        acceptedFiles: 'image/*',
-        addRemoveLinks: true,
-        dictRemoveFile: "<i class='ti ti-x position-absolute top-0 end-0 bg-danger p-1 text-sm text-white rounded-circle'></i>",
-        init: function() {
-            let dz = this;
-            let form = document.getElementById('job-add-form');
-            let realInput = document.getElementById('real-file-input');
-            form.addEventListener("submit", function(e) {
-                // Sử dụng DataTransfer để gom file
-                const dataTransfer = new DataTransfer();
-                
-                // Lấy toàn bộ file hiện có trong Dropzone bỏ vào DataTransfer
-                dz.getAcceptedFiles().forEach(file => {
-                    dataTransfer.items.add(file);
-                });
-
-                // Gán danh sách file này vào input file thật
-                realInput.files = dataTransfer.files;
-
-                // Đồng bộ CKEditor trước khi submit truyền thống
-                if (descEditor) document.querySelector('#editor-description').value = descEditor.getData();
-                if (reqEditor) document.querySelector('#editor-requirements').value = reqEditor.getData();
-
-            });
-
-        }
-    });
+        form.submit();
+    })
 </script>
 
 <script>

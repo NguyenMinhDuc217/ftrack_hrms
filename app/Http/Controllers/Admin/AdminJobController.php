@@ -13,6 +13,7 @@ use App\Models\Profession;
 use App\Models\Province;
 use App\Models\Tag;
 use App\Services\ImageService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -298,5 +299,33 @@ class AdminJobController extends Controller
 
             return redirect()->route('admin.jobs.index')->with('error', 'Job delete failed: '.$e->getMessage());
         }
+    }
+
+    public function uploadEditorImage(Request $request, ImageService $imageService)
+    {
+        if ($request->hasFile('upload')) {
+            $image = $request->file('upload');
+            $fileName = time().'_'.$image->getClientOriginalName();
+
+            $new_image = new Image([
+                'name' => $fileName,
+                'type' => 'des',
+                'file_name_original' => $image->getClientOriginalName(),
+                'size' => $image->getSize(),
+                'mime_type' => $image->getMimeType(),
+                'status' => 1,
+
+            ]);
+            $file = $imageService->upload($image, $new_image, 'jobs');
+
+            $url = $file->url;
+
+            return response()->json([
+                'uploaded' => true,
+                'url' => $url,
+            ]);
+        }
+
+        return response()->json(['uploaded' => false, 'error' => ['message' => __('org.txt_failed_image')]], 400);
     }
 }

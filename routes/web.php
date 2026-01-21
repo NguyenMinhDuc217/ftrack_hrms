@@ -174,6 +174,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     Route::get('/jobs/{job_id}', [AdminJobController::class, 'show'])->name('jobs.show');
     Route::patch('/jobs/{job}', [AdminJobController::class, 'update'])->name('jobs.update');
     Route::post('/jobs/delete/{job_id}', [AdminJobController::class, 'delete'])->name('jobs.delete');
+    Route::post('/jobs/upload-editor-image', [AdminJobController::class, 'uploadEditorImage'])->name('jobs.upload-editor-image');
 
     // route blogs
     Route::get('/blogs', [AdminBlogController::class, 'index'])->name('blogs.index');

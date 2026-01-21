@@ -24,3 +24,7 @@
 
 <!-- [Bootstrap Icons FIle] -->
 <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap-icons/bootstrap-icons.css') }}">
+
+<!-- Quill CSS -->
+<link href="{{ asset('admin/assets/css/plugins/quill.snow.css') }}" rel="stylesheet" />
+<link href="{{ asset('admin/assets/css/plugins/resize.css') }}" rel="stylesheet" />

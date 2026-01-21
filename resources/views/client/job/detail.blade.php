@@ -1,6 +1,72 @@
 @extends('layouts.client')
 
-@section('title', __('cv.profile'))
+@section('title', $job->name . ' - ' . ($job->organization->name ?? 'CPM Vietnam'))
+
+@php
+    $seoDescription = Str::limit(strip_tags($job->description_md), 160);
+    $shareImage = $job->organization->image->url ?? asset('images/default-share.webp');
+    $locale = app()->getLocale();
+
+    $jobPostingSchema = [
+        "@context" => "https://schema.org/",
+        "@type" => "JobPosting",
+        "title" => $job->name,
+        "description" => strip_tags($job->description_md),
+        "identifier" => [
+            "@type" => "PropertyValue",
+            "name" => $job->organization->name ?? 'CPM Vietnam',
+            "value" => (string)$job->job_id
+        ],
+        "datePosted" => $job->created_at ? $job->created_at->toIso8601String() : now()->toIso8601String(),
+        "validThrough" => \Carbon\Carbon::parse($job->end_date)->toIso8601String(),
+        "employmentType" => strtoupper($job->employment_type ?? 'FULL_TIME'),
+        "hiringOrganization" => [
+            "@type" => "Organization",
+            "name" => $job->organization->name ?? 'CPM Vietnam',
+            "sameAs" => $job->organization->link ?? url('/'),
+            "logo" => $job->organization->image->url ?? asset('images/logo.png')
+        ],
+        "jobLocation" => [
+            "@type" => "Place",
+            "address" => [
+                "@type" => "PostalAddress",
+                "streetAddress" => $job->organization->address ?? '',
+                "addressLocality" => $job->job_area->first()->province->name ?? '',
+                "addressRegion" => $job->job_area->first()->province->name ?? '',
+                "addressCountry" => "VN"
+            ]
+        ],
+        "baseSalary" => [
+            "@type" => "MonetaryAmount",
+            "currency" => $job->currency ?? 'VND',
+            "value" => [
+                "@type" => "QuantitativeValue",
+                "minValue" => (int)$job->min_salary,
+                "maxValue" => (int)$job->max_salary,
+                "unitText" => "MONTH"
+            ]
+        ]
+    ];
+@endphp
+
+@push('styles')
+    <meta name="description" content="{{ $seoDescription }}">
+    <meta name="keywords" content="tuyển dụng, việc làm, {{ $job->name }}, {{ $job->organization->name ?? '' }}">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $job->name }} | {{ $job->organization->name ?? 'CPM Vietnam' }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:image" content="{{ $shareImage }}">
+
+    <script type="application/ld+json">
+    @json($jobPostingSchema)
+    </script>
+    
+@endpush
+
+@section('description', $seoDescription)
 
 @section('content')
 
@@ -27,6 +93,26 @@
     .cv-item-active:hover {
         /* background-color: var(--accent-color) !important; */
         color: var(--blue-color) !important;
+    }
+
+    #description-content a[data-fancybox], #requirements-content a[data-fancybox] {
+        display: inline-block !important;
+        vertical-align: middle;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        max-width: 100%;
+    }
+
+    #description-content img, #requirements-content img {
+        display: block !important;
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        cursor: zoom-in;
+    }
+
+    #description-content p:has(img), #requirements-content p:has(img) {
+        display: block; 
     }
 </style>
 
@@ -104,7 +190,7 @@
                     </x-client.elements.button>
                 </div>
 
-                @if($job->images()->count() > 0)
+                @if($job->images()->count() > 0 && false)
                     <div class="image-grid grid grid-cols-3 gap-3">
                         @foreach($job->images() as $index => $img)
                             @if($index < 3)
@@ -132,7 +218,7 @@
                 <!-- Mô tả công việc -->
                 <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-4">
                     <h2 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_description') }}</h2>
-                    <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line">
+                    <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line" id="description-content">
                         {!! $job->description_md !!}
                     </div>
                 </div>
@@ -140,7 +226,7 @@
                 <!-- Yêu cầu công việc -->
                 <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-4">
                     <h2 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_requirements') }}</h2>
-                    <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line">
+                    <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line" id="requirements-content">
                         {!! $job->requirements_md !!}
                     </div>
                 </div>
@@ -255,127 +341,126 @@
             </div>
             <!-- ==================== HẾT BÊN PHẢI ==================== -->
         </div>
+    </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered lg:max-w-[40%]">
-                <div class="modal-content rounded-0">
+    <!-- Modal -->
+    <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered lg:max-w-[40%]">
+            <div class="modal-content rounded-0">
 
-                    @if(Auth::check())
-                    <form action="{{ route('apply.job') }}" id="applyForm" method="POST">
-                        @csrf
-                        <input type="hidden" name="job_id" value="{{ $job->job_id }}">
-                        <input type="hidden" name="cv_id" id="selectedCvId" value="">
+                @if(Auth::check())
+                <form action="{{ route('apply.job') }}" id="applyForm" method="POST">
+                    @csrf
+                    <input type="hidden" name="job_id" value="{{ $job->job_id }}">
+                    <input type="hidden" name="cv_id" id="selectedCvId" value="">
 
-                        <div class="modal-header">
-                            <h1 class="modal-title text-xl font-bold">
-                                {{ __('job.txt_apply') }} <span class="text-[var(--accent-color)]">{{ $job->title }}</span>
-                            </h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        
-                        <div class="modal-body ">
-                                 @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            <li>{{ $errors->first() }}</li>
-                                        </ul>
+                    <div class="modal-header">
+                        <h1 class="modal-title text-xl font-bold">
+                            {{ __('job.txt_apply') }} <span class="text-[var(--accent-color)]">{{ $job->title }}</span>
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body ">
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        <li>{{ $errors->first() }}</li>
+                                    </ul>
+                                </div>
+                            @endif
+
+                        <div class="flex flex-col gap-3 items-center">
+                            <div class="flex items-center gap-2 w-full">
+                                <i class="bi bi-folder2-open text-lg text-[var(--accent-color)]"></i>
+                                <span class="font-bold">{{ __('job.txt_choose_cv_apply') }}</span>
+                            </div>
+
+                            <!-- Chọn CV có sẵn -->
+                            <div id="collapseChooseCV" class="group-collapse flex flex-col gap-2 w-full border-2 hover:border-[var(--accent-color)] border-gray-200 p-2 rounded-md" data-collapse-group="cv-group">
+                                <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full p-0" data-bs-toggle="collapse" data-bs-target="#collapseCVList">
+                                    <span class="title-collapse text-black">{{__('job.txt_choose_cv_available')}}</span>
+                                </button>
+                                <div id="collapseCVList" class="flex flex-col gap-2 collapse show">
+                                @if($cvs && $cvs->count() > 0)
+                                    @foreach($cvs as $cv)
+                                        <div id="cv-item-{{ $cv->id }}" class="cv-item text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
+                                            <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold underline">{{ $cv->document_title }}</a>
+                                            <x-client.elements.button type="button" class="cv-select-btn" onclick="chooseCV({{ $cv->id }}, this )">
+                                                {{__('job.txt_choose_cv')}}
+                                            </x-client.elements.button>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="text-secondary mb-4">
+                                        <i class="ti ti-file-off me-2"></i> {{ __('cv.no_cv_attached') }}
                                     </div>
                                 @endif
-
-                            <div class="flex flex-col gap-3 items-center">
-                                <div class="flex items-center gap-2 w-full">
-                                    <i class="bi bi-folder2-open text-lg text-[var(--accent-color)]"></i>
-                                    <span class="font-bold">{{ __('job.txt_choose_cv_apply') }}</span>
-                                </div>
-
-                                <!-- Chọn CV có sẵn -->
-                                <div id="collapseChooseCV" class="group-collapse flex flex-col gap-2 w-full border-2 hover:border-[var(--accent-color)] border-gray-200 p-2 rounded-md" data-collapse-group="cv-group">
-                                    <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full p-0" data-bs-toggle="collapse" data-bs-target="#collapseCVList">
-                                        <span class="title-collapse text-black">{{__('job.txt_choose_cv_available')}}</span>
-                                    </button>
-                                    <div id="collapseCVList" class="flex flex-col gap-2 collapse show">
-                                    @if($cvs && $cvs->count() > 0)
-                                        @foreach($cvs as $cv)
-                                            <div id="cv-item-{{ $cv->id }}" class="cv-item text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
-                                                <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold underline">{{ $cv->document_title }}</a>
-                                                <x-client.elements.button type="button" class="cv-select-btn" onclick="chooseCV({{ $cv->id }}, this )">
-                                                    {{__('job.txt_choose_cv')}}
-                                                </x-client.elements.button>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <div class="text-secondary mb-4">
-                                            <i class="ti ti-file-off me-2"></i> {{ __('cv.no_cv_attached') }}
-                                        </div>
-                                    @endif
-                                    </div>
-                                </div>
-
-                                <!-- Tạo CV mới -->
-                                <div id="collapseCreateCV" class="group-collapse w-full border-2 border-dashed hover:border-[var(--accent-color)] border-gray-200 rounded-md" data-collapse-group="cv-group">
-                                    <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full" data-bs-toggle="collapse" data-bs-target="#collapseUploadCV">
-                                        <span class="title-collapse text-black">{{__('job.txt_create_new_cv')}}</span>
-                                    </button>
-                                    <div id="collapseUploadCV" class="flex flex-col gap-2 collapse mx-2 mb-2">
-                                        <div class="">
-                                            <label for="cv_name" class="form-label fw-bold">{{ __('cv.cv_name') }} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="cv_name" name="cv_name" placeholder="{{ __('cv.placeholder_cv_name') }}">
-                                        </div>
-                                        <div class="">
-                                            <label class="form-label fw-bold">{{ __('cv.upload_cv') }}</label>
-                                            <div class="input-group">
-                                                <input type="file" name="cv_file" id="cv_file" class="form-control" accept=".doc,.docx,.pdf">
-                                        
-                                                <x-client.elements.button type="button" class="!rounded-r-[var(--bs-border-radius)]" onclick="uploadCV()">
-                                                    <i class="ti ti-upload me-2"></i> {{ __('cv.upload_cv') }}
-                                                </x-client.elements.button>
-                                            </div>
-                                            <span class="text-danger" id="cv_file_error"></span>
-                                        </div>
-                                        <input type="hidden" id="user_document_id">
-                                        <small class="text-muted">{{ __('cv.upload_file_rules') }}</small>
-                                    </div>
-                                </div>
-
-                                @if($checkPhone == false)
-                                <div class="w-full">
-                                    <label for="province_id" class="form-label text-danger fw-bold">{{ __('user.txt_please_fill_phone_number') }} <span class="text-danger">*</span></label>
-                                    <input type="number" name="phone_number" id="phone_number" class="form-control" placeholder="{{ __('user.txt_phone_number') }}">
-                                    @error('phone_number')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                @endif
-
-                                <div class="w-full">
-                                    <div class="mb-3">
-                                        <label for="province_id" class="form-label fw-bold">{{__('job.txt_area_recruitment')}} <span class="text-danger">*</span></label>
-                                        <select name="province_id" id="province_id" class="form-select" required>
-                                            <option value="">{{__('job.txt_province')}}</option>
-                                            @foreach ($job->job_area as $area)
-                                                    <option value="{{ $area->province->id }}">{{ $area->province->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer grid grid-cols-5 justify-center items-center gap-2">
-                            <x-client.elements.button type="submit" class="col-span-4 h-12 flex justify-center items-center gap-2  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">
-                                {{__('job.txt_apply')}}
-                            </x-client.elements.button>
-                            <button type="button" class="col-span-1 h-12 btn border border-transparent text-sm font-medium rounded-0 bg-light hover:bg-gray-100  hover:text-primary hover:shadow-xl" data-bs-dismiss="modal">{{__('default.btn_close')}}</button>
-                        </div>
-                    </form>
-                    @else
-                    <x-client.login/>
-                    @endif
 
-                </div>
+                            <!-- Tạo CV mới -->
+                            <div id="collapseCreateCV" class="group-collapse w-full border-2 border-dashed hover:border-[var(--accent-color)] border-gray-200 rounded-md" data-collapse-group="cv-group">
+                                <button type="button" class="btn border-none hover:text-[var(--accent-color)] w-full" data-bs-toggle="collapse" data-bs-target="#collapseUploadCV">
+                                    <span class="title-collapse text-black">{{__('job.txt_create_new_cv')}}</span>
+                                </button>
+                                <div id="collapseUploadCV" class="flex flex-col gap-2 collapse mx-2 mb-2">
+                                    <div class="">
+                                        <label for="cv_name" class="form-label fw-bold">{{ __('cv.cv_name') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="cv_name" name="cv_name" placeholder="{{ __('cv.placeholder_cv_name') }}">
+                                    </div>
+                                    <div class="">
+                                        <label class="form-label fw-bold">{{ __('cv.upload_cv') }}</label>
+                                        <div class="input-group">
+                                            <input type="file" name="cv_file" id="cv_file" class="form-control" accept=".doc,.docx,.pdf">
+                                    
+                                            <x-client.elements.button type="button" class="!rounded-r-[var(--bs-border-radius)]" onclick="uploadCV()">
+                                                <i class="ti ti-upload me-2"></i> {{ __('cv.upload_cv') }}
+                                            </x-client.elements.button>
+                                        </div>
+                                        <span class="text-danger" id="cv_file_error"></span>
+                                    </div>
+                                    <input type="hidden" id="user_document_id">
+                                    <small class="text-muted">{{ __('cv.upload_file_rules') }}</small>
+                                </div>
+                            </div>
+
+                            <!-- @if($checkPhone == false)
+                            <div class="w-full">
+                                <label for="province_id" class="form-label text-danger fw-bold">{{ __('user.txt_please_fill_phone_number') }} <span class="text-danger">*</span></label>
+                                <input type="number" name="phone_number" id="phone_number" class="form-control" placeholder="{{ __('user.txt_phone_number') }}">
+                                @error('phone_number')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            @endif -->
+
+                            <div class="w-full">
+                                <div class="mb-3">
+                                    <label for="province_id" class="form-label fw-bold">{{__('job.txt_area_recruitment')}} <span class="text-danger">*</span></label>
+                                    <select name="province_id" id="province_id" class="form-select" required>
+                                        <option value="">{{__('job.txt_province')}}</option>
+                                        @foreach ($job->job_area as $area)
+                                                <option value="{{ $area->province->id }}">{{ $area->province->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer grid grid-cols-5 justify-center items-center gap-2">
+                        <x-client.elements.button type="submit" class="col-span-4 h-12 flex justify-center items-center gap-2  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">
+                            {{__('job.txt_apply')}}
+                        </x-client.elements.button>
+                        <button type="button" class="col-span-1 h-12 btn border border-transparent text-sm font-medium rounded-0 bg-light hover:bg-gray-100  hover:text-primary hover:shadow-xl" data-bs-dismiss="modal">{{__('default.btn_close')}}</button>
+                    </div>
+                </form>
+                @else
+                <x-client.login/>
+                @endif
+
             </div>
         </div>
-
     </div>
 
     <script>
@@ -383,7 +468,6 @@
             // Cấu hình thêm nếu muốn
         });
     </script>
-
 
     <script>
         $(document).ready(function() {
@@ -500,6 +584,38 @@
             $('.cv-item').removeClass('cv-item-active');
             $('#cv-item-' + cvId).addClass('cv-item-active');
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tìm tất cả hình ảnh trong phần description
+            const descImages = document.querySelectorAll('#description-content img');
+            const reqImages = document.querySelectorAll('#requirements-content img');
+            
+            descImages.forEach(img => {
+                // Tạo thẻ <a> để bọc quanh hình ảnh
+                const link = document.createElement('a');
+                link.href = img.src; // Lấy link ảnh làm link phóng to
+                link.dataset.fancybox = "description-gallery"; // Đặt tên nhóm gallery (tách biệt với gallery chính nếu muốn)
+
+                // Thực hiện bọc thẻ <a> quanh thẻ <img>
+                img.parentNode.insertBefore(link, img);
+                link.appendChild(img);
+            });
+
+            reqImages.forEach(img => {
+                // Tạo thẻ <a> để bọc quanh hình ảnh
+                const link = document.createElement('a');
+                link.href = img.src; // Lấy link ảnh làm link phóng to
+                link.dataset.fancybox = "requirements-gallery"; // Đặt tên nhóm gallery (tách biệt với gallery chính nếu muốn)
+
+                // Thực hiện bọc thẻ <a> quanh thẻ <img>
+                img.parentNode.insertBefore(link, img);
+                link.appendChild(img);
+            });
+
+            // Khởi tạo lại Fancybox cho các nhóm mới (nếu cần)
+            Fancybox.bind("[data-fancybox='description-gallery']", {});
+            Fancybox.bind("[data-fancybox='requirements-gallery']", {});
+        });
 
     </script>
 </section>
