@@ -134,7 +134,7 @@
                     </h1>
 
                     <!-- 3 ô thông tin nổi bật -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pb-6 border-b-2">
                         <div class="flex items-center gap-2">
                             <div class="w-14 h-14 flex justify-center items-center gap-2 rounded-full border border-gray-200 p-2 bg-[var(--blue-color)] flex-shrink-0">
                                 <i class="bi bi-coin text-white text-4xl"></i>
@@ -150,11 +150,11 @@
 
                         <div class="flex items-center gap-2">
                             <div class="w-14 h-14 flex justify-center items-center gap-2 rounded-full border border-gray-200 p-2 bg-[var(--accent-color)] flex-shrink-0">
-                                <i class="bi bi-geo-alt-fill text-white text-3xl"></i>
+                                <i class="bi bi-people text-white text-3xl"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">{{ __('job.txt_location') }}</p>
-                                <p class="font-semibold text-gray-900">{{ $job->job_area->first()->province->localized_name ?? '' }} {{ $job->job_area->count() > 1 ? ' ' . __('job.txt_and') . ' ' . ($job->job_area->count() - 1) . ' ' . __('job.txt_otherwhere') : '' }}</p>
+                                <p class="text-sm text-gray-600">{{ __('job.txt_number_of_recruitment') }}</p>
+                                <p class="font-semibold text-gray-900">{{ $job->job_area->first()->headcount }}</p>
                             </div>
                         </div>
 
@@ -169,21 +169,54 @@
                         </div>
                     </div>
 
-                    <div>
-                        <p class="text-sm text-gray-600">
-                            {{ __('job.txt_apply_deadline') }}: 
-                            <span class="font-bold text-gray-900">
-                                {{ \Carbon\Carbon::parse($job->end_date)->format('d/m/Y') }}
-                            </span>
-                            <span class="text-green-600 font-medium">
-                                @if (!empty($locale) && $locale == 'vi')
-                                    ({{ __('job.txt_left') }} {{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} {{ __('job.txt_days') }})
-                                @elseif (!empty($locale) && $locale == 'en')
-                                    ({{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} days left)
-                                @endif
-                            </span>
-                        </p>
+                    <div class="flex flex-col gap-2">
+
+                        @if($job->job_area->count() > 0)
+                        <div class="space-y-2 flex items-center gap-3">
+                            <div class="flex items-center gap-2">
+                                <i class="text-xl bi bi-geo-alt text-gray-600"></i>
+                                <p class="text-sm text-gray-600 mt-0">{{ __('job.txt_area_recruitment') }}:</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
+                                @foreach($job->job_area as $area)
+                                    <span class="p-2 bg-gray-100 rounded-md text-xs">
+                                        {{ $area->province->localized_name ?? '' }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+    
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2">
+                                <i class="bi bi-briefcase text-gray-600 text-xl"></i>
+                                <p class="text-sm text-gray-600">{{ __('job.txt_form_of_work') }}:</p>
+                            </div>
+                            <div>
+                                <span class="font-bold p-2 bg-gray-100 rounded-md text-xs">{{ ($job->employment_type) ? Str::upper($job->employment_type) : '' }}</span>
+                            </div>
+                        </div>
+    
+                        <div class="pt-2 flex items-center gap-3">
+                            <div class="flex items-center gap-2">
+                                <i class="bi bi-calendar text-gray-600 text-xl"></i>
+                                <p class="text-sm text-gray-600">{{ __('job.txt_apply_deadline') }}: </p>
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <span class="font-bold text-gray-900">
+                                    {{ \Carbon\Carbon::parse($job->end_date)->format('d/m/Y') }}
+                                </span>
+                                <span class="text-green-600 font-medium">
+                                    @if (!empty($locale) && $locale == 'vi')
+                                        ({{ __('job.txt_left') }} {{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} {{ __('job.txt_days') }})
+                                    @elseif (!empty($locale) && $locale == 'en')
+                                        ({{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} days left)
+                                    @endif
+                                </span>
+                            </p>
+                        </div>
                     </div>
+
                     <!-- Hạn nộp + Nút ứng tuyển -->
                     <x-client.elements.button type="button" class="h-12 w-full flex justify-center items-center gap-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl" data-bs-toggle="modal" data-bs-target="#applyModal" onclick="saveCurrentUrl()">
                         <i class="bi bi-send-plus"></i><span>{{ __('job.txt_apply_now') }}</span>
@@ -291,45 +324,6 @@
                             <i class="bi bi-box-arrow-up-right"></i>
                         </a>
                     </div>
-                </div>
-
-                <div class="flex flex-col gap-3 bg-white rounded-0 shadow-sm border border-gray-100 p-4 sticky">
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_recruitment_info') }}</h3>
-                        <div class="flex items-center gap-2 mt-1">
-                            <div class="">
-                                <i class="w-10 h-10 bi bi-people text-gray-600 text-xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-600">{{ __('job.txt_number_of_recruitment') }}</p>
-                                <p class="font-semibold">{{ $job->job_area->first()->headcount }}</p> <!-- Tạm thời đổi của job areas đầu tiên -->
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-2 mt-1">
-                            <div class="">
-                                <i class="w-10 h-10 bi bi-briefcase text-gray-600 text-xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-600">{{ __('job.txt_form_of_work') }}</p>
-                                <p class="font-semibold">{{ ($job->employment_type) ? Str::ucfirst($job->employment_type) : '' }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    @if($job->job_area->count() > 0)
-                    <div class="space-y-2">
-                        <h3 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_area_recruitment') }}</h3>
-                        <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
-                            <i class="text-xl bi bi-geo-alt-fill text-[var(--blue-color)]"></i>
-                            @foreach($job->job_area as $area)
-                                <span class="p-2 bg-gray-100 rounded-md text-xs">
-                                    {{ $area->province->localized_name ?? '' }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
                 </div>
 
                 <!-- Nút Back (chỉ hiện trên mobile) -->

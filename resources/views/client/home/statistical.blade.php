@@ -10,24 +10,20 @@
     <div class="container mx-auto px-4 relative z-10">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-green-400/30">
             <div class="flex flex-col items-center">
-                <span class="text-4xl md:text-5xl font-bold  mb-2">12+</span>
-                <span class="text-sm md:text-base font-medium">{{ __('default.txt_job') }}</span>
-                <span class="text-xs mt-1">{{ __('default.txt_newest') }}</span>
+                <span class="text-4xl md:text-5xl font-bold  mb-2">1,250+</span>
+                <span class="text-sm md:text-base font-medium">{{ __('default.txt_feild_staff_nationwide') }}</span>
             </div>
             <div class="flex flex-col items-center text-[var(--blue-color)]">
-                <span class="text-4xl md:text-5xl font-bold  mb-2">30+</span>
-                <span class="text-sm md:text-base font-medium">{{ __('default.txt_user') }}</span>
-                <span class="text-xs mt-1">{{ __('default.txt_everyday') }}</span>
+                <span class="text-4xl md:text-5xl font-bold  mb-2">120K+</span>
+                <span class="text-sm md:text-base font-medium">{{ __('default.txt_outlets_covered') }}</span>
             </div>
             <div class="flex flex-col items-center text-[var(--accent-color)]">
-                <span class="text-4xl md:text-5xl font-bold  mb-2">08+</span>
-                <span class="text-sm md:text-base font-medium">{{ __('default.txt_partner') }}</span>
-                <span class="text-xs mt-1">{{ __('default.txt_tepresentative') }}</span>
+                <span class="text-4xl md:text-5xl font-bold  mb-2">1.1M+</span>
+                <span class="text-sm md:text-base font-medium">{{ __('default.txt_merchandising_visits_year') }}</span>
             </div>
             <div class="flex flex-col items-center text-[var(--red-color)]">
-                <span class="text-4xl md:text-5xl font-bold  mb-2">10%</span>
-                <span class="text-sm md:text-base font-medium">{{ __('default.txt_personnel_growth') }}</span>
-                <span class="text-xs mt-1">{{ __('default.txt_fastest_adaptation') }}</span>
+                <span class="text-4xl md:text-5xl font-bold  mb-2">350K+</span>
+                <span class="text-sm md:text-base font-medium">{{ __('default.txt_audit_visits_year') }}</span>
             </div>
         </div>
     </div>

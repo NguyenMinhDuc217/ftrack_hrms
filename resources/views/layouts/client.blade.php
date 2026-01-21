@@ -55,11 +55,6 @@
         body{
             font-family: 'Mulish' !important;
         }
-        :root {
-            --accent-color: #6DB12D;
-            --red-color: #E3501F;
-            --blue-color: #1F7DBC;
-        }
     </style>
 
     <script src="https://cdn.tailwindcss.com"></script>
