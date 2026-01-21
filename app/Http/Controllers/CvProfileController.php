@@ -174,6 +174,9 @@ class CvProfileController extends Controller
 
         $profile->update($data);
         $user = $this->user;
+        if (empty($user->phone_number)) {
+            $userData['phone_number'] = $data['phone_number'];
+        }
         $user->update($userData);
         $provinces = Province::orderBy('name')->get();
         $genders = Gender::cases();

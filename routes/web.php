@@ -44,30 +44,30 @@ Route::get('/sync-permissions', function () {
 Route::get('/clear-cache', function () {
     Artisan::call('optimize:clear');
 
-    $customTemp = storage_path('app/temp');
-    if (! file_exists($customTemp)) {
-        mkdir($customTemp, 0777, true);
-    }
-    $process = new Process(
-        ['composer', 'install'],
-        base_path(),
-        [
-            'COMPOSER_HOME' => $customTemp,
-            'HOME' => $customTemp,
-            'sys_temp_dir' => $customTemp,
-            'TMP' => $customTemp,
-            'TEMP' => $customTemp,
-            'TMPDIR' => $customTemp,
-        ]
-    );
-    $process->setTimeout(300);
-    try {
-        $process->mustRun(); // Runs the process and throws an exception on failure
+    // $customTemp = storage_path('app/temp');
+    // if (! file_exists($customTemp)) {
+    //     mkdir($customTemp, 0777, true);
+    // }
+    // $process = new Process(
+    //     ['composer', 'install'],
+    //     base_path(),
+    //     [
+    //         'COMPOSER_HOME' => $customTemp,
+    //         'HOME' => $customTemp,
+    //         'sys_temp_dir' => $customTemp,
+    //         'TMP' => $customTemp,
+    //         'TEMP' => $customTemp,
+    //         'TMPDIR' => $customTemp,
+    //     ]
+    // );
+    // $process->setTimeout(300);
+    // try {
+    //     $process->mustRun(); // Runs the process and throws an exception on failure
 
-        return 'Composer update successful: '.$process->getOutput();
-    } catch (\Symfony\Component\Process\Exception\ProcessFailedException $exception) {
-        return 'Composer update failed: '.$exception->getMessage();
-    }
+    //     return 'Composer update successful: '.$process->getOutput();
+    // } catch (\Symfony\Component\Process\Exception\ProcessFailedException $exception) {
+    //     return 'Composer update failed: '.$exception->getMessage();
+    // }
 });
 
 function updateVendorFolder()
