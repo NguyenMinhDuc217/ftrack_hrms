@@ -260,7 +260,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600">{{ __('job.txt_scale') }}</p>
-                                <p class="font-semibold">500-2000 {{ __('job.txt_employees') }}</p>
+                                <p class="font-semibold">{{ $job->organization->workforce_size . ' ' . __('job.txt_employees') ?? 'N/A' }}</p>
                             </div>
                         </div>
 

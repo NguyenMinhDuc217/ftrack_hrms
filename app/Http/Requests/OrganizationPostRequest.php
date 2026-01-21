@@ -51,6 +51,7 @@ class OrganizationPostRequest extends FormRequest
             'address' => 'required|string|max:255',
             'link' => 'required|string|max:255|url',
             'business_field' => 'required|string|max:255',
+            'workforce_size' => 'required|string|max:255',
             'status' => ['required', 'string', 'in:active,inactive'],
         ];
     }
@@ -85,6 +86,9 @@ class OrganizationPostRequest extends FormRequest
             'business_field.required' => __('org.txt_business_field_required'),
             'business_field.string' => __('org.txt_business_field_string'),
             'business_field.max' => __('org.txt_business_field_max'),
+            'workforce_size.required' => __('org.txt_workforce_size_required'),
+            'workforce_size.string' => __('org.txt_workforce_size_string'),
+            'workforce_size.max' => __('org.txt_workforce_size_max'),
             'status.required' => __('org.txt_status_required'),
             'status.string' => __('org.txt_status_string'),
             'status.in' => __('org.txt_status_in'),

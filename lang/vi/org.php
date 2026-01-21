@@ -12,6 +12,8 @@ return [
     'txt_email' => 'Email',
     'txt_phone_number' => 'Số điện thoại',
     'txt_address' => 'Địa chỉ',
+    'txt_workforce_size' => 'Quy mô nhân sự',
+    'txt_people' => 'Người',
 
     // Validation
     'txt_name_required' => 'Vui lòng nhập tên',
@@ -41,6 +43,9 @@ return [
     'txt_business_field_required' => 'Vui lòng nhập lĩnh vực kinh doanh',
     'txt_business_field_string' => 'Lĩnh vực kinh doanh phải là một chuỗi',
     'txt_business_field_max' => 'Lĩnh vực kinh doanh phải có ít nhất :max ký tự',
+    'txt_workforce_size_required' => 'Vui lòng nhập quy mô nhân sự',
+    'txt_workforce_size_string' => 'Quy mô nhân sự phải là một chuỗi',
+    'txt_workforce_size_max' => 'Quy mô nhân sự phải có ít nhất :max ký tự',
     'txt_status_required' => 'Vui lòng nhập trạng thái',
     'txt_status_string' => 'Trạng thái phải là một chuỗi',
     'txt_status_in' => 'Trạng thái phải là active hoặc inactive',

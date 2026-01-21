@@ -12,6 +12,8 @@ return [
     'txt_email' => 'Email',
     'txt_phone_number' => 'Phone Number',
     'txt_address' => 'Address',
+    'txt_workforce_size' => 'Workforce Size',
+    'txt_people' => 'People',
 
     // Validation
     'txt_name_required' => 'Please enter name',
@@ -41,6 +43,9 @@ return [
     'txt_business_field_required' => 'Please enter business field',
     'txt_business_field_string' => 'Business field must be a string',
     'txt_business_field_max' => 'Business field must be less than :max characters',
+    'txt_workforce_size_required' => 'Please enter workforce size',
+    'txt_workforce_size_string' => 'Workforce size must be a string',
+    'txt_workforce_size_max' => 'Workforce size must be less than :max characters',
     'txt_status_required' => 'Please enter status',
     'txt_status_string' => 'Status must be a string',
     'txt_status_in' => 'Status must be active or inactive',

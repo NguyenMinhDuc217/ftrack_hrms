@@ -22,6 +22,7 @@ class OrganizationSeeder extends Seeder
             'address' => 'Demo Address',
             'logo' => 'demo-logo.png',
             'business_field' => 'Field Marketing',
+            'workforce_size' => '50-100',
             'status' => 'active',
         ]);
     }

@@ -26,6 +26,7 @@ class Organization extends Model
         'address',
         'link',
         'business_field',
+        'workforce_size',
         'status',
     ];
 

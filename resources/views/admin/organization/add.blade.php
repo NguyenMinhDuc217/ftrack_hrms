@@ -141,6 +141,17 @@
                         <small class="form-text text-muted">60 Nguyen Dinh Chieu</small>
                     </div>
 
+                    <div class="form-group">
+                        <label class="form-label" for="example-max-length">{{ __('org.txt_workforce_size') }} ({{ __('org.txt_people') }})</label>
+                        <input type="text" class="form-control @error('workforce_size') is-invalid @enderror"
+                            name="workforce_size" id="workforce_size" value="{{ old('workforce_size') }}">
+                        @error('workforce_size')
+                        <div class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @enderror
+                        <small class="form-text text-muted">50-100</small>
+                    </div>
 
                     <div class="form-group">
                         <label class="form-label">{{ __('user.txt_status') }}</label>
