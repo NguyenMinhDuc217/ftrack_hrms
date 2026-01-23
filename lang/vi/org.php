@@ -72,4 +72,5 @@ return [
     'txt_job_openings' => 'Công việc đang tuyển',
     'txt_load_more_jobs' => 'Xem thêm :number công việc',
     'txt_collapse' => 'Thu gọn',
+    'txt_view_on_google_maps' => 'Xem trên Google Maps',
 ];

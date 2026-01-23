@@ -93,7 +93,7 @@ return [
     'txt_scale' => 'Scale',
     'txt_employees' => 'employees',
     'txt_business_field' => 'Business field',
-    'txt_see_company_page' => 'See company page',
+    'txt_see_company_page' => 'View company details',
     'txt_recruitment_info' => 'Recruitment information',
     'txt_number_of_recruitment' => 'Number of recruitment',
     'txt_form_of_work' => 'Form of work',

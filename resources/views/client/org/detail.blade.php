@@ -170,7 +170,7 @@
                     @if($org->jobs->count() > 2)
                         <div class="text-center mt-3 flex justify-center">
              
-                            <x-client.elements.button type="button" class="h-12 flex justify-center items-center gap-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl" id="toggle-jobs-btn" data-state="collapsed">
+                            <x-client.elements.button type="button" class="h-10 flex justify-center items-center gap-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl" id="toggle-jobs-btn" data-state="collapsed">
                                 <span id="btn-text">
                                     {{ __('org.txt_load_more_jobs', ['number' => $org->jobs->count() - 2 > 2 ? 2 : $org->jobs->count() - 2]) }}</span> 
                                 <i id="btn-icon" class="bi bi-chevron-down"></i>
@@ -227,20 +227,34 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-4 hover:shadow-xl transition-shadow">
-                    <div class="flex items-center gap-2 pl-2 border-l-4 border-[var(--accent-color)] ">
-                        <i class="bi bi-info-circle text-[var(--accent-color)] text-2xl"></i>
-                        <h2 class="text-lg font-bold text-gray-900 alumni-font">{{ Str::upper('Location') }}</h2>
+                @if ($org->latitude && $org->longitude)
+                <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-2 hover:shadow-xl transition-shadow flex flex-col gap-4 relative group">
+                    <iframe 
+                        title="Google Map Location"
+                        src="https://maps.google.com/maps?q={{ $org->latitude }},{{ $org->longitude }}&z=15&output=embed" 
+                        style="border:0; " 
+                        class="rounded-2xl w-full sm:h-[20vw] h-[80vw]"
+                        allowfullscreen="" 
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+
+                    <div class="hidden group-hover:flex items-center gap-2 absolute top-0 left-0 w-full h-full bg-black/20 justify-center  transition-all duration-300">
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ $org->latitude }},{{ $org->longitude }}" target="_blank">
+                            <x-client.elements.button type="button" class="btn btn-primary btn-sm">
+                                <span class="font-bold">{{ Str::upper(__('org.txt_view_on_google_maps')) }}</span>
+                            </x-client.elements.button>
+                        </a>
                     </div>
                 </div>
+                @endif
+
             </div>
         </div>
 
         
     </div>
 </section>
-
-
 
 <script>
     $(document).ready(function() {

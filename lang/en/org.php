@@ -72,4 +72,5 @@ return [
     'txt_job_openings' => 'Job openings',
     'txt_load_more_jobs' => 'Load :number + more jobs',
     'txt_collapse' => 'Collapse',
+    'txt_view_on_google_maps' => 'View on Google Maps',
 ];
