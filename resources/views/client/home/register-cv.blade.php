@@ -23,13 +23,14 @@
                 <div class="relative w-full max-w-md">
                     <div class="bg-blue-200 rounded-2xl p-4 transform rotate-3 hover:rotate-0 transition-transform duration-500 shadow-xl">
                         <div class="bg-white rounded-xl overflow-hidden shadow-inner border border-gray-100 aspect-[4/3] flex items-center justify-center bg-[url('https://cdn.dribbble.com/users/129972/screenshots/3964640/attachments/906660/cv-cover.png')] bg-cover bg-center">
+                            <img src="{{ asset('client/assets/img/logo-create-cv.png') }}" alt="CV Cover" class="w-full h-full object-cover">
                         </div>
                     </div>
 
                     <div class="absolute -top-4 -right-4 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                         <span class="text-xl">🔔</span>
                     </div>
-                    <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-[var(--accent-color)] rounded-lg flex items-center justify-center shadow-lg transform -rotate-12">
+                    <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-[var(--accent-color)] rounded-lg flex items-center justify-center shadow-lg transform -rotate-12 p-2 border-2 border-white">
                         <span class="text-white text-2xl font-bold alumni-font">CV</span>
                     </div>
                 </div>
