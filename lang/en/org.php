@@ -9,11 +9,14 @@ return [
     'txt_slug' => 'Slug',
     'txt_description' => 'Description',
     'txt_link' => 'Link',
+    'txt_official_website' => 'Official Website',
     'txt_email' => 'Email',
     'txt_phone_number' => 'Phone Number',
     'txt_address' => 'Address',
     'txt_workforce_size' => 'Workforce Size',
     'txt_people' => 'People',
+    'txt_latitude' => 'Latitude',
+    'txt_longitude' => 'Longitude',
 
     // Validation
     'txt_name_required' => 'Please enter name',
@@ -46,6 +49,10 @@ return [
     'txt_workforce_size_required' => 'Please enter workforce size',
     'txt_workforce_size_string' => 'Workforce size must be a string',
     'txt_workforce_size_max' => 'Workforce size must be less than :max characters',
+    'txt_latitude_numeric' => 'Latitude must be a number',
+    'txt_latitude_between' => 'Latitude must be between :min and :max',
+    'txt_longitude_numeric' => 'Longitude must be a number',
+    'txt_longitude_between' => 'Longitude must be between :min and :max',
     'txt_status_required' => 'Please enter status',
     'txt_status_string' => 'Status must be a string',
     'txt_status_in' => 'Status must be active or inactive',
@@ -58,4 +65,11 @@ return [
     'txt_failed_update' => 'Organization updated failed',
     'txt_failed_delete' => 'Organization deleted failed',
     'txt_failed_image' => 'Could not upload image',
+
+    // Detail
+    'txt_active_jobs' => 'Active jobs',
+    'txt_openings' => 'Openings',
+    'txt_job_openings' => 'Job openings',
+    'txt_load_more_jobs' => 'Load :number + more jobs',
+    'txt_collapse' => 'Collapse',
 ];

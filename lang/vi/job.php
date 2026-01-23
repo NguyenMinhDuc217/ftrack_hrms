@@ -93,7 +93,7 @@ return [
     'txt_scale' => 'Quy mô',
     'txt_employees' => 'nhân viên',
     'txt_business_field' => 'Lĩnh vực',
-    'txt_see_company_page' => 'Xem trang công ty',
+    'txt_see_company_page' => 'Xem chi tiết công ty',
     'txt_recruitment_info' => 'Thông tin tuyển dụng',
     'txt_number_of_recruitment' => 'Số lượng tuyển dụng',
     'txt_form_of_work' => 'Hình thức làm việc',

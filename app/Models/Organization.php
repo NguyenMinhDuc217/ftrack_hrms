@@ -27,6 +27,8 @@ class Organization extends Model
         'link',
         'business_field',
         'workforce_size',
+        'latitude',
+        'longitude',
         'status',
     ];
 
@@ -39,5 +41,10 @@ class Organization extends Model
     public function image()
     {
         return $this->belongsTo(Image::class);
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(JobHrms::class, 'org_id', 'org_id')->where('jobs_hrms.status', 1)->where('jobs_hrms.deleted_at', null);
     }
 }

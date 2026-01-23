@@ -13,7 +13,7 @@
 
            
 
-            <form action="{{ route('admin.orgs.store') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+            <form action="{{ route('admin.orgs.store') }}" id="org-add-form" method="POST" class="form-horizontal" enctype="multipart/form-data">
                 @csrf
                 @if (isset($org))
                 @method('PATCH')
@@ -72,9 +72,12 @@
                         <small>{{ __('default.maxlength_set_to_characters', ['length' => 100]) }}</small>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">{{ __('org.txt_description') }}</label>
-                        <textarea name="description" id="editor-description">{{ old('description') }}</textarea>
+                    <div class="form-group" >
+                        <label class="form-label">{{ __('job.txt_description') }}</label>
+                        <div id="description-editor">
+                            {!! old('description') !!}
+                        </div>
+                        <input type="hidden" name="description" id="description_hidden">
                         @error('description')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -153,6 +156,31 @@
                         <small class="form-text text-muted">50-100</small>
                     </div>
 
+                    <div class="d-flex justify-between items-center gap-4">
+                        <div class="flex-fill my-0 form-group">
+                            <label class="form-label" for="example-max-length">{{ __('org.txt_latitude') }}</label>
+                            <input type="text" class="form-control @error('latitude') is-invalid @enderror"
+                                name="latitude" id="latitude" value="{{ old('latitude') }}">
+                            @error('latitude')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
+                            <small class="form-text text-muted">10.779911075314716</small>
+                        </div>
+                        <div class="flex-fill my-0 form-group">
+                            <label class="form-label" for="example-max-length">{{ __('org.txt_longitude') }}</label>
+                            <input type="text" class="form-control @error('longitude') is-invalid @enderror"
+                                name="longitude" id="longitude" value="{{ old('longitude') }}">
+                            @error('longitude')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
+                            <small class="form-text text-muted">106.69901703295604</small>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label">{{ __('user.txt_status') }}</label>
                         <select name="status" class="form-control @error('status') is-invalid @enderror">
@@ -180,25 +208,123 @@
 </div>
 
 <script>
-    let descEditor; 
-    (function () {
-        ClassicEditor.create(document.querySelector('#editor-description'), {
-            simpleUpload: {
-            // Đường dẫn route xử lý upload ảnh
-            uploadUrl: "{{ route('admin.upload.editor.image') }}",
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        }
-        })
-        .then(editor => {
-            descEditor = editor;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    })();
+    const form = document.getElementById('org-add-form');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const description = quill.root.innerHTML;
+        $('#description_hidden').val(description);
+
+
+        form.submit();
+    })
 </script>
+<script>
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+        ['link', 'image', 'video', 'formula'],
+
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+
+        ['clean']                                         // remove formatting button
+    ];
+
+    const quill = new Quill('#description-editor', {
+        modules: {
+            toolbar: {
+                container: toolbarOptions,
+                handlers: {
+                    image: function() {
+                        imageHander(this.quill);
+                    },
+                },
+            },
+            resize: {
+            embedTags: ["VIDEO", "IFRAME"],
+            tools: [
+                {
+                text: "Alt",
+                attrs: {
+                    title: "Set image alt",
+                    class: "btn-alt",
+                },
+                verify(activeEle) {
+                    return activeEle && activeEle.tagName === "IMG";
+                },
+                handler(evt, button, activeEle) {
+                    let alt = activeEle.alt || "";
+                    alt = window.prompt("Alt for image", alt);
+                    if (alt == null) return;
+                    activeEle.setAttribute("alt", alt);
+                },
+                },
+            ],
+            },
+        },
+        theme: 'snow'
+    });
+
+    function imageHander(quillInstance) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+
+        input.addEventListener('change', async function(e) {
+            const file = input.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('upload', file);
+                formData.append('type', 'org');
+
+                try {
+                    const response = await fetch('{{ route("admin.files.upload-editor-image") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                        },
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                   
+                    const imageUrl = data.url;
+
+                   // Lấy vị trí con trỏ hiện tại trong editor
+                    const range = quillInstance.getSelection();
+                    // Chèn hình ảnh vào đúng vị trí đó
+                    quillInstance.insertEmbed(range ? range.index : 0, 'image', imageUrl);
+                    
+                    // Di chuyển con trỏ xuống sau hình ảnh
+                    quillInstance.setSelection((range ? range.index : 0) + 1);
+
+                }  catch (error) {
+                    console.error('Error:', error);
+                    alert('Lỗi upload: ' + error.message);
+                }
+            };
+        });
+
+        input.click();
+    }
+
+</script>
+
 <script>
     function previewAvatar(input) {
         if (input.files && input.files[0]) {

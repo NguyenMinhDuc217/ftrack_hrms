@@ -193,7 +193,7 @@
                                 <p class="text-sm text-gray-600">{{ __('job.txt_form_of_work') }}:</p>
                             </div>
                             <div>
-                                <span class="font-bold p-2 bg-gray-100 rounded-md text-xs">{{ ($job->employment_type) ? Str::upper($job->employment_type) : '' }}</span>
+                                <span class="font-bold text-xs">{{ ($job->employment_type) ? Str::upper($job->employment_type) : '' }}</span>
                             </div>
                         </div>
     
@@ -321,7 +321,7 @@
                     </div>
 
                     <div class="text-center">
-                        <a href="{{ $job->organization->link ?? 'N/A' }}" target="_blank" class="inline-flex items-center gap-2 text-[var(--blue-color)] font-bold hover:text-green-700 transition">
+                        <a href="{{ route('client.org.detail', $job->organization) }}" target="_blank" class="inline-flex items-center gap-2 text-[var(--blue-color)] font-bold hover:text-green-700 transition">
                             {{ __('job.txt_see_company_page') }}
                             <i class="bi bi-box-arrow-up-right"></i>
                         </a>

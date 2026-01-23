@@ -277,9 +277,10 @@
             if (file) {
                 const formData = new FormData();
                 formData.append('upload', file);
+                formData.append('type', 'job');
 
                 try {
-                    const response = await fetch('{{ route("admin.jobs.upload-editor-image") }}', {
+                    const response = await fetch('{{ route("admin.files.upload-editor-image") }}', {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

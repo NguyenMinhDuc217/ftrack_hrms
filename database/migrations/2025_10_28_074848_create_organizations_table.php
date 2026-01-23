@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('phone_number', 11)->unique()->nullable();
             $table->string('email')->unique();
             $table->string('address', 255)->nullable();
+            $table->string('workforce_size', 255)->nullable();
+            $table->string('latitude', 255)->nullable();
+            $table->string('longitude', 255)->nullable();
             $table->string('status', 50)->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminApplicationController;
 use App\Http\Controllers\Admin\AdminBlogController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
+use App\Http\Controllers\Admin\AdminFileController;
 use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminMennuController;
 use App\Http\Controllers\Admin\AdminOrganizationController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CvProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrganizationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Process\Process;
@@ -23,6 +25,7 @@ use Symfony\Component\Process\Process;
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
 Route::get('/job/{job:slug}', [JobController::class, 'detail'])->name('client.job.detail');
+Route::get('/org/{org:slug}', [OrganizationController::class, 'detail'])->name('client.org.detail');
 Route::get('/current-location', [ClientController::class, 'getCurrentLocation'])->name('client.current.location');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
@@ -174,7 +177,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     Route::get('/jobs/{job_id}', [AdminJobController::class, 'show'])->name('jobs.show');
     Route::patch('/jobs/{job}', [AdminJobController::class, 'update'])->name('jobs.update');
     Route::post('/jobs/delete/{job_id}', [AdminJobController::class, 'delete'])->name('jobs.delete');
-    Route::post('/jobs/upload-editor-image', [AdminJobController::class, 'uploadEditorImage'])->name('jobs.upload-editor-image');
 
     // route blogs
     Route::get('/blogs', [AdminBlogController::class, 'index'])->name('blogs.index');
@@ -216,4 +218,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     // Apply
     Route::get('/applications', [AdminApplicationController::class, 'index'])->name('applications.index');
     Route::get('/applications/{id}', [AdminApplicationController::class, 'show'])->name('applications.show');
+
+    Route::post('/files/upload-editor-image', [AdminFileController::class, 'uploadEditorImage'])->name('files.upload-editor-image');
+
 });

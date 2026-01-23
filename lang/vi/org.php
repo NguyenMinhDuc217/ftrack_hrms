@@ -9,11 +9,14 @@ return [
     'txt_slug' => 'Slug',
     'txt_description' => 'Mô tả',
     'txt_link' => 'Link',
+    'txt_official_website' => 'Website',
     'txt_email' => 'Email',
     'txt_phone_number' => 'Số điện thoại',
     'txt_address' => 'Địa chỉ',
     'txt_workforce_size' => 'Quy mô nhân sự',
     'txt_people' => 'Người',
+    'txt_latitude' => 'Vĩ độ',
+    'txt_longitude' => 'Kinh độ',
 
     // Validation
     'txt_name_required' => 'Vui lòng nhập tên',
@@ -46,6 +49,10 @@ return [
     'txt_workforce_size_required' => 'Vui lòng nhập quy mô nhân sự',
     'txt_workforce_size_string' => 'Quy mô nhân sự phải là một chuỗi',
     'txt_workforce_size_max' => 'Quy mô nhân sự phải có ít nhất :max ký tự',
+    'txt_latitude_numeric' => 'Vĩ độ phải là số',
+    'txt_latitude_between' => 'Vĩ độ phải từ :min đến :max',
+    'txt_longitude_numeric' => 'Kinh độ phải là số',
+    'txt_longitude_between' => 'Kinh độ phải từ :min đến :max',
     'txt_status_required' => 'Vui lòng nhập trạng thái',
     'txt_status_string' => 'Trạng thái phải là một chuỗi',
     'txt_status_in' => 'Trạng thái phải là active hoặc inactive',
@@ -58,4 +65,11 @@ return [
     'txt_failed_update' => 'Cập nhật doanh nghiệp thất bại',
     'txt_failed_delete' => 'Xóa doanh nghiệp thất bại',
     'txt_failed_image' => 'Không thể tải ảnh',
+
+    // Detail
+    'txt_active_jobs' => 'Tuyển dụng',
+    'txt_openings' => 'việc làm đang tuyển',
+    'txt_job_openings' => 'Công việc đang tuyển',
+    'txt_load_more_jobs' => 'Xem thêm :number công việc',
+    'txt_collapse' => 'Thu gọn',
 ];

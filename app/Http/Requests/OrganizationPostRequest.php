@@ -52,6 +52,8 @@ class OrganizationPostRequest extends FormRequest
             'link' => 'required|string|max:255|url',
             'business_field' => 'required|string|max:255',
             'workforce_size' => 'required|string|max:255',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             'status' => ['required', 'string', 'in:active,inactive'],
         ];
     }
@@ -89,6 +91,10 @@ class OrganizationPostRequest extends FormRequest
             'workforce_size.required' => __('org.txt_workforce_size_required'),
             'workforce_size.string' => __('org.txt_workforce_size_string'),
             'workforce_size.max' => __('org.txt_workforce_size_max'),
+            'latitude.numeric' => __('org.txt_latitude_numeric'),
+            'latitude.between' => __('org.txt_latitude_between'),
+            'longitude.numeric' => __('org.txt_longitude_numeric'),
+            'longitude.between' => __('org.txt_longitude_between'),
             'status.required' => __('org.txt_status_required'),
             'status.string' => __('org.txt_status_string'),
             'status.in' => __('org.txt_status_in'),
