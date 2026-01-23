@@ -129,12 +129,12 @@
 
                 <!-- Card thông tin nhanh + nút ứng tuyển -->
                 <div class="flex flex-col gap-3 bg-white rounded-0 shadow-sm border border-gray-100 p-4 hover:shadow-xl transition-shadow">
-                    <h1 class="text-lg font-bold text-gray-900 mb-4 alumni-font">
+                    <h1 class="text-lg font-bold text-gray-900 mb-2 alumni-font">
                         {{ $job->name }}
                     </h1>
 
                     <!-- 3 ô thông tin nổi bật -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pb-6 border-b-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 pb-6 border-b-2">
                         <div class="flex items-center gap-2">
                             <div class="w-14 h-14 flex justify-center items-center gap-2 rounded-full border border-gray-200 p-2 bg-[var(--blue-color)] flex-shrink-0">
                                 <i class="bi bi-coin text-white text-4xl"></i>
@@ -279,9 +279,11 @@
                              class="w-20 h-20 rounded-0 object-contain border border-gray-200 shadow-sm flex-shrink-0" />
 
                         <div class="flex-1 min-w-0">
-                            <h3 class="text-xl font-bold text-gray-900 alumni-font">{{ $job->organization->name ?? 'N/A' }}</h3>
+                            <a href="{{ route('client.org.detail', $job->organization) }}">
+                                <h3 class="text-xl font-bold text-gray-900 alumni-font">{{ $job->organization->name ?? 'N/A' }}</h3>
+                            </a>
                             <div class="text-sm text-gray-600 mt-1">
-                                {!! $job->organization->description ?? 'N/A' !!}
+                                {!! Str::limit($job->organization->description ?? 'N/A', 80) !!}
                             </div>
                         </div>
                     </div>

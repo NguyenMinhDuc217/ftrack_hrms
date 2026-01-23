@@ -5,6 +5,15 @@ return [
     'vi' => 'Vietnamese',
     'en' => 'English',
 
+    // Header
+    'txt_home' => 'Home',
+    'txt_login' => 'Login',
+    'txt_register' => 'Register',
+    'txt_welcome' => 'Welcome',
+    'txt_profile' => 'User Profile',
+    'txt_cv' => 'CV Manage',
+    'txt_logout' => 'Logout',
+
     // btn
     'btn_submit' => 'Submit',
     'btn_reset' => 'Reset',
@@ -61,6 +70,11 @@ return [
     'txt_tepresentative' => 'Representative',
     'txt_personnel_growth' => 'Personnel Growth',
     'txt_fastest_adaptation' => 'Fastest Adaptation',
+    'txt_feild_staff_nationwide' => 'Feild Staff Nationwide',
+    'txt_outlets_covered' => 'Outlets Covered',
+    'txt_merchandising_visits_year' => 'Merchandising Visits / Year',
+    'txt_audit_visits_year' => 'Audit Visits / Year',
+
     'txt_register_cv_title_1' => 'A well-tailored CV',
     'txt_register_cv_title_2' => 'A New Journey Begins',
     'txt_register_cv_des' => 'Design a CV that stands out, attracts recruiters, and opens up career opportunities you want. With FTrack’s online CV creation tool, you will have a professional CV in minutes.',

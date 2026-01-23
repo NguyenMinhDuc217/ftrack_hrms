@@ -5,6 +5,15 @@ return [
     'vi' => 'Tiếng Việt',
     'en' => 'Tiếng Anh',
 
+    // Header
+    'txt_home' => 'Trang chủ',
+    'txt_login' => 'Đăng nhập',
+    'txt_register' => 'Đăng ký',
+    'txt_welcome' => 'Xin chào',
+    'txt_profile' => 'Thông tin cá nhân',
+    'txt_cv' => 'Quản lý CV',
+    'txt_logout' => 'Đăng xuất',
+
     // btn
     'btn_submit' => 'Lưu',
     'btn_reset' => 'Reset',
@@ -61,6 +70,11 @@ return [
     'txt_tepresentative' => 'Tiêu biểu',
     'txt_personnel_growth' => 'Tăng trưởng nhân sự',
     'txt_fastest_adaptation' => 'Thích ứng nhanh nhất',
+    'txt_feild_staff_nationwide' => 'Nhân viên hiện trường trên toàn quốc',
+    'txt_outlets_covered' => 'Số điểm bán hàng',
+    'txt_merchandising_visits_year' => 'Lượt ghé thăm trưng bày / năm',
+    'txt_audit_visits_year' => 'Lượt ghé thăm kiểm tra / năm',
+
     'txt_register_cv_title_1' => 'Một CV Chỉn Chu',
     'txt_register_cv_title_2' => 'Một Hành Trình Mới Bắt Đầu',
     'txt_register_cv_des' => 'Thiết kế CV nổi bật, thu hút nhà tuyển dụng và mở ra cơ hội nghề nghiệp bạn mong muốn. Với công cụ tạo CV trực tuyến của FTrack, bạn sẽ có ngay một bản CV chuyên nghiệp trong vài phút.',

@@ -18,7 +18,7 @@
   /* --default-font: "Mulish";
   --heading-font: "Mulish";
   --nav-font: "Mulish"; */
-   --default-font: "Mulish";
+  --default-font: "Mulish";
   --heading-font: "Mulish";
   --nav-font: "Mulish";
   --alumni-font: "Alumni Sans";
@@ -26,28 +26,39 @@
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
 :root {
-  --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-  --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #5f687b; /* Color for headings, subheadings and title throughout the website */
+  --background-color: #ffffff;
+  /* Background color for the entire website, including individual sections */
+  --default-color: #444444;
+  /* Default color used for the majority of the text content across the entire website */
+  --heading-color: #5f687b;
+  /* Color for headings, subheadings and title throughout the website */
   /* --accent-color: #10bc69; Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   /* --accent-color: #6AB745; */
   --accent-color: #6DB12D;
-  --red-color: #E3501F;
+  --red-color: #E3051F;
   --blue-color: #1F7DBC;
   --bg-color: #F8FAFB;
-  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
-  --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+  --surface-color: #ffffff;
+  /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+  --contrast-color: #ffffff;
+  /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
   /* --nav-color: #5f687b; */
-  --nav-color: #000000;  /* The default color of the main navmenu links */
-  --nav-hover-color: var(--blue-color); /* Applied to main navmenu links when they are hovered over or active */
-  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
-  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #000000; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: var(--blue-color); /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-color: #000000;
+  /* The default color of the main navmenu links */
+  --nav-hover-color: var(--blue-color);
+  /* Applied to main navmenu links when they are hovered over or active */
+  --nav-mobile-background-color: #ffffff;
+  /* Used as the background color for mobile navigation menu */
+  --nav-dropdown-background-color: #ffffff;
+  /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
+  --nav-dropdown-color: #000000;
+  /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: var(--blue-color);
+  /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -299,6 +310,7 @@ h6 {
     order: 3;
   }
 }
+
 @media (max-width: 576px) {
   .header .btn-getstarted {
     display: none;
@@ -1782,18 +1794,18 @@ section,
 }
 
 .btn-success {
-    background-color: #6AB745 !important;
-    border-color: #6AB745 !important;
+  background-color: #6AB745 !important;
+  border-color: #6AB745 !important;
 }
 
 .bg-background {
-    background-color: var(--bg-color) !important;
+  background-color: var(--bg-color) !important;
 }
 
 .form-control:focus {
-    /* color: var(--accent-color); */
-    background-color: var(--bs-body-bg);
-    border-color: var(--accent-color);
-    outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(var(--accent-color), .25);
+  /* color: var(--accent-color); */
+  background-color: var(--bs-body-bg);
+  border-color: var(--accent-color);
+  outline: 0;
+  box-shadow: 0 0 0 .25rem rgba(var(--accent-color), .25);
 }

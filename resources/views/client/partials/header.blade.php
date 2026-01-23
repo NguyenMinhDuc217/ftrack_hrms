@@ -7,27 +7,27 @@
 
     <nav id="navmenu" class="navmenu">
       <ul class="max-h-max">
-        <li><a href="{{ route('client.home') }}" class="{{ request()->routeIs('client.home') ? 'active' : '' }} alumni-font">Home</a></li>
+        <li><a href="{{ route('client.home') }}" class="{{ request()->routeIs('client.home') ? 'active' : '' }} alumni-font">{{ __('default.txt_home') }}</a></li>
         {{-- Other static links --}}
 
         @auth {{-- Checks if any user is authenticated --}}
           <!-- <li><a href="{{ route('client.dashboard') }}" class="{{ request()->routeIs('client.dashboard') ? 'active' : '' }}">Dashboard</a></li> -->
           <li class="dropdown">
-              <a href="#"><span class="alumni-font ">Welcome, {{ Auth::user()->full_name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <a href="#"><span class="alumni-font ">{{ __('default.txt_welcome') }}, {{ Auth::user()->full_name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
-                  <li><a href="{{ route('profile') }}" class="alumni-font ">User Profile</a></li>
-                  <li><a href="{{ route('cv.manage') }}" class="alumni-font ">CV</a></li>
+                  <li><a href="{{ route('profile') }}" class="alumni-font ">{{ __('default.txt_profile') }}</a></li>
+                  <li><a href="{{ route('cv.manage') }}" class="alumni-font ">{{ __('default.txt_cv') }}</a></li>
                   <li>
                       <form method="POST" action="{{ route('logout') }}">
                           @csrf
-                          <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="alumni-font ">Logout</a>
+                          <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="alumni-font ">{{ __('default.txt_logout') }}</a>
                       </form>
                   </li>
               </ul>
           </li>
         @else {{-- User is a guest --}}
-          <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }} alumni-font ">Login</a></li>
-          <li><a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }} alumni-font ">Register</a></li>
+          <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }} alumni-font ">{{ __('default.txt_login') }}</a></li>
+          <li><a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }} alumni-font ">{{ __('default.txt_register') }}</a></li>
         @endauth
 
         @php
