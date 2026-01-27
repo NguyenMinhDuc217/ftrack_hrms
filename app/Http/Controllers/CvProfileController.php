@@ -17,18 +17,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Storage;
+use Spatie\LaravelPdf\Facades\Pdf;
+use function Spatie\LaravelPdf\Support\pdf;
+// use Barryvdh\DomPDF\Facade\Pdf;
 
 class CvProfileController extends Controller
 {
     private $user;
     private $user_id;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->user = auth()->user();
         $this->user_id = $this->user->user_id;
     }
 
-    private function getUserProfile() {
+    private function getUserProfile()
+    {
         $profile = CvProfile::where('user_id', $this->user_id)->first();
         if (!$profile) {
             $profile = CvProfile::create([
@@ -43,7 +48,8 @@ class CvProfileController extends Controller
         return $profile;
     }
 
-    public function getView() {
+    public function getView()
+    {
         // Get or Create a profile for the current user
         $profile = $this->getUserProfile();
 
@@ -71,7 +77,7 @@ class CvProfileController extends Controller
         $genders = Gender::cases();
 
         $user = $this->user;
-        return view('cv.partials.profile', compact('profile', 'user','provinces','genders'));
+        return view('cv.partials.profile', compact('profile', 'user', 'provinces', 'genders'));
     }
 
     public function index()
@@ -103,10 +109,11 @@ class CvProfileController extends Controller
         $genders = Gender::cases();
 
         $user = $this->user;
-        return view('cv.profile.index', compact('profile', 'user','provinces','genders'));
+        return view('cv.profile.index', compact('profile', 'user', 'provinces', 'genders'));
     }
 
-    public function saveSummary(Request $request, \App\Services\UserDocumentService $userDocumentService) {
+    public function saveSummary(Request $request, \App\Services\UserDocumentService $userDocumentService)
+    {
         $profile = $this->getUserProfile();
 
         $rules = [
@@ -114,7 +121,7 @@ class CvProfileController extends Controller
             'title' => ['required', 'string', 'max:64'],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
             'phone_number' => ['required', 'max:10', 'regex:/^\d{10}$/'],
-            'address' => ['nullable','string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
             'province_code' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['required', 'date'],
             'avatar' => ['nullable', 'image', 'max:2048'], // 2MB Max
@@ -165,7 +172,7 @@ class CvProfileController extends Controller
                 'confidential' => false,
                 'org_id' => $this->user->org_id,
             ]);
-            $file = $userDocumentService->upload($request->file('avatar'), $userDocument,'avatars');
+            $file = $userDocumentService->upload($request->file('avatar'), $userDocument, 'avatars');
             $data['avatar_file_id'] = $file->id;
             if ($oldFile) {
                 $userDocumentService->delete($oldFile);
@@ -194,12 +201,12 @@ class CvProfileController extends Controller
             'id' => ['nullable', Rule::exists($ruleModel->getTable(), $ruleModel->getKeyName())],
             'position' => ['required', 'string', 'max:64'],
             'company_name' => ['required', 'string', 'max:64'],
-            'is_current' => ['nullable','boolean'],
+            'is_current' => ['nullable', 'boolean'],
             'start_date' => ['required', 'date_format:Y-m'],
-            'end_date' => ['required_without:is_current','date_format:Y-m','after_or_equal:start_date'],
-            'description' => ['nullable','string', 'max:3000'],
+            'end_date' => ['required_without:is_current', 'date_format:Y-m', 'after_or_equal:start_date'],
+            'description' => ['nullable', 'string', 'max:3000'],
         ];
-        $validator = Validator::make($request->all(), $rules,[
+        $validator = Validator::make($request->all(), $rules, [
             'end_date.required_without' => __('cv.validation_required'),
         ]);
         if ($validator->fails()) {
@@ -220,10 +227,10 @@ class CvProfileController extends Controller
         ]);
 
         $data['cv_profile_id'] = $profile->id;
-        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date.'-01')) : null;
-        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date.'-01')) : null;
+        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date . '-01')) : null;
+        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date . '-01')) : null;
 
-        if(isset($data['id'])) {
+        if (isset($data['id'])) {
             $experience = $profile->experiences()->findOrFail($data['id']);
             unset($data['id']);
             $experience->update($data);
@@ -249,13 +256,15 @@ class CvProfileController extends Controller
     }
 
     // --- 3. Education ---
-    public function getEducation($id) {
+    public function getEducation($id)
+    {
         $profile = $this->getUserProfile();
         $education = $profile->educations()->findOrFail($id);
         return response()->json($education);
     }
 
-    public function saveEducation(Request $request) {
+    public function saveEducation(Request $request)
+    {
         $profile = $this->getUserProfile();
 
         $ruleModel = new CvEducation();
@@ -264,10 +273,10 @@ class CvProfileController extends Controller
             'school' => ['required', 'string', 'max:64'],
             'degree' => ['required', 'string', 'max:64'],
             'major' => ['required', 'string', 'max:64'],
-            'is_current' => ['nullable','boolean'],
+            'is_current' => ['nullable', 'boolean'],
             'start_date' => ['required', 'date_format:Y-m'],
-            'end_date' => ['required_without:is_current','date_format:Y-m','after_or_equal:start_date'],
-            'description' => ['nullable','string', 'max:3000'],
+            'end_date' => ['required_without:is_current', 'date_format:Y-m', 'after_or_equal:start_date'],
+            'description' => ['nullable', 'string', 'max:3000'],
         ];
         $validator = Validator::make($request->all(), $rules, [
             'end_date.required_without' => __('cv.validation_required'),
@@ -289,8 +298,8 @@ class CvProfileController extends Controller
         ]);
 
         $data['cv_profile_id'] = $profile->id;
-        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date.'-01')) : null;
-        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date.'-01')) : null;
+        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date . '-01')) : null;
+        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date . '-01')) : null;
 
         if (isset($data['id'])) {
             $education = $profile->educations()->findOrFail($data['id']);
@@ -303,17 +312,19 @@ class CvProfileController extends Controller
         $educations = $this->educationDTO($profile->educations()->orderBy('start_date', 'desc')->get());
         return $this->getView();
     }
-    public function deleteEducation($id) {
+    public function deleteEducation($id)
+    {
         $profile = $this->getUserProfile();
         // ensure education belongs to the profile
         $education = $profile->educations()->findOrFail($id);
         $education->delete();
-        $educations = $this->educationDTO($profile->educations()->orderBy('start_date','desc')->get());
+        $educations = $this->educationDTO($profile->educations()->orderBy('start_date', 'desc')->get());
         return $this->getView();
     }
 
     // --- 4. Skills ---
-    public function saveSkillGroup(Request $request) {
+    public function saveSkillGroup(Request $request)
+    {
         $profile = $this->getUserProfile();
 
         $validator = Validator::make($request->all(), [
@@ -362,10 +373,11 @@ class CvProfileController extends Controller
         return $this->getView();
     }
 
-    public function deleteSkillGroup(Request $request) {
+    public function deleteSkillGroup(Request $request)
+    {
         $profile = $this->getUserProfile();
         $group = $request->group;
-        if($group) {
+        if ($group) {
             $profile->skills()->where('group', $group)->delete();
         }
         $skills = $profile->skills()->orderBy('group')->orderBy('name')->get();
@@ -373,7 +385,8 @@ class CvProfileController extends Controller
     }
 
     // --- 5. Languages ---
-    public function saveLanguage(Request $request) {
+    public function saveLanguage(Request $request)
+    {
         $profile = $this->getUserProfile();
         $rulemodel = new CvLanguage();
         $rules = [
@@ -397,7 +410,8 @@ class CvProfileController extends Controller
         );
         return $this->getView();
     }
-    public function deleteLanguage($id) {
+    public function deleteLanguage($id)
+    {
         $profile = $this->getUserProfile();
 
         $language = $profile->languages()->findOrFail($id);
@@ -406,16 +420,17 @@ class CvProfileController extends Controller
     }
 
     // --- 6. Projects ---
-    public function saveProject(Request $request) {
+    public function saveProject(Request $request)
+    {
         $profile = $this->getUserProfile();
         $ruleModel = new CvProject();
         $rules = [
             'id' => ['nullable', Rule::exists($ruleModel->getTable(), $ruleModel->getKeyName())],
             'name' => ['required', 'string', 'max:64'],
             'url' => ['nullable', 'url'],
-            'is_current' => ['nullable','boolean'],
+            'is_current' => ['nullable', 'boolean'],
             'start_date' => ['required', 'date_format:Y-m'],
-            'end_date' => ['required_without:is_current','date_format:Y-m', 'after_or_equal:start_date'],
+            'end_date' => ['required_without:is_current', 'date_format:Y-m', 'after_or_equal:start_date'],
             'description' => ['nullable', 'string', 'max:3000'],
         ];
         $validator = Validator::make($request->all(), $rules, [
@@ -428,11 +443,11 @@ class CvProfileController extends Controller
             ]);
         }
 
-        $data = $request->only(['id','name', 'url', 'description', 'is_current']);
+        $data = $request->only(['id', 'name', 'url', 'description', 'is_current']);
 
         $data['cv_profile_id'] = $profile->id;
-        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date.'-01')) : null;
-        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date.'-01')) : null;
+        $data['start_date'] = !empty($request->start_date) ? date('Y-m-d', strtotime($request->start_date . '-01')) : null;
+        $data['end_date'] = !empty($request->end_date) ? date('Y-m-d', strtotime($request->end_date . '-01')) : null;
 
         if (isset($data['id'])) {
             $project = $profile->projects()->findOrFail($data['id']);
@@ -446,7 +461,8 @@ class CvProfileController extends Controller
         $projects = $this->projectsDTO($projects);
         return $this->getView();
     }
-    public function deleteProject($id) {
+    public function deleteProject($id)
+    {
         $profile = $this->getUserProfile();
         // ensure project belongs to the profile
         $project = $profile->projects()->findOrFail($id);
@@ -457,7 +473,8 @@ class CvProfileController extends Controller
     }
 
     // --- 7. Certificates ---
-    public function saveCertificate(Request $request) {
+    public function saveCertificate(Request $request)
+    {
         $profile = $this->getUserProfile();
         $ruleModel = new CvCertificate();
         $rules = [
@@ -475,10 +492,10 @@ class CvProfileController extends Controller
                 'errors' => $validator->errors(),
             ]);
         }
-        $data = $request->only(['id','name', 'organization', 'issue_date', 'expiration_date', 'url']);
+        $data = $request->only(['id', 'name', 'organization', 'issue_date', 'expiration_date', 'url']);
         $data['cv_profile_id'] = $profile->id;
-        $data['issue_date'] = !empty($request->issue_date) ? date('Y-m-d', strtotime($request->issue_date.'-01')) : null;
-        $data['expiration_date'] = !empty($request->expiration_date) ? date('Y-m-d', strtotime($request->expiration_date.'-01')) : null;
+        $data['issue_date'] = !empty($request->issue_date) ? date('Y-m-d', strtotime($request->issue_date . '-01')) : null;
+        $data['expiration_date'] = !empty($request->expiration_date) ? date('Y-m-d', strtotime($request->expiration_date . '-01')) : null;
         if (isset($data['id'])) {
             $certificate = $profile->certificates()->findOrFail($data['id']);
             unset($data['id']);
@@ -490,7 +507,8 @@ class CvProfileController extends Controller
         $certificates = $this->certificatesDTO($profile->certificates()->orderBy('issue_date', 'desc')->get());
         return $this->getView();
     }
-    public function deleteCertificate($id) {
+    public function deleteCertificate($id)
+    {
         $profile = $this->getUserProfile();
         // ensure certificate belongs to the profile
         $certificate = $profile->certificates()->findOrFail($id);
@@ -500,7 +518,8 @@ class CvProfileController extends Controller
     }
 
     // --- 8. Awards ---
-    public function saveAward(Request $request) {
+    public function saveAward(Request $request)
+    {
         $profile = $this->getUserProfile();
         $ruleModel = new CvAward();
         $rules = [
@@ -517,9 +536,9 @@ class CvProfileController extends Controller
                 'errors' => $validator->errors(),
             ]);
         }
-        $data = $request->only(['id','name', 'organization', 'year', 'description']);
+        $data = $request->only(['id', 'name', 'organization', 'year', 'description']);
         $data['cv_profile_id'] = $profile->id;
-        if($data['id']) {
+        if ($data['id']) {
             $award = $profile->awards()->findOrFail($data['id']);
             unset($data['id']);
             $award->update($data);
@@ -529,7 +548,8 @@ class CvProfileController extends Controller
         $awards = $profile->awards()->orderByDesc('year')->get();
         return $this->getView();
     }
-    public function deleteAward($id) {
+    public function deleteAward($id)
+    {
         $profile = $this->getUserProfile();
         // ensure award belongs to the profile
         $award = $profile->awards()->findOrFail($id);
@@ -538,7 +558,8 @@ class CvProfileController extends Controller
         return $this->getView();
     }
 
-    private function projectsDTO($projects) {
+    private function projectsDTO($projects)
+    {
         return $projects->map(function ($project) {
             $project->start_date = !empty($project->start_date) ? date('Y-m', strtotime($project->start_date)) : null;
             $project->end_date = !empty($project->end_date) ? date('Y-m', strtotime($project->end_date)) : null;
@@ -546,7 +567,8 @@ class CvProfileController extends Controller
         });
     }
 
-    private function educationDTO($education) {
+    private function educationDTO($education)
+    {
         return $education->map(function ($education) {
             $education->start_date = !empty($education->start_date) ? date('Y-m', strtotime($education->start_date)) : null;
             $education->end_date = !empty($education->end_date) ? date('Y-m', strtotime($education->end_date)) : null;
@@ -554,7 +576,8 @@ class CvProfileController extends Controller
         });
     }
 
-    private function experienceDTO($experience) {
+    private function experienceDTO($experience)
+    {
         return $experience->map(function ($experience) {
             $experience->start_date = !empty($experience->start_date) ? date('Y-m', strtotime($experience->start_date)) : null;
             $experience->end_date = !empty($experience->end_date) ? date('Y-m', strtotime($experience->end_date)) : null;
@@ -562,11 +585,45 @@ class CvProfileController extends Controller
         });
     }
 
-    private function certificatesDTO($certificates) {
+    private function certificatesDTO($certificates)
+    {
         return $certificates->map(function ($certificate) {
             $certificate->issue_date = !empty($certificate->issue_date) ? date('Y-m', strtotime($certificate->issue_date)) : null;
             $certificate->expiration_date = !empty($certificate->expiration_date) ? date('Y-m', strtotime($certificate->expiration_date)) : null;
             return $certificate;
         });
     }
+
+    public function previewDownloadPdf($key = 1, $type = '')
+    {
+        $options = cv_template_options();
+        if (!isset($options[$key]) || !view()->exists($options[$key]['blade'])) {
+            $key = 1;
+        }
+        $template = $options[$key]['blade'];
+        $profile = $this->getUserProfile();
+        $user = $this->user;
+        if ($type == 'preview') {
+            return view($template, compact('profile', 'user'));
+        } else if ($type == 'download') {
+            return pdf()->view($template, compact('profile', 'user'))->format('a4')->name('preview-cv.pdf')->download();
+        }
+    }
+
+    // public function previewDownloadPdf($key = 1, $type = '')
+    // {
+    //     $options = cv_template_options();
+    //     if (!isset($options[$key]) || !view()->exists($options[$key]['blade'])) {
+    //         $key = 1;
+    //     }
+    //     $template = $options[$key]['blade'];
+    //     $profile = $this->getUserProfile();
+    //     $user = $this->user;
+    //     if ($type == 'preview') {
+    //         return view($template, compact('profile', 'user'));
+    //     } else if ($type == 'download') {
+    //         $pdf = Pdf::loadView($template, compact('profile', 'user'))->setPaper('a4', 'portrait')->setOption('margin-top', 15)->setOption('margin-bottom', 15)->setOption('margin-left', 15)->setOption('margin-right', 15);
+    //         return $pdf->download('preview-cv.pdf');
+    //     }
+    // }
 }

@@ -137,6 +137,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/save-award', [CvProfileController::class, 'saveAward'])->name('profile.save.award');
     Route::delete('/profile/delete-award/{id}', [CvProfileController::class, 'deleteAward'])->name('profile.delete.award');
 
+    Route::get('/profile/preview-pdf/{id}/{type}', [CvProfileController::class, 'previewDownloadPdf'])->name('cv.preview-pdf');
+
     // CV Management
     Route::get('/cv-manage', [App\Http\Controllers\CvManagementController::class, 'index'])->name('cv.manage');
     Route::post('/cv-manage/upload', [App\Http\Controllers\CvManagementController::class, 'upload'])->name('cv.upload');
@@ -151,7 +153,6 @@ Route::middleware('auth')->group(function () {
 
     // Apply Job
     Route::post('/apply-job', [App\Http\Controllers\JobController::class, 'applyJob'])->name('apply.job');
-
 });
 
 // Admin Routes
@@ -220,5 +221,4 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:super_admin|ad
     Route::get('/applications/{id}', [AdminApplicationController::class, 'show'])->name('applications.show');
 
     Route::post('/files/upload-editor-image', [AdminFileController::class, 'uploadEditorImage'])->name('files.upload-editor-image');
-
 });

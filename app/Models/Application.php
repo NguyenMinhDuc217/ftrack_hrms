@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\GeneralStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int $application_id
@@ -57,6 +58,19 @@ class Application extends Model
 
     protected $primaryKey = 'application_id';
 
+    public function scopeGetAllApplications($query)
+    {
+        if (Auth::user()->role_id != 1) { // Nếu không phải admin
+            $query->whereHas('user', function ($query) {
+                $query->where('role_id', '!=', 1);
+            });
+
+            return $query;
+        }
+
+        return $query;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -69,7 +83,12 @@ class Application extends Model
 
     public function job()
     {
-        return $this->belongsTo(JobHrms::class, 'job_id')->where('jobs_hrms.status', 1)->where('jobs_hrms.deleted_at', null);
+        $query_jobs = $this->belongsTo(JobHrms::class, 'job_id')->where('jobs_hrms.status', 1)->where('jobs_hrms.deleted_at', null);
+        if (Auth::user()->role_id != 1) {
+            $query_jobs->where('org_id', Auth::user()->org_id);
+        }
+
+        return $query_jobs;
     }
 
     public function job_area()

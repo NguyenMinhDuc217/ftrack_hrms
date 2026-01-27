@@ -43,12 +43,12 @@ class CvProfile extends Model
 
     public function educations()
     {
-        return $this->hasMany(CvEducation::class);
+        return $this->hasMany(CvEducation::class)->orderBy('start_date', 'desc');
     }
 
     public function experiences()
     {
-        return $this->hasMany(CvExperience::class);
+        return $this->hasMany(CvExperience::class)->orderBy('start_date', 'desc');
     }
 
     public function skills()
