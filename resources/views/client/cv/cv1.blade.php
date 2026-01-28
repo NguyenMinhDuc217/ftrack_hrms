@@ -41,7 +41,7 @@
 
             html {
                 /* Giúp trình duyệt tính toán đúng chiều cao của body */
-                height: auto !important; 
+                height: auto !important;
             }
 
             body {
@@ -49,10 +49,6 @@
                 padding: 0 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                
-                /* BÍ QUYẾT: Đưa màu nền lên BODY để nó luôn phủ kín 100% các trang giấy */
-                background: linear-gradient(to right, #374151 0%, #374151 35%, #ffffff 35%, #ffffff 100%) !important;
-                width: 210mm !important;
             }
 
             .cv-container {
@@ -60,15 +56,17 @@
                 flex-direction: row !important;
                 width: 210mm !important;
                 /* Bỏ min-height cố định để nội dung chảy tự nhiên */
-                min-height: 100% !important; 
-                background: transparent !important; /* Làm trong suốt để thấy nền của body */
+                min-height: 100% !important;
+                background: transparent !important;
+                /* Làm trong suốt để thấy nền của body */
                 box-shadow: none !important;
                 margin: 0 !important;
             }
 
             aside {
                 width: 35% !important;
-                background: transparent !important; /* Trong suốt */
+                background: transparent !important;
+                /* Trong suốt */
                 color: white !important;
                 padding: 10mm 5mm !important;
                 flex-shrink: 0 !important;
@@ -76,10 +74,12 @@
 
             main {
                 width: 65% !important;
-                background: transparent !important; /* Trong suốt */
+                background: transparent !important;
+                /* Trong suốt */
                 padding: 10mm !important;
                 flex-grow: 1 !important;
-                color: #1F2937 !important; /* Ép màu chữ tối để dễ đọc khi in */
+                color: #1F2937 !important;
+                /* Ép màu chữ tối để dễ đọc khi in */
             }
 
             /* Ngăn chặn các khoảng trống do ngắt trang không hợp lý */
@@ -90,7 +90,8 @@
             }
 
             /* Giữ tiêu đề đi kèm với nội dung phía dưới */
-            h2, h3 {
+            h2,
+            h3 {
                 page-break-after: avoid !important;
             }
 
@@ -101,13 +102,20 @@
         }
 
         /* Hiển thị trên màn hình (giữ nguyên để xem trên web) */
-        body { font-family: 'Inter', sans-serif; }
-        .cv-container { width: 100%; min-height: 100vh; display: flex; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cv-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+        }
     </style>
 
 </head>
 
-<body class=" bg-background-light dark:bg-background-dark min-h-screen transition-colors duration-200">
+<body class=" bg-background-light dark:bg-background-dark min-h-screen transition-colors duration-200 !mb-0">
 
     <div class="bg-white dark:bg-cv-main-dark shadow-2xl flex flex-col md:flex-row cv-container ">
         <aside class="w-full md:w-[35%] bg-cv-sidebar-dark text-white p-8 flex flex-col gap-8">
@@ -124,15 +132,15 @@
                     <div class="flex-grow h-px bg-primary/30"></div>
                 </div>
                 <ul class="space-y-4 text-sm font-light text-gray-300">
-                    <li class="flex items-start gap-3">
+                    <li class="flex items-center gap-3">
                         <span class="material-icons-round text-primary text-lg">phone</span>
                         <span>{{ $profile->phone_number ?? __('cv.phone_default') }}</span>
                     </li>
-                    <li class="flex items-start gap-3">
+                    <li class="flex items-center gap-3">
                         <span class="material-icons-round text-primary text-lg">email</span>
                         <span class="break-all">{{ $user->email ?? __('cv.email_default') }}</span>
                     </li>
-                    <li class="flex items-start gap-3">
+                    <li class="flex items-center gap-3">
                         <span class="material-icons-round text-primary text-lg">location_on</span>
                         <span>{{ !empty($profile->province_name) ? (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) : __('cv.address_default') }}</span>
                     </li>
@@ -186,7 +194,7 @@
             <!-- EXPERIENCE -->
             <section class="mb-10">
                 <div class="flex items-center gap-4 mb-6">
-                    <h2 class="text-xl font-bold text-primary uppercase whitespace-nowrap">{{ __('cv.experience') }}</h2>
+                    <h2 class="text-xl font-bold text-primary uppercase whitespace-nowrap">{{ __('cv.work_experience') }}</h2>
                     <div class="flex-grow h-px bg-primary/20"></div>
                 </div>
                 @if($profile->experiences->isEmpty())
@@ -199,7 +207,7 @@
                         <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">{{$exp->start_date->format('Y-m')}} — {{ $exp->end_date ? $exp->end_date->format('Y-m') : __('cv.present') }}</span>
                     </div>
                     <p class="font-bold text-primary text-sm mb-3">{{ $exp->company_name }}</p>
-                    <div class="text-muted whitespace-pre-line">{{ $exp->description ? trim($exp->description) : '' }}</div>
+                    <div class="text-muted dark:text-gray-400 whitespace-pre-line">{{ $exp->description ? trim($exp->description) : '' }}</div>
                 </div>
                 @endforeach
                 @endif
@@ -240,7 +248,7 @@
                         @foreach($profile->projects as $project)
                         <div class="flex flex-col gap-2 mb-4">
                             <p class="font-bold text-gray-900 dark:text-white uppercase">{{ $project->name }}</p>
-                            <p class="">{{ $project->description ?? '' }}</p>
+                            <p class="dark:text-gray-400">{{ $project->description ?? '' }}</p>
                             @if(!empty($project->url))
                             <a href="{{ $project->url }}" target="_blank" class="text-primary small text-decoration-none fw-medium">
                                 {{ $project->url }} <i class="ti ti-external-link ms-1"></i>

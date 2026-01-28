@@ -53,23 +53,112 @@
             display: none;
         }
     </style>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .cv-container {
+                display: block !important;
+                width: 210mm !important;
+                min-height: 297mm !important;
+                background: transparent !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                overflow: visible !important;
+            }
+
+            .cv-header-container {
+                width: 100% !important;
+            }
+
+            .cv-header {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                border-radius: 2rem !important;
+            }
+
+            .cv-header .name-container {
+                text-align: left !important;
+            }
+
+
+            .cv-body-grid {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            aside {
+                float: left !important;
+                width: 35% !important;
+                background: transparent !important;
+                padding: 0 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            main {
+                float: left !important;
+                width: 65% !important;
+                background: transparent !important;
+                padding: 0 0 0 5mm !important;
+                box-sizing: border-box !important;
+            }
+
+            section,
+            .timeline-item {
+                display: block !important;
+                width: 100% !important;
+                clear: both;
+            }
+
+            .cv-container::after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cv-container {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark min-h-screen ">
-    <div class="w-full bg-white dark:bg-slate-900 shadow-xl rounded-2xl overflow-hidden">
-        <div class="p-8 pb-0">
-            <div class="bg-card-green dark:bg-slate-800 rounded-[2rem] p-8 flex flex-col md:flex-row items-center gap-8">
+<body class="bg-background-light dark:bg-background-dark min-h-screen !mb-0">
+    <div class="cv-container w-full bg-white dark:bg-slate-900 shadow-xl rounded-0 overflow-hidden">
+        <div class="cv-header-container p-8 pb-0">
+            <div class="cv-header bg-card-green dark:bg-slate-800 rounded-[2rem] p-8 flex flex-col md:flex-row items-center gap-8">
                 <div class="relative w-40 h-40 flex-shrink-0">
                     <img alt="Nguyễn Hoàng Anh Profile" class="w-full h-full object-cover rounded-full border-4 border-white dark:border-slate-700 shadow-md" src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" />
                 </div>
-                <div class="text-center md:text-left">
+                <div class="text-center md:text-left name-container">
                     <h1 class="text-3xl md:text-4xl font-extrabold text-primary uppercase tracking-tight">{{$profile->full_name ?? __('cv.user_name_default')}}</h1>
                     <p class="text-xl text-secondary dark:text-blue-400 font-semibold mt-2">{{$profile->title ?? __('cv.title_default')}}</p>
                 </div>
             </div>
         </div>
-        <div class="p-8 grid grid-cols-1 md:grid-cols-12 gap-8">
-            <div class="md:col-span-4 space-y-6">
+        <div class="cv-body-grid p-8 grid grid-cols-1 md:grid-cols-12 gap-8">
+            <aside class="md:col-span-4 space-y-6">
 
                 <!-- Thông tin cá nhân -->
                 <div class="bg-card-green dark:bg-slate-800 p-5 rounded-2xl relative">
@@ -79,25 +168,25 @@
 
                     <ul class="space-y-4 text-sm text-gray-700 dark:text-slate-300">
                         <li class="flex items-center gap-3">
-                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center">
+                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 calendar_today
                             </span>
                             <span class="font-medium">{{ \Carbon\Carbon::parse($user->date_of_birth)->format('d/m/Y') ?? 'N/A' }}</span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center">
+                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 phone
                             </span>
                             <span class="font-medium">{{ $profile->phone_number ?? __('cv.phone_default') }}</span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center">
+                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 email
                             </span>
                             <span class="font-medium">{{ $user->email ?? __('cv.email_default') }}</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center">
+                            <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 home
                             </span>
                             <span class="font-medium">{{ !empty($profile->province_name) ? (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) : __('cv.address_default') }}</span>
@@ -116,115 +205,100 @@
                 </div>
 
                 <!-- Skills -->
+                @php
+                $groupedSkills = collect($profile->skills)->groupBy('group');
+                $softSkills = $groupedSkills->get('Soft Skill') ?? collect();
+                $coreGroups = $groupedSkills->except(['Soft Skill']);
+                @endphp
+                @if($coreGroups->count() > 0)
                 <div class="bg-card-green dark:bg-slate-800 p-5 rounded-2xl relative">
                     <div class="bg-gradient-to-r from-orange-400 to-orange-300 dark:bg-yellow-900/30 px-4 py-1.5 rounded-full inline-block mb-6 absolute -top-3 left-1/2 transform -translate-x-1/2">
                         <h3 class="text-white dark:text-yellow-200 font-bold text-sm">{{ __('cv.skills') }}</h3>
                     </div>
                     <ul class="space-y-2 text-sm text-text-main dark:text-slate-300">
-                         @php
-                        $groupedSkills = collect($profile->skills)->groupBy('group');
-                        $softSkills = $groupedSkills->get('Soft Skill') ?? collect();
-                        $coreGroups = $groupedSkills->except(['Soft Skill']);
-                        @endphp
+
                         @foreach($coreGroups as $groupName => $groupSkills)
                         <li class="flex items-center gap-2">
                             <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
                             {{ $groupName }}
                         </li>
-                        <ul class="list-disc">
+                        @if($groupSkills->count() > 0)
+                        <ul class="list-disc pl-8">
                             @foreach($groupSkills as $skill)
-                                <li class="fw-normal whitespace-nowrap text-sm">
-                                    <span class="text-wrap">{{ $skill->name }} 2332r32222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</span> 
-                                    @if($skill->year_of_experience)
-                                    <small class="fw-bold">({{ trans_choice('cv.years_count', $skill->year_of_experience) }})</small>
-                                    @endif
-                                </li>
+                            <li class="fw-normal  text-sm break-all leading-relaxed">
+                                <span class="">{{ $skill->name ?? '' }}</span>
+                                @if($skill->year_of_experience)
+                                <small class="fw-bold">({{ trans_choice('cv.years_count', $skill->year_of_experience) }})</small>
+                                @endif
+                            </li>
                             @endforeach
                         </ul>
+                        @endif
                         @endforeach
-                       
                     </ul>
                 </div>
+                @endif
 
-            </div>
-            <div class="md:col-span-8 space-y-8">
+            </aside>
+
+            <main class="md:col-span-8 space-y-8">
+
+                <!-- Education -->
                 <section>
                     <div class="bg-card-green dark:bg-emerald-900/20 rounded-lg px-4 py-2 mb-6">
-                        <h3 class="text-primary font-bold text-lg uppercase">Học vấn</h3>
+                        <h3 class="text-primary font-bold text-lg uppercase">{{ __('cv.education') }}</h3>
                     </div>
+                    @if($profile->educations->isEmpty())
+                    <p class="text-muted fst-italic">{{ __('cv.no_education') }}</p>
+                    @else
+                    @foreach($profile->educations as $edu)
                     <div class="space-y-6 relative">
                         <div class="timeline-item relative pl-10">
                             <div class="absolute left-0 top-0 w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white z-10">
                                 <span class="material-icons text-xs">school</span>
                             </div>
                             <div class="flex flex-wrap items-center justify-between mb-1">
-                                <h4 class="font-bold text-primary">Trường Đại học TopCV</h4>
-                                <span class="text-primary text-sm font-semibold">10/2017 - 06/2021</span>
+                                <h4 class="font-bold text-primary">{{$edu->school}}</h4>
+                                <span class="text-primary text-sm font-semibold">{{ $edu->start_date->format('Y-m') }} — {{ $edu->end_date ? $edu->end_date->format('Y-m') : 'Present' }}</span>
                             </div>
-                            <p class="font-bold text-secondary dark:text-blue-400 mb-2">Ngành Kinh doanh quốc tế</p>
+                            @if(!empty($edu->description))
+                            <p class="font-bold text-secondary dark:text-blue-400 mb-2">{{$edu->description}}</p>
+                            @endif
                             <ul class="list-disc list-inside space-y-1 text-sm text-text-main dark:text-slate-300 ml-2">
-                                <li>Xếp loại: Xuất sắc</li>
-                                <li>Giải thưởng:
-                                    <ul class="list-none ml-6 mt-1 space-y-1">
-                                        <li>• Top 10 sinh viên tiêu biểu năm học 2018 - 2019</li>
-                                        <li>• Top 10 sinh viên thành tích học tập xuất sắc toàn khóa</li>
-                                    </ul>
-                                </li>
+                                <li>{{$edu->degree ?? ''}} {{ $edu->major ? ': ' . $edu->major : '' }}</li>
                             </ul>
                         </div>
                     </div>
+                    @endforeach
+                    @endif
                 </section>
+
+                <!-- Experience -->
                 <section>
                     <div class="bg-card-green dark:bg-emerald-900/20 rounded-lg px-4 py-2 mb-6">
-                        <h3 class="text-primary font-bold text-lg uppercase">Kinh nghiệm làm việc</h3>
+                        <h3 class="text-primary font-bold text-lg uppercase">{{ __('cv.work_experience') }}</h3>
                     </div>
+                    @if($profile->experiences->isEmpty())
+                    <p class="text-muted fst-italic">{{ __('cv.no_experience') }}</p>
+                    @else
                     <div class="space-y-10 relative">
+                        @foreach($profile->experiences as $exp)
                         <div class="timeline-item relative pl-10">
                             <div class="absolute left-0 top-0 w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white z-10">
                                 <span class="material-icons text-xs">business_center</span>
                             </div>
                             <div class="flex flex-wrap items-center justify-between mb-1">
-                                <h4 class="font-bold text-primary">Chuyên viên quan hệ khách hàng cá nhân</h4>
-                                <span class="text-primary text-sm font-semibold">01/2024 - Nay</span>
+                                <h4 class="font-bold text-primary">{{$exp->position}}</h4>
+                                <span class="text-primary text-sm font-semibold">{{$exp->start_date->format('Y-m')}} — {{ $exp->end_date ? $exp->end_date->format('Y-m') : __('cv.present') }}</span>
                             </div>
-                            <p class="font-bold text-secondary dark:text-blue-400 mb-3">MW Group, Inc.</p>
-                            <ul class="list-disc list-inside space-y-2 text-sm text-text-main dark:text-slate-300 ml-2">
-                                <li>Quản lý danh mục hơn 200 khách hàng cá nhân, đảm bảo tỷ lệ duy trì khách hàng đạt 95%.</li>
-                                <li>Phân tích hồ sơ tín dụng, đề xuất các gói vay phù hợp, góp phần tăng 30% dư nợ tín dụng trong 02 năm liên tiếp.</li>
-                                <li>Hỗ trợ khách hàng xây dựng chiến lược tài chính cá nhân, tư vấn các gói tiết kiệm và đầu tư với tỷ lệ chốt giao dịch thành công trên 85%.</li>
-                                <li>Phối hợp với bộ phận kiểm soát tín dụng để đảm bảo quy trình phê duyệt khoản vay đạt chuẩn và tuân thủ các quy định của ngân hàng.</li>
-                                <li class="list-none pt-2">
-                                    <span class="font-bold text-text-main dark:text-slate-200">Thành tựu:</span>
-                                    <ul class="list-none ml-4 mt-1">
-                                        <li>• Đạt 168% KPI doanh số tín dụng</li>
-                                        <li>• Đạt 145% chỉ tiêu bảo hiểm trong năm 2024.</li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <p class="font-bold text-secondary dark:text-blue-400 mb-3">{{$exp->company_name}}</p>
+                            <div class="text-muted whitespace-pre-line list-disc list-inside space-y-2 text-sm text-text-main dark:text-slate-300 ml-2">{{ $exp->description ? trim($exp->description) : '' }}</div>
                         </div>
-                        <div class="timeline-item relative pl-10">
-                            <div class="absolute left-0 top-0 w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white z-10">
-                                <span class="material-icons text-xs">business_center</span>
-                            </div>
-                            <div class="flex flex-wrap items-center justify-between mb-1">
-                                <h4 class="font-bold text-primary">Chuyên viên quan hệ khách hàng cá nhân</h4>
-                                <span class="text-primary text-sm font-semibold">04/2021 - 12/2023</span>
-                            </div>
-                            <p class="font-bold text-secondary dark:text-blue-400 mb-3">SVT Financial Group, Inc.</p>
-                            <ul class="list-disc list-inside space-y-2 text-sm text-text-main dark:text-slate-300 ml-2">
-                                <li>Quản lý danh mục 150+ khách hàng cá nhân, tư vấn và cung cấp các sản phẩm tín dụng, tiết kiệm và bảo hiểm.</li>
-                                <li>Hỗ trợ khách hàng trong quá trình vay vốn, thẩm định hồ sơ tín dụng.</li>
-                                <li>Phối hợp với bộ phận chăm sóc khách hàng để nâng cao trải nghiệm người dùng.</li>
-                            </ul>
-                        </div>
+                        @endforeach
                     </div>
+                    @endif
                 </section>
-            </div>
-        </div>
-        <div class="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-            <button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors" onclick="document.documentElement.classList.toggle('dark')">
-                <span class="material-icons">dark_mode</span>
-            </button>
+            </main>
         </div>
     </div>
 

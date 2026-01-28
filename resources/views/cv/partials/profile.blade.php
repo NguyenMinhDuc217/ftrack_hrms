@@ -282,46 +282,12 @@
                 <select id="template-select" class="form-select w-auto" onchange="updatePreview(this.value)">
                     <option value="">Select Template</option>
                     @foreach(cv_template_options() as $key => $option)
-                    <option value="{{ $key }}" {{ $key == '1' ? 'selected' : '' }}>
+                    <option value="{{ $key }}">
                         {{ $option['name'] }}
                     </option>
                     @endforeach
                 </select>
 
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header justify-between">
-                    <h5 class="modal-title" id="previewModalLabel">CV Preview</h5>
-                    <div class="flex flex-wrap justify-center items-center gap-3">
-                        <div class="flex gap-2 no-print">
-                            <button class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg text-gray-600 dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center" onclick="printCV()">
-                                <i class="ti ti-download"></i> Download Resume
-                            </button>
-                            <button class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg text-gray-600 dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center" onclick="document.documentElement.classList.toggle('dark')">
-                                <span class="material-icons-round">dark_mode</span>
-                            </button>
-                        </div>
-                        <button class="btn-secondary-clean d-flex align-items-center gap-2">
-                            Save
-                        </button>
-                        <!-- <button id="download-cv-btn" class="btn-primary-clean d-flex align-items-center gap-2" onclick="downloadPdf()">
-                            <i class="ti ti-download"></i> Download Resume
-                        </button> -->
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                </div>
-                <div class="modal-body p-0" id="preview-body"> <!-- p-0 để iframe sát viền -->
-                    <div id="loading" class="hidden text-center py-5">
-                        <div class="spinner-border text-primary" role="status"></div>
-                        <p class="mt-2">Đang tải preview...</p>
-                    </div>
-                    <iframe id="pdf-preview" src="" width="100%" height="800px" style="border: none;"></iframe>
-                </div>
             </div>
         </div>
     </div>
@@ -422,7 +388,7 @@
                     <!-- Work Experience -->
                     <div class="clean-card">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h2 class="section-title h4 fw-bold text-dark m-0">Work Experience</h2>
+                            <h2 class="section-title h4 fw-bold text-dark m-0">{{ __('cv.work_experience') }}</h2>
                             <button class="btn btn-light text-success bg-success-subtle rounded-0 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('experienceModal')">
                                 <i class="ti ti-plus"></i> Add Experience
                             </button>
@@ -545,9 +511,57 @@
         </div>
     </main>
 
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header justify-between">
+                    <h5 class="modal-title" id="previewModalLabel">CV Preview</h5>
+                    <div class="flex flex-wrap justify-center items-center gap-3">
+                        <div class="flex gap-2 items-center no-print">
+                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--blue-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="printCV()" title="Download">
+                                <i class="ti ti-download"></i>
+                            </button>
+                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--accent-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-white hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="toggleDarkMode()" title="Theme Mode">
+                                <span class="material-icons" id="text-theme-mode"><i class="bi bi-moon-stars-fill"></i></span>
+                            </button>
+                            <button id="download-cv-btn" class="w-10 h-10 p-2 rounded-full !bg-[var(--red-color)] dark:bg-gray-800 shadow-lg text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="downloadPdf()" title="Save">
+                                <i class="bi bi-floppy"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="modal-body p-0" id="preview-body"> <!-- p-0 để iframe sát viền -->
+                    <div id="loading" class="hidden text-center py-5">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2">Đang tải preview...</p>
+                    </div>
+                    <iframe id="pdf-preview" src="" width="100%" height="800px" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Biến lưu trữ template hiện tại, mặc định là 1
         let currentTemplate = 1;
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            const iframe = document.getElementById('pdf-preview');
+            console.log(isDark)
+            if (iframe && iframe.contentWindow) {
+                const childHtml = iframe.contentWindow.document.documentElement;
+                if (isDark) {
+                    childHtml.classList.add('dark');
+                    $("#text-theme-mode").html('<i class="bi bi-sun-fill"></i>');
+                    console.log($('#text-theme-mode'))
+                } else {
+                    childHtml.classList.remove('dark');
+                    $("#text-theme-mode").html('<i class="bi bi-moon-stars-fill"></i>');
+                }
+            }
+        }
 
         function updatePreview(templateKey) {
             currentTemplate = templateKey; // Cập nhật biến toàn cục
@@ -573,6 +587,10 @@
             iframe.onload = () => {
                 loading.classList.add('hidden');
                 iframe.style.display = 'block';
+
+                if (document.documentElement.classList.contains('dark')) {
+                    iframe.contentWindow.document.documentElement.classList.add('dark');
+                }
             };
         }
 
@@ -590,7 +608,7 @@
             if (iframe && iframe.contentWindow) {
                 // 1. Lấy trạng thái Dark mode của trang cha (nếu muốn)
                 // Thông thường CV nên in ở chế độ Light Mode để tiết kiệm mực và chuyên nghiệp
-                iframe.contentWindow.document.documentElement.classList.remove('dark');
+                // iframe.contentWindow.document.documentElement.classList.remove('dark');
 
                 // 2. Focus và thực hiện lệnh in
                 iframe.contentWindow.focus();
