@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light" lang="vi">
+<html class="{{ $theme == 'dark' ? 'dark' : 'light' }}" lang="vi">
 
 <head>
     <meta charset="utf-8" />
@@ -39,12 +39,9 @@
                 margin: 0;
             }
 
-            html {
-                /* Giúp trình duyệt tính toán đúng chiều cao của body */
-                height: auto !important;
-            }
-
             body {
+
+
                 margin: 0 !important;
                 padding: 0 !important;
                 -webkit-print-color-adjust: exact !important;
@@ -52,52 +49,96 @@
             }
 
             .cv-container {
-                display: flex !important;
-                flex-direction: row !important;
+                display: block !important;
+                /* Dùng block + float để ngắt trang chuẩn */
                 width: 210mm !important;
-                /* Bỏ min-height cố định để nội dung chảy tự nhiên */
-                min-height: 100% !important;
-                background: transparent !important;
-                /* Làm trong suốt để thấy nền của body */
-                box-shadow: none !important;
+                min-height: 297mm !important;
                 margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: none !important;
+                /* Bỏ gradient, dùng div fixed */
+                overflow: visible !important;
+                position: relative !important;
+                z-index: 0 !important;
+            }
+
+            .print-sidebar-bg {
+                display: block !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 35% !important;
+                height: 100% !important;
+                background-color: #374151 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                z-index: -1 !important;
             }
 
             aside {
+                float: left !important;
                 width: 35% !important;
-                background: transparent !important;
-                /* Trong suốt */
-                color: white !important;
-                padding: 10mm 5mm !important;
-                flex-shrink: 0 !important;
+                background-color: transparent !important;
+                /* Nhìn xuyên qua nền cha */
+                box-sizing: border-box !important;
+                min-height: 297mm !important;
             }
 
             main {
+                float: right !important;
                 width: 65% !important;
-                background: transparent !important;
-                /* Trong suốt */
-                padding: 10mm !important;
-                flex-grow: 1 !important;
-                color: #1F2937 !important;
-                /* Ép màu chữ tối để dễ đọc khi in */
+                background-color: transparent !important;
+                /* Nhìn xuyên qua nền cha */
+                box-sizing: border-box !important;
+                min-height: 297mm !important;
             }
 
-            /* Ngăn chặn các khoảng trống do ngắt trang không hợp lý */
+            /* Ngắt trang thông minh */
             section {
-                page-break-inside: auto !important;
-                margin-bottom: 5mm !important;
                 display: block !important;
+                width: 100% !important;
+                clear: both;
             }
 
-            /* Giữ tiêu đề đi kèm với nội dung phía dưới */
-            h2,
-            h3 {
+            /* Ngăn các khối nội dung quan trọng bị cắt đôi khi sang trang */
+            .experience,
+            .project,
+            .flex.flex-col.gap-2 {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            /* Đảm bảo tiêu đề section không nằm cuối trang một mình */
+            h2 {
                 page-break-after: avoid !important;
+                break-after: avoid !important;
             }
 
-            /* Ẩn các icon nếu cần để bản in sạch hơn */
-            .material-icons-round {
-                line-height: 1 !important;
+            .cv-container::after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            /* Chỉnh lại ảnh đại diện khi in */
+            img {
+                -webkit-print-color-adjust: exact;
+            }
+
+            .cv-name {
+                font-size: 14pt !important;
+                line-height: 1.2 !important;
+                white-space: nowrap !important;
+                display: block !important;
+                width: 100% !important;
+                letter-spacing: -0.02em !important;
+            }
+
+            .cv-title {
+                font-size: 14pt !important;
+                margin-top: 5px !important;
             }
         }
 
@@ -111,6 +152,10 @@
             min-height: 100vh;
             display: flex;
         }
+
+        .print-sidebar-bg {
+            display: none;
+        }
     </style>
 
 </head>
@@ -118,13 +163,16 @@
 <body class=" bg-background-light dark:bg-background-dark min-h-screen transition-colors duration-200 !mb-0">
 
     <div class="bg-white dark:bg-cv-main-dark shadow-2xl flex flex-col md:flex-row cv-container ">
-        <aside class="w-full md:w-[35%] bg-cv-sidebar-dark text-white p-8 flex flex-col gap-8">
-            <div class="relative  mx-auto mb-4 bg-gray-400 dark:bg-gray-600 overflow-hidden">
+        <!-- Element này tạo nền cho sidebar khi in (hiển thị ở mọi trang) -->
+        <div class="print-sidebar-bg"></div>
+
+        <aside class=" w-full md:w-[35%] bg-cv-sidebar-dark text-white p-8 flex flex-col gap-8">
+            <div class="relative mx-auto mb-4 bg-gray-400 dark:bg-gray-600 overflow-hidden">
                 <img alt="Profile Picture" class="w-[200px] h-[200px] object-cover " src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" />
             </div>
-            <div class="text-center md:text-left">
-                <h1 class="text-3xl font-bold text-primary mb-2 uppercase tracking-tight">{{$profile->full_name ?? __('cv.user_name_default')}}</h1>
-                <p class="text-lg font-medium text-gray-300">{{$profile->title ?? __('cv.title_default')}}</p>
+            <div class="text-center ">
+                <h1 class="cv-name text-lg md:text-3xl font-bold text-primary mb-2 uppercase tracking-tight">{{$profile->full_name ?? __('cv.user_name_default')}}</h1>
+                <p class="cv-title text-lg font-medium text-gray-300">{{$profile->title ?? __('cv.title_default')}}</p>
             </div>
             <section>
                 <div class="flex items-center gap-2 mb-4">
@@ -201,13 +249,13 @@
                 <p class="text-muted fst-italic">{{ __('cv.no_experience') }}</p>
                 @else
                 @foreach($profile->experiences as $exp)
-                <div class="mb-8">
+                <div class="mb-8 experience">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
                         <h3 class="font-bold text-gray-900 dark:text-white uppercase">{{ $exp->position }}</h3>
                         <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">{{$exp->start_date->format('Y-m')}} — {{ $exp->end_date ? $exp->end_date->format('Y-m') : __('cv.present') }}</span>
                     </div>
                     <p class="font-bold text-primary text-sm mb-3">{{ $exp->company_name }}</p>
-                    <div class="text-muted dark:text-gray-400 whitespace-pre-line">{{ $exp->description ? trim($exp->description) : '' }}</div>
+                    <div class="text-muted dark:text-gray-400 whitespace-pre-line text-sm">{{ $exp->description ? trim($exp->description) : '' }}</div>
                 </div>
                 @endforeach
                 @endif
@@ -225,7 +273,7 @@
                 <div>
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-1">
                         @if(!empty($edu->description))
-                        <h3 class="font-bold text-gray-900 dark:text-white uppercase">{{$edu->description}}</h3>
+                        <h3 class="font-bold text-gray-900 dark:text-white uppercase text-sm">{{$edu->description}}</h3>
                         @endif
                         <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">{{ $edu->start_date->format('Y-m') }} — {{ $edu->end_date ? $edu->end_date->format('Y-m') : 'Present' }}</span>
                     </div>
@@ -246,9 +294,9 @@
                     @else
                     <div class="flex flex-col gap-2 mb-8">
                         @foreach($profile->projects as $project)
-                        <div class="flex flex-col gap-2 mb-4">
+                        <div class="flex flex-col gap-2 mb-4 project">
                             <p class="font-bold text-gray-900 dark:text-white uppercase">{{ $project->name }}</p>
-                            <p class="dark:text-gray-400">{{ $project->description ?? '' }}</p>
+                            <p class="dark:text-gray-400 text-sm">{{ $project->description ?? '' }}</p>
                             @if(!empty($project->url))
                             <a href="{{ $project->url }}" target="_blank" class="text-primary small text-decoration-none fw-medium">
                                 {{ $project->url }} <i class="ti ti-external-link ms-1"></i>

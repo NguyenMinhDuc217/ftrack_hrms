@@ -14,6 +14,7 @@
         "laravel/socialite": "^5.23",
         "laravel/tinker": "^2.10.1",
         "league/flysystem-aws-s3-v3": "^3.30",
+        "spatie/laravel-pdf": "^1.8",
         "spatie/laravel-permission": "^6.21"
     },
     "require-dev": {
@@ -36,7 +37,8 @@
         },
         "files": [
             "app/Helpers/QueryHelper.php",
-            "app/Helpers/SlugHelper.php"
+            "app/Helpers/SlugHelper.php",
+            "app/Helpers/CvExampleHelper.php"
         ]
     },
     "autoload-dev": {

@@ -571,6 +571,8 @@
             const iframe = document.getElementById('pdf-preview');
             const loading = document.getElementById('loading');
 
+            const isDark = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+
             modal.show();
             loading.classList.remove('hidden');
             iframe.style.display = 'none';
@@ -579,7 +581,7 @@
             // 1. Dùng một chuỗi bất kỳ làm placeholder (ví dụ: 999999)
             // Lưu ý: templateKey trong ngoặc ['templateKey' => '999999'] phải nằm trong nháy đơn để PHP hiểu là chuỗi
             let url = "{{ route('cv.preview-pdf', ['id' => '999999', 'type' => 'preview']) }}";
-            url = url.replace('999999', templateKey);
+            url = url.replace('999999', templateKey) + '?theme=' + isDark;
 
             // 2. Thay thế chuỗi 999999 đó bằng biến JavaScript templateKey
             iframe.src = url;
@@ -595,9 +597,9 @@
         }
 
         function downloadPdf() {
-            // Làm tương tự cho phần download
+            const isDark = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
             let url = "{{ route('cv.preview-pdf', ['id' => '999999', 'type' => 'download']) }}";
-            url = url.replace('999999', currentTemplate);
+            url = url.replace('999999', currentTemplate) + '?theme=' + isDark;
 
             window.location.href = url;
         }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html class="{{ $theme == 'dark' ? 'dark' : 'light' }}" lang=" vi">
 
 <head>
     <meta charset="utf-8" />
@@ -96,24 +96,23 @@
 
 
             .cv-body-grid {
-                display: block !important;
+                display: grid !important;
+                grid-template-columns: 3.5fr 6.5fr !important;
+                /* Chia tỉ lệ 35/65 */
+                gap: 20px !important;
                 width: 100% !important;
             }
 
             aside {
-                float: left !important;
-                width: 35% !important;
-                background: transparent !important;
-                padding: 0 0 !important;
-                box-sizing: border-box !important;
+                grid-column: span 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 24px !important;
             }
 
             main {
-                float: left !important;
-                width: 65% !important;
-                background: transparent !important;
-                padding: 0 0 0 5mm !important;
-                box-sizing: border-box !important;
+                grid-column: span 1 !important;
+                padding-left: 10px !important;
             }
 
             section,
@@ -123,11 +122,78 @@
                 clear: both;
             }
 
+            .experience,
+            .project,
+            .information,
+            .flex.flex-col.gap-2 {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+
+
+            /* Đảm bảo tiêu đề section không nằm cuối trang một mình */
+            h2 {
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+
             .cv-container::after {
                 content: "";
                 display: table;
                 clear: both;
             }
+
+            .cv-body-grid {
+                display: grid !important;
+                grid-template-columns: 35% 65% !important;
+                gap: 5px !important;
+                width: 100% !important;
+            }
+
+            aside,
+            main {
+                float: none !important;
+                /* Bỏ float */
+                width: auto !important;
+            }
+
+            aside>div {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                display: block !important;
+                position: relative !important;
+            }
+
+            aside>div:nth-child(2) {
+                padding-top: 1mm !important;
+            }
+
+            aside>div:nth-child(3) {
+                padding-top: 1mm !important;
+                Ưu
+            }
+
+            .section-badge {
+                position: absolute !important;
+                top: -1 !important;
+                /* Dùng margin âm thay cho absolute */
+                z-index: 50 !important;
+            }
+
+            .absolute.-top-3 {
+                position: absolute !important;
+                top: -12px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                z-index: 50 !important;
+            }
+
+            .information,
+            .summary {
+                margin-top: 20px !important;
+            }
+
         }
 
         body {
@@ -195,13 +261,15 @@
                 </div>
 
                 <!-- Summary -->
-                <div class="bg-card-green dark:bg-slate-800 p-5 rounded-2xl relative">
-                    <div class="bg-gradient-to-r from-orange-400 to-orange-300 dark:bg-yellow-900/30 px-4 py-1.5 rounded-full inline-block mb-6 absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <h3 class="text-white dark:text-yellow-200 font-bold text-sm">{{ __('cv.summary') }}</h3>
+                <div>
+                    <div class="bg-card-green dark:bg-slate-800 p-5 rounded-2xl relative summary">
+                        <div class="bg-gradient-to-r from-orange-400 to-orange-300 dark:bg-yellow-900/30 px-4 py-1.5 rounded-full inline-block mb-6 absolute -top-3 left-1/2 transform -translate-x-1/2">
+                            <h3 class="text-white dark:text-yellow-200 font-bold text-sm">{{ __('cv.summary') }}</h3>
+                        </div>
+                        <p class="text-sm leading-relaxed text-text-main dark:text-slate-300">
+                            {{ $profile->summary ?? __('cv.summary_default') }}
+                        </p>
                     </div>
-                    <p class="text-sm leading-relaxed text-text-main dark:text-slate-300">
-                        {{ $profile->summary ?? __('cv.summary_default') }}
-                    </p>
                 </div>
 
                 <!-- Skills -->
@@ -211,31 +279,37 @@
                 $coreGroups = $groupedSkills->except(['Soft Skill']);
                 @endphp
                 @if($coreGroups->count() > 0)
-                <div class="bg-card-green dark:bg-slate-800 p-5 rounded-2xl relative">
-                    <div class="bg-gradient-to-r from-orange-400 to-orange-300 dark:bg-yellow-900/30 px-4 py-1.5 rounded-full inline-block mb-6 absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <h3 class="text-white dark:text-yellow-200 font-bold text-sm">{{ __('cv.skills') }}</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm text-text-main dark:text-slate-300">
+                <div class="">
+                    <div class="cv-card bg-card-green dark:bg-slate-800 p-5 rounded-2xl relative information">
+                        <div class="cv-card-header flex justify-between">
+                            <div class="section-badge bg-gradient-to-r from-orange-400 to-orange-300 dark:bg-yellow-900/30 px-4 py-1.5 rounded-full inline-block mb-6 absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                <h3 class="text-white dark:text-yellow-200 font-bold text-sm">{{ __('cv.skills') }}</h3>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-2 w-full text-text-main dark:text-slate-300">
+                            <ul class="space-y-2 text-sm text-text-main dark:text-slate-300">
 
-                        @foreach($coreGroups as $groupName => $groupSkills)
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
-                            {{ $groupName }}
-                        </li>
-                        @if($groupSkills->count() > 0)
-                        <ul class="list-disc pl-8">
-                            @foreach($groupSkills as $skill)
-                            <li class="fw-normal  text-sm break-all leading-relaxed">
-                                <span class="">{{ $skill->name ?? '' }}</span>
-                                @if($skill->year_of_experience)
-                                <small class="fw-bold">({{ trans_choice('cv.years_count', $skill->year_of_experience) }})</small>
+                                @foreach($coreGroups as $groupName => $groupSkills)
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                                    {{ $groupName }}
+                                </li>
+                                @if($groupSkills->count() > 0)
+                                <ul class="list-disc pl-8">
+                                    @foreach($groupSkills as $skill)
+                                    <li class="fw-normal  text-sm break-all leading-relaxed">
+                                        <span class="">{{ $skill->name ?? '' }}</span>
+                                        @if($skill->year_of_experience)
+                                        <small class="fw-bold">({{ trans_choice('cv.years_count', $skill->year_of_experience) }})</small>
+                                        @endif
+                                    </li>
+                                    @endforeach
+                                </ul>
                                 @endif
-                            </li>
-                            @endforeach
-                        </ul>
-                        @endif
-                        @endforeach
-                    </ul>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 @endif
 
@@ -283,7 +357,7 @@
                     @else
                     <div class="space-y-10 relative">
                         @foreach($profile->experiences as $exp)
-                        <div class="timeline-item relative pl-10">
+                        <div class="timeline-item relative pl-10 experience">
                             <div class="absolute left-0 top-0 w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white z-10">
                                 <span class="material-icons text-xs">business_center</span>
                             </div>

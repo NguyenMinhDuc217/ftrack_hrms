@@ -594,8 +594,10 @@ class CvProfileController extends Controller
         });
     }
 
-    public function previewDownloadPdf($key = 1, $type = '')
+    public function previewDownloadPdf(Request $request, $key = 1, $type = '')
     {
+        $theme = $request->theme ?? 'light';
+
         $options = cv_template_options();
         if (!isset($options[$key]) || !view()->exists($options[$key]['blade'])) {
             $key = 1;
@@ -604,26 +606,15 @@ class CvProfileController extends Controller
         $profile = $this->getUserProfile();
         $user = $this->user;
         if ($type == 'preview') {
-            return view($template, compact('profile', 'user'));
+            return view($template, compact('profile', 'user', 'theme'));
         } else if ($type == 'download') {
-            return pdf()->view($template, compact('profile', 'user'))->format('a4')->name('preview-cv.pdf')->download();
+            return pdf()->view($template, compact('profile', 'user', 'theme'))
+                ->format('a4')
+                ->name('preview-cv.pdf')
+                ->withBrowsershot(function ($browsershot) {
+                    $browsershot->windowSize(1280, 1024); // Giả lập màn hình desktop
+                })
+                ->download();
         }
     }
-
-    // public function previewDownloadPdf($key = 1, $type = '')
-    // {
-    //     $options = cv_template_options();
-    //     if (!isset($options[$key]) || !view()->exists($options[$key]['blade'])) {
-    //         $key = 1;
-    //     }
-    //     $template = $options[$key]['blade'];
-    //     $profile = $this->getUserProfile();
-    //     $user = $this->user;
-    //     if ($type == 'preview') {
-    //         return view($template, compact('profile', 'user'));
-    //     } else if ($type == 'download') {
-    //         $pdf = Pdf::loadView($template, compact('profile', 'user'))->setPaper('a4', 'portrait')->setOption('margin-top', 15)->setOption('margin-bottom', 15)->setOption('margin-left', 15)->setOption('margin-right', 15);
-    //         return $pdf->download('preview-cv.pdf');
-    //     }
-    // }
 }
