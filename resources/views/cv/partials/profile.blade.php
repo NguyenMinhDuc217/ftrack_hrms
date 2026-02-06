@@ -254,7 +254,7 @@
     </style>
 
     <!-- Hero Section -->
-    <div class="container">
+    <div class="container px-0">
         <div class="hero-section">
             <div class="profile-img-container">
                 <div class="position-relative d-inline-block">
@@ -278,21 +278,11 @@
                     <i class="ti ti-share"></i> Share Profile
                 </button>
 
-                <!-- Select template -->
-                <select id="template-select" class="form-select w-auto" onchange="updatePreview(this.value)">
-                    <option value="">Select Template</option>
-                    @foreach(cv_template_options() as $key => $option)
-                    <option value="{{ $key }}">
-                        {{ $option['name'] }}
-                    </option>
-                    @endforeach
-                </select>
-
             </div>
         </div>
     </div>
 
-    <main class="container pb-5">
+    <main class="container pb-5 px-0">
         <div class="row g-5">
 
             <!-- LEFT COLUMN -->
@@ -307,7 +297,7 @@
                         </div>
                         <hr class="mb-2" />
                         <div class="d-flex flex-column gap-3">
-                            <div class="contact-item"><i class="ti ti-mail"></i> {{ $user->email ?? __('cv.email_default') }}</div>
+                            <div class="contact-item break-all"><i class="ti ti-mail"></i> {{ $user->email ?? __('cv.email_default') }}</div>
                             <div class="contact-item"><i class="ti ti-phone"></i> {{ $profile->phone_number ?? __('cv.phone_default') }}</div>
                             <div class="contact-item"><i class="ti ti-calendar-event"></i>{{ \Carbon\Carbon::parse($user->date_of_birth)->format('d/m/Y') ?? __('cv.dob_default') }}</div>
                             <div class="contact-item"><i class="ti ti-user"></i> {{ !empty($profile->gender) ? $profile->gender->getLabel()['lang'] : __('cv.gender_default') }}</div>
@@ -510,117 +500,3 @@
             </section>
         </div>
     </main>
-
-    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header justify-between">
-                    <h5 class="modal-title" id="previewModalLabel">CV Preview</h5>
-                    <div class="flex flex-wrap justify-center items-center gap-3">
-                        <div class="flex gap-2 items-center no-print">
-                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--blue-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="printCV()" title="Download">
-                                <i class="ti ti-download"></i>
-                            </button>
-                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--accent-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-white hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="toggleDarkMode()" title="Theme Mode">
-                                <span class="material-icons" id="text-theme-mode"><i class="bi bi-moon-stars-fill"></i></span>
-                            </button>
-                            <button id="download-cv-btn" class="w-10 h-10 p-2 rounded-full !bg-[var(--red-color)] dark:bg-gray-800 shadow-lg text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="downloadPdf()" title="Save">
-                                <i class="bi bi-floppy"></i>
-                            </button>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                </div>
-                <div class="modal-body p-0" id="preview-body"> <!-- p-0 để iframe sát viền -->
-                    <div id="loading" class="hidden text-center py-5">
-                        <div class="spinner-border text-primary" role="status"></div>
-                        <p class="mt-2">Đang tải preview...</p>
-                    </div>
-                    <iframe id="pdf-preview" src="" width="100%" height="800px" style="border: none;"></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Biến lưu trữ template hiện tại, mặc định là 1
-        let currentTemplate = 1;
-
-        function toggleDarkMode() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            const iframe = document.getElementById('pdf-preview');
-            console.log(isDark)
-            if (iframe && iframe.contentWindow) {
-                const childHtml = iframe.contentWindow.document.documentElement;
-                if (isDark) {
-                    childHtml.classList.add('dark');
-                    $("#text-theme-mode").html('<i class="bi bi-sun-fill"></i>');
-                    console.log($('#text-theme-mode'))
-                } else {
-                    childHtml.classList.remove('dark');
-                    $("#text-theme-mode").html('<i class="bi bi-moon-stars-fill"></i>');
-                }
-            }
-        }
-
-        function updatePreview(templateKey) {
-            currentTemplate = templateKey; // Cập nhật biến toàn cục
-
-            const modalElement = document.getElementById('previewModal');
-            const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-            const iframe = document.getElementById('pdf-preview');
-            const loading = document.getElementById('loading');
-
-            const isDark = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-
-            modal.show();
-            loading.classList.remove('hidden');
-            iframe.style.display = 'none';
-
-            // --- CÁCH SỬA LỖI TẠI ĐÂY ---
-            // 1. Dùng một chuỗi bất kỳ làm placeholder (ví dụ: 999999)
-            // Lưu ý: templateKey trong ngoặc ['templateKey' => '999999'] phải nằm trong nháy đơn để PHP hiểu là chuỗi
-            let url = "{{ route('cv.preview-pdf', ['id' => '999999', 'type' => 'preview']) }}";
-            url = url.replace('999999', templateKey) + '?theme=' + isDark;
-
-            // 2. Thay thế chuỗi 999999 đó bằng biến JavaScript templateKey
-            iframe.src = url;
-
-            iframe.onload = () => {
-                loading.classList.add('hidden');
-                iframe.style.display = 'block';
-
-                if (document.documentElement.classList.contains('dark')) {
-                    iframe.contentWindow.document.documentElement.classList.add('dark');
-                }
-            };
-        }
-
-        function downloadPdf() {
-            const isDark = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-            let url = "{{ route('cv.preview-pdf', ['id' => '999999', 'type' => 'download']) }}";
-            url = url.replace('999999', currentTemplate) + '?theme=' + isDark;
-
-            window.location.href = url;
-        }
-
-        function printCV() {
-            const iframe = document.getElementById('pdf-preview');
-
-            if (iframe && iframe.contentWindow) {
-                // 1. Lấy trạng thái Dark mode của trang cha (nếu muốn)
-                // Thông thường CV nên in ở chế độ Light Mode để tiết kiệm mực và chuyên nghiệp
-                // iframe.contentWindow.document.documentElement.classList.remove('dark');
-
-                // 2. Focus và thực hiện lệnh in
-                iframe.contentWindow.focus();
-
-                // Thêm một khoảng trễ nhỏ để trình duyệt cập nhật lại layout nếu vừa bỏ dark mode
-                setTimeout(() => {
-                    iframe.contentWindow.print();
-                }, 200);
-            } else {
-                alert("Đang tải bản xem trước, vui lòng đợi trong giây lát!");
-            }
-        }
-    </script>

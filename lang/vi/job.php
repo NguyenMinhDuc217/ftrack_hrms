@@ -108,6 +108,7 @@ return [
     'txt_choose_cv_apply' => 'Chọn CV để ứng tuyển',
     'txt_choose_cv_available' => 'Chọn CV có sẵn',
     'txt_update_cv_available' => 'Tải lên CV có sẵn',
+    'txt_upload_cv' => 'Tải lên CV',
     'txt_choose_cv' => 'Chọn CV',
     'txt_create_new_cv' => 'Tạo CV mới',
     'txt_create_cv' => 'Tạo CV',

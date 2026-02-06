@@ -42,7 +42,7 @@
     }
   </style>
   <div class="background-image">
-    <div class="container mx-auto px-0 footer-content">
+    <div class="container mx-auto px-0 footer-content page">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 pt-[6rem]">
         <!-- Column 1: Brand & Address -->
         <div class="lg:col-span-1">

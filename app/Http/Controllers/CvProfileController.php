@@ -112,6 +112,66 @@ class CvProfileController extends Controller
         return view('cv.profile.index', compact('profile', 'user', 'provinces', 'genders'));
     }
 
+    public function edit()
+    {
+        $profile = $this->getUserProfile();
+        $user = $this->user;
+        $provinces = Province::orderBy('name')->get();
+        $genders = Gender::cases();
+        $completionPercentage = $this->calculateCompletion($profile, $user);
+        return view('cv.profile.edit', compact('profile', 'user', 'provinces', 'genders', 'completionPercentage'));
+    }
+
+    public function saveAll(Request $request) {
+        dd($request);
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully',
+        ]);
+    }
+
+    private function calculateCompletion($profile, $user)
+    {
+        $score = 0;
+        $maxScore = 100;
+        $sectionScore = 20;
+
+        // 1. Personal Information (20%)
+        // Check essential fields
+        if (
+            !empty($profile->full_name) &&
+            !empty($profile->title) &&
+            !empty($profile->gender) &&
+            !empty($profile->phone_number) &&
+            !empty($profile->province_code) &&
+            !empty($user->date_of_birth) // user date_of_birth is used in view
+        ) {
+             $score += $sectionScore;
+        }
+
+        // 2. Skills (20%)
+        if ($profile->skills()->count() > 0) {
+            $score += $sectionScore;
+        }
+
+        // 3. Work Experience (20%)
+        if ($profile->experiences()->count() > 0) {
+            $score += $sectionScore;
+        }
+
+        // 4. Education (20%)
+        if ($profile->educations()->count() > 0) {
+            $score += $sectionScore;
+        }
+
+        // 5. Projects (20%)
+        if ($profile->projects()->count() > 0) {
+             $score += $sectionScore;
+        }
+
+        return $score;
+    }
+
     public function saveSummary(Request $request, \App\Services\UserDocumentService $userDocumentService)
     {
         $profile = $this->getUserProfile();
@@ -594,6 +654,11 @@ class CvProfileController extends Controller
         });
     }
 
+    public function createCv()
+    {
+        return view('client.cv.create-cv');
+    }
+
     public function previewDownloadPdf(Request $request, $key = 1, $type = '')
     {
         $theme = $request->theme ?? 'light';
@@ -612,7 +677,8 @@ class CvProfileController extends Controller
                 ->format('a4')
                 ->name('preview-cv.pdf')
                 ->withBrowsershot(function ($browsershot) {
-                    $browsershot->windowSize(1280, 1024); // Giả lập màn hình desktop
+                    $browsershot->windowSize(1280, 1024) // Giả lập màn hình desktop
+                        ->waitUntilNetworkIdle();  // Đợi tải xong font/ảnh các thứ các thứ
                 })
                 ->download();
         }

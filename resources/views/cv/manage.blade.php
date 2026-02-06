@@ -143,13 +143,16 @@
 @endpush
 
 @section('content')
-    <!-- BEGIN: MainContent -->
-    <main class="flex-grow-1 py-4 py-md-5" style="background-color: #f0f4f8; min-height: 80vh;">
-        <div class="container-xl">
-            <!-- Page Title -->
-            <div class="mb-4">
-                 <h1 class="h3 fw-bold text-dark">{{ __('cv.manage_cvs') }}</h1>
-            </div>
+<!-- BEGIN: MainContent -->
+<main class="flex-grow-1 py-4 py-md-5" style="min-height: 80vh;">
+    <div class="container-xl container px-0">
+        <!-- Page Title -->
+        <div class="mb-4 flex justify-between items-center">
+            <h1 class="h3 fw-bold text-dark">{{ __('cv.manage_cvs') }}</h1>
+            <x-client.elements.button type="button" class="h-12 flex justify-center items-center gap-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl" onclick="window.location.href = '{{ route('profile.create-cv') }}'">
+                <i class="bi bi-send-plus"></i><span>{{ __('job.txt_create_cv') }}</span>
+            </x-client.elements.button>
+        </div>
 
             <div class="row g-4">
                 

@@ -77,11 +77,12 @@
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
     }
+
     #applyModal .modal-body::-webkit-scrollbar {
         display: none;
     }
 
-    .collapse { 
+    .collapse {
         border-width: 0 !important;
         visibility: inherit !important;
     }
@@ -90,12 +91,14 @@
         background-color: #d4ffc3 !important;
         border: solid 2px #ffffff !important;
     }
+
     .cv-item-active:hover {
         /* background-color: var(--accent-color) !important; */
         color: var(--blue-color) !important;
     }
 
-    #description-content a[data-fancybox], #requirements-content a[data-fancybox] {
+    #description-content a[data-fancybox],
+    #requirements-content a[data-fancybox] {
         display: inline-block !important;
         vertical-align: middle;
         margin-right: 8px;
@@ -103,7 +106,8 @@
         max-width: 100%;
     }
 
-    #description-content img, #requirements-content img {
+    #description-content img,
+    #requirements-content img {
         display: block !important;
         max-width: 100%;
         height: auto;
@@ -111,16 +115,17 @@
         cursor: zoom-in;
     }
 
-    #description-content p:has(img), #requirements-content p:has(img) {
-        display: block; 
+    #description-content p:has(img),
+    #requirements-content p:has(img) {
+        display: block;
     }
 </style>
 
 <section class="py-6 bg-gray-50">
     @php
-        $locale = app()->getLocale();
+    $locale = app()->getLocale();
     @endphp
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-0">
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8">
 
@@ -128,7 +133,7 @@
             <div class="lg:col-span-8 flex flex-col gap-4">
 
                 <!-- Card thông tin nhanh + nút ứng tuyển -->
-                <div class="flex flex-col gap-3 bg-white rounded-0 shadow-sm border border-gray-100 p-4 hover:shadow-xl transition-shadow">
+                <div class="flex flex-col gap-3 bg-white rounded-lg shadow-sm border border-gray-100 p-4 hover:shadow-xl transition-shadow">
                     <h1 class="text-lg font-bold text-gray-900 mb-2 alumni-font">
                         {{ $job->name }}
                     </h1>
@@ -143,7 +148,7 @@
                                 <p class="text-sm text-gray-600">{{ __('job.txt_income') }}</p>
                                 <p class="font-semibold text-gray-900">
                                     {{ __('job.txt_salary_rank', ['min' => number_format($job->min_salary / 1000000, 1), 'max' => number_format($job->max_salary / 1000000, 1)]) }}
-                                   
+
                                 </p>
                             </div>
                         </div>
@@ -179,14 +184,14 @@
                             </div>
                             <div class="flex flex-wrap items-center gap-1 text-sm text-gray-600 my-2">
                                 @foreach($job->job_area as $area)
-                                    <span class="p-2 bg-gray-100 rounded-md text-xs">
-                                        {{ $area->province->localized_name ?? '' }}
-                                    </span>
+                                <span class="p-2 bg-gray-100 rounded-md text-xs">
+                                    {{ $area->province->localized_name ?? '' }}
+                                </span>
                                 @endforeach
                             </div>
                         </div>
                         @endif
-    
+
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-2">
                                 <i class="bi bi-briefcase text-gray-600 text-xl"></i>
@@ -196,7 +201,7 @@
                                 <span class="font-bold text-xs">{{ ($job->employment_type) ? Str::upper($job->employment_type) : '' }}</span>
                             </div>
                         </div>
-    
+
                         <div class="pt-2 flex items-center gap-3">
                             <div class="flex items-center gap-2">
                                 <i class="bi bi-calendar text-gray-600 text-xl"></i>
@@ -208,9 +213,9 @@
                                 </span>
                                 <span class="text-green-600 font-medium">
                                     @if (!empty($locale) && $locale == 'vi')
-                                        ({{ __('job.txt_left') }} {{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} {{ __('job.txt_days') }})
+                                    ({{ __('job.txt_left') }} {{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} {{ __('job.txt_days') }})
                                     @elseif (!empty($locale) && $locale == 'en')
-                                        ({{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} days left)
+                                    ({{ number_format(\Carbon\Carbon::now()->diffInDays($job->end_date)) }} days left)
                                     @endif
                                 </span>
                             </p>
@@ -224,32 +229,32 @@
                 </div>
 
                 @if($job->images()->count() > 0 && false)
-                    <div class="image-grid grid grid-cols-3 gap-3">
-                        @foreach($job->images() as $index => $img)
-                            @if($index < 3)
-                                <a href="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" 
-                                data-fancybox="gallery" 
-                                class="relative group block overflow-hidden rounded-0 aspect-square border border-gray-100 shadow-sm h-[150px] w-full" 
-                                data-caption="Image #{{ $index + 1 }}">
-                                    
-                                    <img src="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" alt="Job Image {{ $index + 1 }}" class="h-[150px] w-full object-contain transition-transform duration-500 group-hover:scale-110" />
+                <div class="image-grid grid grid-cols-3 gap-3">
+                    @foreach($job->images() as $index => $img)
+                    @if($index < 3)
+                        <a href="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}"
+                        data-fancybox="gallery"
+                        class="relative group block overflow-hidden rounded-lg aspect-square border border-gray-100 shadow-sm h-[150px] w-full"
+                        data-caption="Image #{{ $index + 1 }}">
 
-                                    @if($index == 2 && $job->images()->count() > 3)
-                                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center transition-colors group-hover:bg-black/40">
-                                            <span class="text-white text-2xl font-bold">+{{ $job->images()->count() - 3 }}</span>
-                                        </div>
-                                    @endif
-                                </a>
-                            @else
-                                {{-- Các ảnh từ thứ 4 trở đi sẽ bị ẩn nhưng vẫn nằm trong gallery để slide --}}
-                                <a href="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" data-fancybox="gallery" class="hidden"></a>
-                            @endif
+                        <img src="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" alt="Job Image {{ $index + 1 }}" class="h-[150px] w-full object-contain transition-transform duration-500 group-hover:scale-110" />
+
+                        @if($index == 2 && $job->images()->count() > 3)
+                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center transition-colors group-hover:bg-black/40">
+                            <span class="text-white text-2xl font-bold">+{{ $job->images()->count() - 3 }}</span>
+                        </div>
+                        @endif
+                        </a>
+                        @else
+                        {{-- Các ảnh từ thứ 4 trở đi sẽ bị ẩn nhưng vẫn nằm trong gallery để slide --}}
+                        <a href="{{ $img ? $img->url : asset('images/profile/blank-profile.svg') }}" data-fancybox="gallery" class="hidden"></a>
+                        @endif
                         @endforeach
-                    </div>
+                </div>
                 @endif
 
                 <!-- Mô tả công việc -->
-                <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                     <h2 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_description') }}</h2>
                     <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line" id="description-content">
                         {!! $job->description_md !!}
@@ -257,7 +262,7 @@
                 </div>
 
                 <!-- Yêu cầu công việc -->
-                <div class="bg-white rounded-0 shadow-sm border border-gray-100 p-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                     <h2 class="text-xl font-bold text-gray-900 alumni-font">{{ __('job.txt_requirements') }}</h2>
                     <div class="prose prose-sm max-w-none text-gray-700 whitespace-pre-line" id="requirements-content">
                         {!! $job->requirements_md !!}
@@ -272,11 +277,11 @@
             <div class="lg:col-span-4 flex flex-col gap-4">
 
                 <!-- Card công ty -->
-                <div class="flex flex-col gap-3 bg-white rounded-0 shadow-sm border border-gray-100 p-4 sticky">
+                <div class="flex flex-col gap-3 bg-white rounded-lg shadow-sm border border-gray-100 p-4 sticky">
                     <div class="flex items-start gap-4">
-                        <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}" 
-                             alt="Logo công ty" 
-                             class="w-20 h-20 rounded-0 object-contain border border-gray-200 shadow-sm flex-shrink-0" />
+                        <img src="{{ $job->organization->image->url ?? asset('images/profile/blank-profile.svg') }}"
+                            alt="Logo công ty"
+                            class="w-20 h-20 rounded-lg object-contain border border-gray-200 shadow-sm flex-shrink-0" />
 
                         <div class="flex-1 min-w-0">
                             <a href="{{ route('client.org.detail', $job->organization) }}">
@@ -342,7 +347,7 @@
     <!-- Modal -->
     <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered lg:max-w-[40%]">
-            <div class="modal-content rounded-0">
+            <div class="modal-content rounded-lg">
 
                 @if(Auth::check())
                 <form action="{{ route('apply.job') }}" id="applyForm" method="POST">
@@ -356,15 +361,15 @@
                         </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
+
                     <div class="modal-body ">
-                                @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        <li>{{ $errors->first() }}</li>
-                                    </ul>
-                                </div>
-                            @endif
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                <li>{{ $errors->first() }}</li>
+                            </ul>
+                        </div>
+                        @endif
 
                         <div class="flex flex-col gap-3 items-center">
                             <div class="flex items-center gap-2 w-full">
@@ -378,20 +383,20 @@
                                     <span class="title-collapse text-black">{{__('job.txt_choose_cv_available')}}</span>
                                 </button>
                                 <div id="collapseCVList" class="flex flex-col gap-2 collapse show">
-                                @if($cvs && $cvs->count() > 0)
+                                    @if($cvs && $cvs->count() > 0)
                                     @foreach($cvs as $cv)
-                                        <div id="cv-item-{{ $cv->id }}" class="cv-item text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
-                                            <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold underline">{{ $cv->document_title }}</a>
-                                            <x-client.elements.button type="button" class="cv-select-btn" onclick="chooseCV({{ $cv->id }}, this )">
-                                                {{__('job.txt_choose_cv')}}
-                                            </x-client.elements.button>
-                                        </div>
+                                    <div id="cv-item-{{ $cv->id }}" class="cv-item text-decoration-none text-dark w-full d-flex align-items-center justify-content-between p-3 border-2 rounded bg-light hover:border-[var(--accent-color)] cursor-pointer">
+                                        <a href="{{ $cv->url }}" target="_blank" class="mb-0 fw-bold underline">{{ $cv->document_title }}</a>
+                                        <x-client.elements.button type="button" class="cv-select-btn" onclick="chooseCV({{ $cv->id }}, this )">
+                                            {{__('job.txt_choose_cv')}}
+                                        </x-client.elements.button>
+                                    </div>
                                     @endforeach
-                                @else
+                                    @else
                                     <div class="text-secondary mb-4">
                                         <i class="ti ti-file-off me-2"></i> {{ __('cv.no_cv_attached') }}
                                     </div>
-                                @endif
+                                    @endif
                                 </div>
                             </div>
 
@@ -409,7 +414,7 @@
                                         <label class="form-label fw-bold">{{ __('cv.upload_cv') }}</label>
                                         <div class="input-group">
                                             <input type="file" name="cv_file" id="cv_file" class="form-control" accept=".doc,.docx,.pdf">
-                                    
+
                                             <x-client.elements.button type="button" class="!rounded-r-[var(--bs-border-radius)]" onclick="uploadCV()">
                                                 <i class="ti ti-upload me-2"></i> {{ __('cv.upload_cv') }}
                                             </x-client.elements.button>
@@ -437,10 +442,10 @@
                                     <select name="province_id" id="province_id" class="form-select" required>
                                         <option value="">{{__('job.txt_province')}}</option>
                                         @foreach ($job->job_area as $area)
-                                                <option value="{{ $area->province->id }}">{{ $area->province->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                        <option value="{{ $area->province->id }}">{{ $area->province->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -448,11 +453,11 @@
                         <x-client.elements.button type="submit" class="col-span-4 h-12 flex justify-center items-center gap-2  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">
                             {{__('job.txt_apply')}}
                         </x-client.elements.button>
-                        <button type="button" class="col-span-1 h-12 btn border border-transparent text-sm font-medium rounded-0 bg-light hover:bg-gray-100  hover:text-primary hover:shadow-xl" data-bs-dismiss="modal">{{__('default.btn_close')}}</button>
+                        <button type="button" class="col-span-1 h-12 btn border border-transparent text-sm font-medium rounded-lg bg-light hover:bg-gray-100  hover:text-primary hover:shadow-xl" data-bs-dismiss="modal">{{__('default.btn_close')}}</button>
                     </div>
                 </form>
                 @else
-                <x-client.login/>
+                <x-client.login />
                 @endif
 
             </div>
@@ -469,7 +474,7 @@
         $(document).ready(function() {
             $('#collapseChooseCV').addClass('border-black shadow-md').find('.title-collapse').addClass('font-semibold text-[var(--accent-color)] underline');
 
-            $(document).on('show.bs.collapse', '.collapse', function () {
+            $(document).on('show.bs.collapse', '.collapse', function() {
                 var $this = $(this);
                 var group = $this.closest('.group-collapse');
                 var title = group.find('.title-collapse');
@@ -487,25 +492,25 @@
             });
 
             // Khi collapse đóng xong → bỏ viền + xoay icon về
-            $(document).on('hidden.bs.collapse', '.collapse', function () {
+            $(document).on('hidden.bs.collapse', '.collapse', function() {
                 var $parent = $(this).closest('.group-collapse');
                 $parent.removeClass('border-black shadow-md');
                 $parent.find('.title-collapse').removeClass('font-semibold text-[var(--accent-color)] underline');
             });
 
             // Xóa required khi collapse đóng
-            $(document).on('hidden.bs.collapse', '#collapseUploadCV', function () {
+            $(document).on('hidden.bs.collapse', '#collapseUploadCV', function() {
                 $(this).find('input[required]').removeAttr('required');
             });
             // Thêm required khi collapse mở
-            $(document).on('show.bs.collapse', '#collapseUploadCV', function () {
+            $(document).on('show.bs.collapse', '#collapseUploadCV', function() {
                 $(this).find('#cv_name, #cv_file').attr('required', 'required');
             });
 
-            $('#applyModal').on('hidden.bs.modal', function(){
+            $('#applyModal').on('hidden.bs.modal', function() {
                 sessionStorage.removeItem('job_apply_url');
                 window.location.reload();
-            }); 
+            });
         });
 
         // Lưu URL hiện tại vào sessionStorage
@@ -514,10 +519,10 @@
         }
 
         // Sau khi login xong sẽ tự động mở
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const applyUrl = sessionStorage.getItem('job_apply_url');
             var checkPhone = @json($checkPhone);
-            
+
             @if(session('applied_successfully'))
                 Toast.fire({
                     icon: 'success',
@@ -525,13 +530,13 @@
                 });
                 sessionStorage.removeItem('job_apply_url');
             @else
-                if(applyUrl && applyUrl === window.location.href) {
-                    var modal = new bootstrap.Modal(document.getElementById('applyModal'));
-                    modal.show();
-                    if (checkPhone) {
-                        sessionStorage.removeItem('job_apply_url');
-                    }
+            if (applyUrl && applyUrl === window.location.href) {
+                var modal = new bootstrap.Modal(document.getElementById('applyModal'));
+                modal.show();
+                if (checkPhone) {
+                    sessionStorage.removeItem('job_apply_url');
                 }
+            }
             @endif
         });
 
@@ -539,15 +544,15 @@
             const formData = new FormData();
             formData.append('cv_file', $('#cv_file')[0].files[0]);
             formData.append('cv_name', $('#cv_name').val());
-            var url = '{{ route('cv.upload') }}';
-            
+            var url = '{{ route("cv.upload") }}';
+
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
+                success: function(response) {
                     console.log(response)
                     if (response.success) {
                         if (response.data) {
@@ -566,7 +571,7 @@
                         });
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     $('#cv_file_error').text(error);
                     console.log(error);
                 }
@@ -581,11 +586,11 @@
             $('#cv-item-' + cvId).addClass('cv-item-active');
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Tìm tất cả hình ảnh trong phần description
             const descImages = document.querySelectorAll('#description-content img');
             const reqImages = document.querySelectorAll('#requirements-content img');
-            
+
             descImages.forEach(img => {
                 // Tạo thẻ <a> để bọc quanh hình ảnh
                 const link = document.createElement('a');
@@ -612,7 +617,6 @@
             Fancybox.bind("[data-fancybox='description-gallery']", {});
             Fancybox.bind("[data-fancybox='requirements-gallery']", {});
         });
-
     </script>
 </section>
 

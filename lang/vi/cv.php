@@ -143,6 +143,10 @@ return [
     'txt_create_cv_des' => 'Hãy tải CV đầu tiên để sẵn sàng ứng tuyển hàng ngàn việc làm hấp dẫn!',
     'txt_support_type_file' => 'Hỗ trợ: .pdf, .doc, .docx (tối đa 5MB)',
     'txt_skip_create_cv' => 'Để sau, tôi muốn xem việc làm trước',
+    'txt_choose_path_create_cv' => 'Chọn một con đường để chuẩn bị hồ sơ chuyên nghiệp của bạn',
+    'txt_upload_cv_des' => 'Chọn CV của bạn từ tệp PDF hoặc DOCX.',
+    'txt_create_cv_des' => 'Tạo mới CV từ những mẫu chuyên nghiệp có sẵn',
+
 
     // Detailed Empty State
     'no_cv_uploaded_yet' => 'Chưa có CV nào được tải lên.',

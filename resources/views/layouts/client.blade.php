@@ -36,12 +36,6 @@
 
     <!-- Main CSS File -->
     <link href="{{ asset('client/assets/css/main.css') }}" rel="stylesheet">
-    <!-- Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-
 
     <!-- Fancybox -->
     <link rel="stylesheet" href="{{ asset('fancyapps/ui/dist/fancybox/fancybox.css') }}">
@@ -52,7 +46,7 @@
     <link href="{{ asset('client/assets/vendor/select2/dist/css/select2-bootstrap-5-theme.css') }}" rel="stylesheet">
 
     <style>
-        body{
+        body {
             font-family: 'Mulish' !important;
         }
     </style>
@@ -95,6 +89,18 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        .page {
+            max-width: 1340px !important
+        }
+
+        body, section {
+            background-color: #f9fafb !important;
+        }
+
+        .container {
+            max-width: 1340px !important;
+        }
+        
     </style>
 
     @stack('styles') {{-- For page-specific CSS --}}
@@ -106,37 +112,37 @@
 
     @include('client.partials.header')
 
-    <main class="main">
+    <main class="main page mx-auto !w-100" >
         @yield('content')
     </main>
 
     @auth
     @if(session('show_create_cv_modal'))
-        <x-client.create-cv />
+    <x-client.create-cv />
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var modal = new bootstrap.Modal($('#CreateCVModal'), {
-                    backdrop: 'static',
-                    keyboard: false
-                });
-                modal.show();
-
-                //Xóa flag sau khi hiện (chỉ hiện 1 lần)
-                fetch(`{{ route('clear.create.cv.flag') }}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = new bootstrap.Modal($('#CreateCVModal'), {
+                backdrop: 'static',
+                keyboard: false
             });
-        </script>
+            modal.show();
+
+            //Xóa flag sau khi hiện (chỉ hiện 1 lần)
+            fetch(`{{ route('clear.create.cv.flag') }}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+        });
+    </script>
     @endif
     @endauth
 
-  @if(!Route::is('login'))
-      @include('client.partials.footer')
-  @endif
+    @if(!Route::is('login'))
+    @include('client.partials.footer')
+    @endif
 
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center bg-black"><i
@@ -164,7 +170,7 @@
     <script src="{{ asset('client/assets/vendor/select2/dist/js/select2.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             $('.select2-single').select2({
                 placeholder: "{{ __('default.txt_location') }}",
                 allowClear: true,

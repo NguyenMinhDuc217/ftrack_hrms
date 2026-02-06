@@ -5,15 +5,15 @@ if (!function_exists('cv_template_options')) {
     {
         return [
             '1' => [
-                'name' => 'CV1',
+                'name' => 'C',
                 'blade' => 'client.cv.cv1',
             ],
             '2' => [
-                'name' => 'CV2',
+                'name' => 'P',
                 'blade' => 'client.cv.cv2',
             ],
             '3' => [
-                'name' => 'CV3',
+                'name' => 'M',
                 'blade' => 'client.cv.cv3',
             ],
         ];
