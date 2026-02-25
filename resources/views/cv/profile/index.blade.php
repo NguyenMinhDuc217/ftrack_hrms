@@ -107,6 +107,8 @@
                     });
                 }
 
+                $('input[name="is_current"]').trigger('change');
+                
                 new bootstrap.Modal(document.getElementById(modalId)).show();
             }
 

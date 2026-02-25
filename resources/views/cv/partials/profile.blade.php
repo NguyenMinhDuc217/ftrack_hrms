@@ -60,6 +60,9 @@
         }
 
         .profile-img-container img {
+            max-width: 200px;
+            max-height: 183px;
+            aspect-ratio: 1;
             width: 100%;
             height: 100%;
             object-fit: cover;
