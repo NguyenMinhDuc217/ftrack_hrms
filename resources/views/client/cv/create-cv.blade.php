@@ -57,7 +57,8 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 card-all">
-            @foreach(cv_template_options() as $key => $option)
+            @foreach($cv_templates as $key => $option)
+
             <div class="group cursor-pointer p-2 rounded-lg border-2 border-gray-200 !h-[80%] hover:transition-all hover:scale-105 bg-[#eeeeee]" onclick="updatePreview('{{ $key }}')">
 
                 <div class="cv-preview-box rounded-lg">

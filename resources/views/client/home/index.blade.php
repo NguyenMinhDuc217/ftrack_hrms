@@ -3,9 +3,9 @@
         .container {
             max-width: 1340px !important;
         }
-        .page {
+        /* .page {
             max-width: 100vw !important;
-        }
+        } */
         header .page {
             max-width: 1340px !important;
         }

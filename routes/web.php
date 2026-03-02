@@ -21,6 +21,7 @@ use App\Http\Controllers\OrganizationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 // Client Routes
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
@@ -72,6 +73,26 @@ Route::get('/clear-cache', function () {
     //     return 'Composer update failed: '.$exception->getMessage();
     // }
 });
+
+Route::get('/install-spatie-pdf', function () {
+    $process = new Process([
+        'composer',
+        'require',
+        'spatie/laravel-pdf',
+        '--no-dev',
+        '--optimize-autoloader',
+        '--no-interaction'
+    ]);
+    $process->setWorkingDirectory(base_path());
+    $process->setTimeout(3600);
+
+    try {
+        $process->mustRun();
+        return '<pre>' . htmlspecialchars($process->getOutput()) . '</pre>';
+    } catch (ProcessFailedException $exception) {
+        return '<pre>Lỗi: ' . htmlspecialchars($exception->getMessage()) . '</pre>';
+    }
+})->name('install-spatie-pdf');
 
 function updateVendorFolder()
 {
@@ -136,8 +157,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete-certificate/{id}', [CvProfileController::class, 'deleteCertificate'])->name('profile.delete.certificate');
     Route::post('/profile/save-award', [CvProfileController::class, 'saveAward'])->name('profile.save.award');
     Route::delete('/profile/delete-award/{id}', [CvProfileController::class, 'deleteAward'])->name('profile.delete.award');
+    Route::get('/profile/edit', [CvProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/save-all', [CvProfileController::class, 'saveAll'])->name('profile.save.all');
 
-    Route::get('/profile/preview-pdf/{id}/{type}', [CvProfileController::class, 'previewDownloadPdf'])->name('cv.preview-pdf');
+    Route::get('/create-cv', [CvProfileController::class, 'createCv'])->name('profile.create-cv');
+    Route::get('/create-cv/preview-pdf/{id}/{type}', [CvProfileController::class, 'previewDownloadPdf'])->name('cv.preview-pdf');
 
     // CV Management
     Route::get('/cv-manage', [App\Http\Controllers\CvManagementController::class, 'index'])->name('cv.manage');

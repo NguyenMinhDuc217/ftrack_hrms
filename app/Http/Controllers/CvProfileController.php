@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Gender;
+use App\Http\Requests\CvProfile\ProfilePostRequest;
 use App\Models\CvAward;
 use App\Models\CvCertificate;
 use App\Models\CvEducation;
@@ -122,13 +123,141 @@ class CvProfileController extends Controller
         return view('cv.profile.edit', compact('profile', 'user', 'provinces', 'genders', 'completionPercentage'));
     }
 
-    public function saveAll(Request $request) {
-        dd($request);
-        return response()->json([
-            'success' => true,
-            'message' => 'Profile updated successfully',
-        ]);
+    public function saveAll(ProfilePostRequest $request, \App\Services\UserDocumentService $userDocumentService) {
+        // dd($request->all());
+        $data = $request->validated();
+        // dd($data);
+
+        DB::beginTransaction();
+        try {
+            $profile = $this->getUserProfile();
+            // dd($this->user);
+            // dd($profile);
+
+            // SUMMARY
+                if ($request->has('province_code')) {
+                    $province = Province::where('code', $request->province_code)->first();
+                    if ($province) {
+                        $data['info']['province_name'] = $province->full_name;
+                        $data['info']['province_name_en'] = $province->full_name_en;
+                    }
+                }
+
+                $userData = array();
+                $userData['date_of_birth'] = $data['info']['date_of_birth'];
+                $avatar = $data['info']['avatar'];
+                unset($data['info']['date_of_birth']);
+                unset($data['info']['avatar']);
+
+                // if ($request->hasFile('avatar')) {
+                if (isset($avatar)) {
+                    $oldFile = $profile->avatar;
+                    $userDocument =  new UserDocument([
+                        'user_id' => $this->user_id,
+                        'uploaded_by' => $this->user_id,
+                        'document_type' => 'avatar',
+                        'document_title' => 'Avatar',
+                        'confidential' => false,
+                        'org_id' => $this->user->org_id,
+                    ]);
+                    $file = $userDocumentService->upload($avatar, $userDocument, 'avatars');
+                    $data['info']['avatar_file_id'] = $file->id;
+                    if ($oldFile) {
+                        $userDocumentService->delete($oldFile);
+                    }
+                }
+                $profile->update($data['info']);
+
+                
+                $user = $this->user;
+                if (empty($user->phone_number)) {
+                    $userData['phone_number'] = $data['info']['phone_number'];
+                }
+                $user->update($userData);
+            // END SUMMARY
+
+            // SKILLS
+                $skillData = $data["skill"];
+                foreach ($skillData as $group) {
+                    $skill['cv_profile_id'] = $profile->id;
+                    $groupName = $group['group'] ?? null;
+                    $oldGroupName = $group['old_group'] ?? null;
+                    $targetDelete = $oldGroupName ? $oldGroupName : $groupName;
+                    $profile->skills()->where('group', $targetDelete)->delete();
+                    foreach ($group['skills'] as $skill) {
+                        $profile->skills()->create([
+                            'name' => $skill['newSkillName'],
+                            'group' => $groupName,
+                            'year_of_experience' => $skill['newSkillExp'] ?? null,
+                        ]);
+                    }
+                }
+            // END SKILLS
+
+            // EXPERIENCES
+                $expData = $data["exp"];
+                foreach ($expData as $exp) {
+                    $exp['cv_profile_id'] = $profile->id;
+                    $exp['start_date'] = !empty($exp['start_date']) ? date('Y-m-d', strtotime($exp['start_date'] . '-01')) : null;
+                    $exp['end_date'] = !empty($exp['end_date']) ? date('Y-m-d', strtotime($exp['end_date'] . '-01')) : null;
+                    if (isset($exp['id'])) {
+                        $experience = $profile->experiences()->findOrFail($exp['id']);
+                        unset($exp['id']);
+                        $experience->update($exp);
+                    } else {
+                        $experience = $profile->experiences()->create($exp);
+                    }
+                }
+            // END EXPERIENCES
+
+            // EDUCATIONS
+                $eduData = $data["edu"];
+                foreach ($eduData as $edu) {
+                    $edu['cv_profile_id'] = $profile->id;
+                    $edu['start_date'] = !empty($edu['start_date']) ? date('Y-m-d', strtotime($edu['start_date'] . '-01')) : null;
+                    $edu['end_date'] = !empty($edu['end_date']) ? date('Y-m-d', strtotime($edu['end_date'] . '-01')) : null;
+                    if (isset($edu['id'])) {
+                        $education = $profile->educations()->findOrFail($edu['id']);
+                        unset($edu['id']);
+                        $education->update($edu);
+                    } else {
+                        $education = $profile->educations()->create($edu);
+                    }
+                }
+            // END EDUCATIONS
+
+            // PROJECTS
+                $projData = $data["proj"];
+                foreach ($projData as $proj) {
+                    $proj['cv_profile_id'] = $profile->id;
+                    $proj['start_date'] = !empty($proj['start_date']) ? date('Y-m-d', strtotime($proj['start_date'] . '-01')) : null;
+                    $proj['end_date'] = !empty($proj['end_date']) ? date('Y-m-d', strtotime($proj['end_date'] . '-01')) : null;
+                    if (isset($proj['id'])) {
+                        $project = $profile->projects()->findOrFail($proj['id']);
+                        unset($proj['id']);
+                        $project->update($proj);
+                    } else {
+                        $project = $profile->projects()->create($proj);
+                    }
+                }
+            // END PROJECTS
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully',
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ]);
+        }
     }
+
 
     private function calculateCompletion($profile, $user)
     {
@@ -656,14 +785,43 @@ class CvProfileController extends Controller
 
     public function createCv()
     {
-        return view('client.cv.create-cv');
+        $cv_templates = [
+            '1' => [
+                'name' => 'C',
+                'blade' => 'client.cv.cv1',
+            ],
+            '2' => [
+                'name' => 'P',
+                'blade' => 'client.cv.cv2',
+            ],
+            '3' => [
+                'name' => 'M',
+                'blade' => 'client.cv.cv3',
+            ],
+        ];
+        return view('client.cv.create-cv', compact('cv_templates'));
     }
+    
 
     public function previewDownloadPdf(Request $request, $key = 1, $type = '')
     {
         $theme = $request->theme ?? 'light';
 
-        $options = cv_template_options();
+        // $options = cv_template_options();
+        $options = [
+            '1' => [
+                'name' => 'C',
+                'blade' => 'client.cv.cv1',
+            ],
+            '2' => [
+                'name' => 'P',
+                'blade' => 'client.cv.cv2',
+            ],
+            '3' => [
+                'name' => 'M',
+                'blade' => 'client.cv.cv3',
+            ],
+        ];
         if (!isset($options[$key]) || !view()->exists($options[$key]['blade'])) {
             $key = 1;
         }

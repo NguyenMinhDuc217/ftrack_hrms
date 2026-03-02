@@ -45,6 +45,12 @@
     <link href="{{ asset('client/assets/vendor/select2/dist/css/select2.css') }}" rel="stylesheet">
     <link href="{{ asset('client/assets/vendor/select2/dist/css/select2-bootstrap-5-theme.css') }}" rel="stylesheet">
 
+    <!-- Quill CSS -->
+    <link href="{{ asset('admin/assets/css/plugins/quill.snow.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/assets/css/plugins/resize.css') }}" rel="stylesheet" />
+    <script src="{{ asset('admin/assets/js/plugins/quill.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/plugins/resize.js') }}"></script>
+
     <style>
         body {
             font-family: 'Mulish' !important;
@@ -168,6 +174,10 @@
     <script src="{{ asset('client/assets/js/main.js') }}"></script>
 
     <script src="{{ asset('client/assets/vendor/select2/dist/js/select2.js') }}"></script>
+
+    <!-- quill -->
+    <script src="{{ asset('admin/assets/js/plugins/quill.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/plugins/resize.js') }}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

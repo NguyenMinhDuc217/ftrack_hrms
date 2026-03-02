@@ -8,7 +8,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Blog 1 -->
-            <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
+            <div class="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
                 <div class="h-48 overflow-hidden relative">
                     <img src="https://picsum.photos/id/4/400/250" alt="Blog 1" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute top-4 left-4 flex gap-2">
@@ -26,7 +26,7 @@
             </div>
 
             <!-- Blog 2 -->
-            <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
+            <div class="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
                 <div class="h-48 overflow-hidden relative">
                     <img src="https://picsum.photos/id/6/400/250" alt="Blog 2" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute top-4 left-4 flex gap-2">
@@ -44,7 +44,7 @@
             </div>
 
             <!-- Blog 3 -->
-            <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
+            <div class="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
                 <div class="h-48 overflow-hidden relative">
                     <img src="https://picsum.photos/id/20/400/250" alt="Blog 3" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute top-4 left-4 flex gap-2">
