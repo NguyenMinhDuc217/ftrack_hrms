@@ -20,7 +20,7 @@
                         </div>
                         <img id="avatar-preview" class="size-24 rounded-lg object-cover" src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" alt="Avatar">
                     </div>
-                    <input type="file" class="absolute inset-0 opacity-0 cursor-pointer " name="info[avatar]" id="avatar-input" accept="image/*" onchange="previewAvatar(this)" />
+                    <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" name="info[avatar]" id="avatar-input" value="{{ $profile->avatar ? $profile->avatar->url : '' }}" accept="image/*" onchange="previewAvatar(this)" />
                     <!-- <input type="hidden" name="info[avatar]" id="avatar-hidden" value="{{ $profile->avatar ? $profile->avatar->url : '' }}"> -->
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 <div class="invalid-note"></div>
             </div>
             <div class="md:col-span-2 flex flex-col gap-2">
-                <label class="text-sm font-bold">{{ Str::upper(__('cv.address')) }}</label>
+                <label class="text-sm font-bold">{{ Str::upper(__('cv.address')) }} <span class="text-danger">*</span></label>
                 <input type="text" class="form-control text-muted" name="info[address]" value="{{ $profile->address ?? '' }}" placeholder="{{ __('cv.placeholder_address') }}">
                 <div class="invalid-note"></div>
             </div>

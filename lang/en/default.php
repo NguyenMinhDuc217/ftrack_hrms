@@ -99,4 +99,8 @@ return [
 
     // Error
     'error_location_not_found' => 'Location not found',
+
+    'today' => 'today',
+    'txt_empty' => 'empty',
+    
 ];

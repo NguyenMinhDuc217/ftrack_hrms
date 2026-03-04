@@ -18,6 +18,7 @@ return [
     'core_skills' => 'Kỹ năng chuyên môn',
     'soft_skills' => 'Kỹ năng mềm',
     'contact_info' => 'Thông tin',
+    'info_more' => 'Thông tin thêm',
 
     // Fields
     'full_name' => 'Họ và tên',
@@ -53,8 +54,10 @@ return [
     'award_name' => 'Tên giải thưởng',
     'manage_skills' => 'Quản lý kỹ năng',
     'group_name' => 'Tên nhóm',
+    'old_group' => 'Tên nhóm cũ',
     'add_skills' => 'Thêm kỹ năng',
     'skills_list' => 'Danh sách kỹ năng',
+    'skill_name' => 'Tên kỹ năng',
     'native' => 'Bản ngữ',
     'fluent' => 'Thành thạo',
     'intermediate' => 'Trung cấp',
@@ -116,6 +119,8 @@ return [
     'validation_required' => 'Trường này không được bỏ trống',
 
     // Manage CV
+    'choose_cv_template' => 'Chọn mẫu CV chuyên nghiệp',
+    'preview_and_choose' => 'Xem trước trực tiếp và chọn mẫu phù hợp nhất',
     'manage_cvs' => 'Quản lý CV',
     'your_cv' => 'CV của bạn',
     'uploaded' => 'Đã tải lên',
@@ -129,6 +134,9 @@ return [
     'user_cv_title' => 'CV người dùng',
     'cv_name' => 'Tên CV',
     'placeholder_cv_name' => 'VD: CV Lập trình viên PHP',
+    'cv_data_of_you' => 'CV theo dữ liệu của bạn',
+    'cv_example' => 'CV mẫu',
+    'cv_preview' => 'Xem trước CV',
 
     // Validation
     'cv_file_required' => 'File CV là bắt buộc',
@@ -136,6 +144,11 @@ return [
     'cv_file_max' => 'File CV phải nhỏ hơn 3MB',
     'cv_name_required' => 'Tên CV là bắt buộc',
     'cv_name_max' => 'Tên CV phải nhỏ hơn 255 ký tự',
+    'profile_is_not_complete' => 'Thông tin cá nhân chưa đầy đủ',
+    'profile_is_complete' => 'Thông tin cá nhân đã đầy đủ',
+    'user_or_profile_does_not_exist' => 'Người dùng hoặc hồ sơ không tồn tại',
+    'profile_updated_successfully' => 'Cập nhật thông tin cá nhân thành công',
+    'something_went_wrong' => 'Có lỗi xảy ra',
 
     // Modal create
     'txt_welcome' => 'Chào mừng bạn đến với tuyển dụng CPM',
@@ -147,9 +160,45 @@ return [
     'txt_upload_cv_des' => 'Chọn CV của bạn từ tệp PDF hoặc DOCX.',
     'txt_create_cv_des' => 'Tạo mới CV từ những mẫu chuyên nghiệp có sẵn',
 
-
     // Detailed Empty State
     'no_cv_uploaded_yet' => 'Chưa có CV nào được tải lên.',
     'upload_cv_suggestion' => 'Sử dụng biểu mẫu bên trái để tải lên CV đầu tiên của bạn để bắt đầu.',
 
+    
+    // DATA CV EXAMPLE
+    'cv_full_name' => 'Nguyễn Văn A',
+    'cv_title' => 'Infomation Technology',
+    'cv_phone_number' => '0983825924',
+    'cv_email' => 'nguyenvana@gmail.com',
+    'cv_proivince_name' => 'Thành phố Hồ Chí Minh',
+    'cv_province_name_en' => 'Ho Chi Minh City',
+    'cv_address' => '123 Đường ABC, Quận 1, Thành phố Hồ Chí Minh',
+    'cv_summary' => 'Hơn 5 năm kinh nghiệm trong việc phát triển các hệ thống Web quy mô lớn. Am hiểu về kiến trúc Microservices và tối ưu hóa hiệu năng hệ thống.',
+    'cv_soft_skill_1' => 'Giao tiếp',
+    'cv_soft_skill_2' => 'Làm việc nhóm',
+
+    'cv_exp_1_title' => 'Trưởng nhóm kỹ thuật',
+    'cv_exp_1_company' => 'Công ty Công nghệ CPM',
+    'cv_exp_1_start_date' => '2020-01-01',
+    'cv_exp_1_end_date' => '2025-12-31',
+    'cv_exp_1_description' => '- Quản lý đội ngũ 10 developers.\n- Thiết kế kiến trúc hệ thống thương mại điện tử.',
+    'cv_exp_2_title' => 'Lập trình viên phần cốt lõi',
+    'cv_exp_2_company' => 'Công ty Công nghệ FPT',
+    'cv_exp_2_start_date' => '2018-01-01',
+    'cv_exp_2_end_date' => '2019-12-31',
+    'cv_exp_2_description' => '- Xây dựng API cho ứng dụng di động.\n- Tối ưu hóa database MySQL.',
+   
+    'cv_edu_1_school' => 'Đại học Bách Khoa Hà Nội',
+    'cv_edu_1_degree' => 'Cử nhân',
+    'cv_edu_1_major' => 'Khoa học Máy tính',
+    'cv_edu_1_start_date' => '2014-09-01',
+    'cv_edu_1_end_date' => '2018-06-30',
+    'cv_edu_1_description' => 'Tốt nghiệp loại Giỏi, GPA: 3.6/4.0',
+
+    'cv_proj_1_name' => 'Hệ thống quản lý nhân sự',
+    'cv_proj_1_description' => 'Xây dựng module quản lý chấm công và tính lương tự động.',
+    'cv_proj_1_start_date' => '2022-01-01',
+    'cv_proj_1_end_date' => '2023-03-31',
+    'cv_proj_1_url' => 'https://github.com/example/project',
+    // END DATA CV EXAMPLE
 ];

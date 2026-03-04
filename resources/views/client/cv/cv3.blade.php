@@ -223,7 +223,7 @@
             </div>
             <div class="px-6 md:px-12 py-4">
                 <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-300 text-justify">
-                    {{ $profile->summary ?? __('cv.summary_default') }}
+                    {!! $profile->summary ?? __('cv.summary_default') !!}
                 </p>
             </div>
         </section>
@@ -249,7 +249,7 @@
                             {{ $edu->major }} {{ $edu->degree ? ' - '.$edu->degree : '' }}
                         </p>
                         @if($edu->description)
-                        <p class="text-xs text-slate-500 dark:text-slate-400 italic mt-2">{{$edu->description}}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 italic mt-2">{!! $edu->description !!}</p>
                         @endif
                     </div>
                 </div>
@@ -280,7 +280,7 @@
                             {{ $exp->position }}
                         </p>
                         <div class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
-                            {{ $exp->description }}
+                            {!! $exp->description !!}
                         </div>
                     </div>
                 </div>

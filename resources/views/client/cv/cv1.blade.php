@@ -181,7 +181,7 @@
 
         <aside class=" w-full md:w-[35%] bg-cv-sidebar-dark text-white p-6 pb-0 flex flex-col gap-8">
             <div class="relative mx-auto bg-gray-400 dark:bg-gray-600 overflow-hidden">
-                <img alt="Profile Picture" class="w-[200px] h-[200px] object-cover " src="{{ $profile->avatar ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" />
+                <img alt="Profile Picture" class="w-[200px] h-[200px] object-cover " src="{{ !empty($profile->avatar) ? $profile->avatar->url : asset('images/profile/blank-profile.svg') }}" />
             </div>
             <div class="text-center ">
                 <h1 class="cv-name text-lg md:text-3xl font-bold text-primary mb-2 uppercase tracking-tight">{{$profile->full_name ?? __('cv.user_name_default')}}</h1>
@@ -214,16 +214,18 @@
                 </div>
                 <div class="space-y-3">
                     @php
-                    $groupedSkills = collect($profile->skills)->groupBy('group');
-                    $softSkills = $groupedSkills->get('Soft Skill') ?? collect();
+                    $groupedSkills = !empty($profile->skills) ? collect($profile->skills)->groupBy('group') : collect();
+                    $softSkills = (!empty($groupedSkills) && $groupedSkills->get('Soft Skill')) ? $groupedSkills->get('Soft Skill')  : collect();
                     $coreGroups = $groupedSkills->except(['Soft Skill']);
                     @endphp
+                    @if(!empty($coreGroups))
                     @foreach($coreGroups as $groupName => $groupSkills)
                     <div class="mb-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 class="h6 fw-bold text-uppercase text-muted letter-spacing-1 underline pb-2">{{$groupName}}</h3>
                         </div>
                         <div class="flex flex-wrap gap-2 mb-3"> <!-- gap-x rộng hơn để tách biệt các cụm -->
+                            @if(!empty($groupSkills))
                             @foreach($groupSkills as $skill)
                             <span class="border-2 border-gray-100 p-1 rounded-md fw-normal whitespace-nowrap text-xs"> <!-- Thêm whitespace-nowrap -->
                                 {{ $skill->name }}
@@ -232,9 +234,11 @@
                                 @endif
                             </span>
                             @endforeach
+                            @endif
                         </div>
                     </div>
                     @endforeach
+                    @endif
 
                 </div>
             </section>
@@ -248,7 +252,7 @@
                     <div class="flex-grow h-px bg-primary/20"></div>
                 </div>
                 <p class="text-xs leading-relaxed text-gray-600 dark:text-gray-400">
-                    {{ $profile->summary ?? __('cv.summary_default') }}
+                    {!! $profile->summary ?? __('cv.summary_default') !!}
                 </p>
             </section>
 
@@ -258,7 +262,7 @@
                     <h2 class="text-xl font-bold text-primary uppercase whitespace-nowrap">{{ __('cv.work_experience') }}</h2>
                     <div class="flex-grow h-px bg-primary/20"></div>
                 </div>
-                @if($profile->experiences->isEmpty())
+                @if(empty($profile->experiences) || $profile->experiences->isEmpty())
                 <p class="text-muted fst-italic">{{ __('cv.no_experience') }}</p>
                 @else
                 @foreach($profile->experiences as $exp)
@@ -268,7 +272,7 @@
                         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{$exp->start_date->format('Y-m')}} — {{ $exp->end_date ? $exp->end_date->format('Y-m') : __('cv.present') }}</span>
                     </div>
                     <p class="font-bold text-primary text-xs mb-3">{{ $exp->company_name }}</p>
-                    <div class="text-muted dark:text-gray-400 whitespace-pre-line text-xs">{{ $exp->description ? trim($exp->description) : '' }}</div>
+                    <div class="text-muted dark:text-gray-400 whitespace-pre-line text-xs">{!! $exp->description ? trim($exp->description) : '' !!}</div>
                 </div>
                 @endforeach
                 @endif
@@ -280,14 +284,14 @@
                     <h2 class="text-xl font-bold text-primary uppercase whitespace-nowrap">{{ __('cv.education') }}</h2>
                     <div class="flex-grow h-px bg-primary/20"></div>
                 </div>
-                @if($profile->educations->isEmpty())
+                @if(empty($profile->educations) || $profile->educations->isEmpty())
                 <p class="text-muted fst-italic">{{ __('cv.no_education') }}</p>
                 @else
                 @foreach($profile->educations as $edu)
                 <div>
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-1">
                         @if(!empty($edu->description))
-                        <h3 class="font-bold text-gray-900 dark:text-white uppercase text-xs">{{$edu->description}}</h3>
+                        <h3 class="font-bold text-gray-900 dark:text-white uppercase text-xs">{!! $edu->description !!}</h3>
                         @endif
                         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ $edu->start_date->format('Y-m') }} — {{ $edu->end_date ? $edu->end_date->format('Y-m') : 'Present' }}</span>
                     </div>
@@ -305,14 +309,14 @@
                     <div class="flex-grow h-px bg-primary/20"></div>
                 </div>
                 <div>
-                    @if($profile->projects->isEmpty())
+                    @if(empty($profile->projects) || $profile->projects->isEmpty())
                     <p class="text-muted fst-italic">{{ __('cv.no_projects') }}</p>
                     @else
                     <div class="flex flex-col gap-2 mb-0">
                         @foreach($profile->projects as $project)
                         <div class="flex flex-col gap-2 mb-4 project">
                             <p class="font-bold text-gray-900 dark:text-white uppercase">{{ $project->name }}</p>
-                            <p class="dark:text-gray-400 text-xs">{{ $project->description ?? '' }}</p>
+                            <p class="dark:text-gray-400 text-xs">{!! $project->description ?? '' !!}</p>
                             @if(!empty($project->url))
                             <a href="{{ $project->url }}" target="_blank" class="text-primary small text-xs text-decoration-none fw-medium">
                                 {{ $project->url }} <i class="ti ti-external-link ms-1"></i>

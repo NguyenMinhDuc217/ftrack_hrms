@@ -99,4 +99,8 @@ return [
 
     // Error
     'error_location_not_found' => 'Không tìm thấy vị trí',
+
+    'today' => 'hôm nay',
+    'txt_empty' => 'empty',
+
 ];

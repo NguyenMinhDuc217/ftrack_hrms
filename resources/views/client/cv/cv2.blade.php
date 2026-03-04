@@ -280,25 +280,25 @@
                             <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 calendar_today
                             </span>
-                            <span class="font-medium">{{ \Carbon\Carbon::parse($user->date_of_birth)->format('d/m/Y') ?? 'N/A' }}</span>
+                            <span class="font-medium break-all">{{ \Carbon\Carbon::parse($user->date_of_birth)->format('d/m/Y') ?? 'N/A' }}</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 phone
                             </span>
-                            <span class="font-medium">{{ $profile->phone_number ?? __('cv.phone_default') }}</span>
+                            <span class="font-medium break-all">{{ $profile->phone_number ?? __('cv.phone_default') }}</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 email
                             </span>
-                            <span class="font-medium">{{ $user->email ?? __('cv.email_default') }}</span>
+                            <span class="font-medium break-all">{{ $user->email ?? __('cv.email_default') }}</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <span class="material-icons bg-orange-400 text-white text-base rounded-full w-8 h-8 flex items-center justify-center shrink-0">
                                 home
                             </span>
-                            <span class="font-medium">{{ !empty($profile->province_name) ? (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) : __('cv.address_default') }}</span>
+                            <span class="font-medium break-all">{{ !empty($profile->province_name) ? (app()->getLocale() == 'en' ? $profile->province_name_en : $profile->province_name) : __('cv.address_default') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -310,7 +310,7 @@
                             <h3 class="text-white dark:text-yellow-200 font-bold text-xs">{{ __('cv.summary') }}</h3>
                         </div>
                         <p class="text-xs leading-relaxed text-text-main dark:text-slate-300">
-                            {{ $profile->summary ?? __('cv.summary_default') }}
+                            {!! $profile->summary ?? __('cv.summary_default') !!}
                         </p>
                     </div>
                 </div>
@@ -379,7 +379,7 @@
                                 <span class="text-primary text-xs font-semibold">{{ $edu->start_date->format('Y-m') }} — {{ $edu->end_date ? $edu->end_date->format('Y-m') : 'Present' }}</span>
                             </div>
                             @if(!empty($edu->description))
-                            <p class="font-bold text-secondary dark:text-blue-400 mb-2">{{$edu->description}}</p>
+                            <p class="font-bold text-secondary dark:text-blue-400 mb-2">{!! $edu->description !!}</p>
                             @endif
                             <ul class="list-disc list-inside space-y-1 text-xs text-text-main dark:text-slate-300 ml-2">
                                 <li>{{$edu->degree ?? ''}} {{ $edu->major ? ': ' . $edu->major : '' }}</li>
@@ -409,7 +409,7 @@
                                 <span class="text-primary text-xs font-semibold">{{$exp->start_date->format('Y-m')}} — {{ $exp->end_date ? $exp->end_date->format('Y-m') : __('cv.present') }}</span>
                             </div>
                             <p class="font-bold text-secondary dark:text-blue-400 mb-3">{{$exp->company_name}}</p>
-                            <div class="text-muted whitespace-pre-line list-disc list-inside space-y-2 text-xs text-text-main dark:text-slate-300 ml-2">{{ $exp->description ? trim($exp->description) : '' }}</div>
+                            <div class="text-muted whitespace-pre-line list-disc list-inside space-y-2 text-xs text-text-main dark:text-slate-300 ml-2">{!! $exp->description ? trim($exp->description) : '' !!}</div>
                         </div>
                         @endforeach
                     </div>
@@ -431,7 +431,7 @@
                             <div class="flex flex-wrap items-center justify-between mb-1">
                                 <h4 class="font-bold text-primary">{{ $project->name }}</h4>
                             </div>
-                            <div class="text-muted whitespace-pre-line list-disc list-inside space-y-2 text-xs text-text-main dark:text-slate-300">{{ $project->description ? trim($project->description) : '' }}</div>
+                            <div class="text-muted whitespace-pre-line list-disc list-inside space-y-2 text-xs text-text-main dark:text-slate-300">{!! $project->description ? trim($project->description) : '' !!}</div>
                             @if(!empty($project->url))
                             <a href="{{ $project->url }}" target="_blank" class="text-primary small text-xs text-decoration-none fw-medium">
                                 {{ $project->url }} <i class="ti ti-external-link ms-1"></i>

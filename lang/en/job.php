@@ -99,6 +99,10 @@ return [
     'txt_form_of_work' => 'Form of work',
     'txt_area_recruitment' => 'Area recruitment',
     'txt_salary_rank' => ':min - :maxM VND',
+    'txt_current_salary' => 'Current salary',
+    'txt_expected_salary' => 'Expected salary',
+    'txt_expected_start_date' => 'Expected start date',
+    'txt_work_experience' => 'Work experience',
 
     'txt_apply_cv_required' => 'Please select or upload a CV to apply',
     'txt_apply_application_area_required' => 'Please select application area',

@@ -10,7 +10,7 @@ class AdminApplicationController extends Controller
 {
     public function index()
     {
-        $applications = Application::with('user')->with('user.cvProfile')->with('user.cvProfile.avatar')->with('job')->with('job.organization')->with('job_area')->with('job_area.province')->with('user_document')->getAllApplications();
+        $applications = Application::with('user')->with('user.cvProfile')->with('user.cvProfile.avatar')->with('job')->with('job.organization')->with('job_area')->with('job_area.province')->with('user_document')->getAllApplications()->orderBy('applied_at', 'desc');
         $applications = $applications->paginate(10);
         // dd($applications);
         $users_applied = [];

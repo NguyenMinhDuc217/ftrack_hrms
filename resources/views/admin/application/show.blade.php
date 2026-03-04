@@ -32,15 +32,53 @@
                 </div>
             </div>
             <div class="card-body">
-                <p class="card-text">Name: {{ $application->user->last_name ?? '' . ' ' . $application->user->first_name ?? '' }}</p>
-                <p class="card-text">Email: {{ $application->user->email }}</p>
-                <p class="card-text">Phone: {{ $application->user->phone_number }}</p>
-                <div>
-                    <span>CV: </span>
-                    <a href="{{ $application->user_document->url }}" target="_blank">
-                        {{ $application->user_document->document_title }}
-                    </a>
-                </div>
+                <p class="card-text">{{ __('user.txt_firstname') }}: 
+                    <span class="fw-bold">
+                        {{ $application->user->last_name ?? '' . ' ' . $application->user->first_name ?? '' }}
+                    </span>
+                </p>
+                <p class="card-text">Email: 
+                    <span class="fw-bold">
+                        {{ $application->user->email }}
+                    </span>
+                </p>
+                <p class="card-text">{{ __('user.txt_phone_number') }}:  
+                    <span class="fw-bold">
+                        {{ $application->user->phone_number }}
+                    </span>
+                </p>
+                <p class="card-text border-b-4 border-indigo-500">
+                    <span>CV: 
+                        <a href="{{ $application->user_document->url }}" target="_blank">
+                            {{ $application->user_document->document_title }}
+                        </a>
+                    </span>
+                    
+                </p>
+                <p class="card-text">
+                    {{ __('job.txt_current_salary') }}:
+                    <span class="fw-bold">
+                     {{ number_format($application->current_salary/ 1000000, 1) }}M VND
+                    </span>
+                </p>
+                <p class="card-text">
+                    {{ __('job.txt_expected_salary') }}:
+                    <span class="fw-bold">
+                     {{ number_format($application->expected_salary/ 1000000, 1) }}M VND
+                    </span>
+                </p>
+                <p class="card-text">
+                    {{ __('job.txt_expected_start_date') }}:
+                    <span class="fw-bold">
+                     {{ \Carbon\Carbon::parse($application->expected_start_date)->format('d/m/Y') }}
+                    </span>
+                </p>
+                <p class="card-text">
+                    {{ __('job.txt_work_experience') }}:
+                    <span class="fw-bold">
+                     {{ $application->work_experience ? trim(str_replace(['năm', 'year', 'years', 'Năm', 'Year', 'Years'], '', $application->work_experience)) . ' '. __('job.txt_year')  : __('job.txt_no_experience') }}
+                    </span>
+                </p>
             </div>
         </div>
     </div>

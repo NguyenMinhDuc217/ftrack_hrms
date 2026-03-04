@@ -99,6 +99,10 @@ return [
     'txt_form_of_work' => 'Hình thức làm việc',
     'txt_area_recruitment' => 'Khu vực tuyển dụng',
     'txt_salary_rank' => ':min - :max triệu',
+    'txt_current_salary' => 'Mức lương hiện tại',
+    'txt_expected_salary' => 'Mức lương mong muốn',
+    'txt_expected_start_date' => 'Thời gian có thể nhận việc',
+    'txt_work_experience' => 'Kinh nghiệm làm việc',
 
     'txt_apply_cv_required' => 'Vui lòng chọn hoặc tải lên một CV để ứng tuyển',
     'txt_apply_application_area_required' => 'Vui lòng chọn khu vực ứng tuyển',

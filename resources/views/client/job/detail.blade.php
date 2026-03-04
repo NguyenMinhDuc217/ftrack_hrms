@@ -436,6 +436,9 @@
                             </div>
                             @endif -->
 
+                    <div class="invalid-note"></div>
+
+
                             <div class="w-full">
                                 <div class="mb-3">
                                     <label for="province_id" class="form-label fw-bold">{{__('job.txt_area_recruitment')}} <span class="text-danger">*</span></label>
@@ -445,12 +448,44 @@
                                         <option value="{{ $area->province->id }}">{{ $area->province->name }}</option>
                                         @endforeach
                                     </select>
+                                    <div class="invalid-note"></div>
                                 </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="mb-3 col-span-1">
+                                        <label for="province_id" class="form-label fw-bold">{{__('job.txt_current_salary')}} <span class="text-danger">*</span></label>
+                                        <input type="number" name="current_salary" id="current_salary" class="form-control" placeholder="{{ __('job.txt_current_salary') }}">
+                                        <div class="invalid-note"></div>
+                                    </div>
+                                    <div class="mb-3 col-span-1">
+                                        <label for="province_id" class="form-label fw-bold">{{__('job.txt_expected_salary')}} <span class="text-danger">*</span></label>
+                                        <input type="number" name="expected_salary" id="expected_salary" class="form-control" placeholder="{{ __('job.txt_expected_salary') }}">
+                                        <div class="invalid-note"></div>
+                                    </div>
+                                    <div class="mb-3 col-span-1">
+                                        <label for="province_id" class="form-label fw-bold">{{__('job.txt_expected_start_date')}} <span class="text-danger">*</span></label>
+                                        <input type="date" name="expected_start_date" id="expected_start_date" class="form-control" placeholder="{{ __('job.txt_expected_start_date') }}">
+                                        <div class="invalid-note"></div>
+                                    </div>
+                                    <div class="mb-3 col-span-1">
+                                        <label for="province_id" class="form-label fw-bold">{{__('job.txt_work_experience')}} <span class="text-danger">*</span></label>
+                                        <select name="work_experience" id="work_experience" class="form-select" required>
+                                            <option value="">{{ __('cv.exp') }}</option>
+                                            <option value="1">{{ __('cv.year_1') }}</option>
+                                            <option value="2">{{ __('cv.year_2') }}</option>
+                                            <option value="3">{{ __('cv.year_3') }}</option>
+                                            <option value="4">{{ __('cv.year_4') }}</option>
+                                            <option value="5">{{ __('cv.year_5_plus') }}</option>
+                                            <option value="10">{{ __('cv.year_10_plus') }}</option>
+                                        </select>
+                                        <div class="invalid-note"></div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer grid grid-cols-5 justify-center items-center gap-2">
-                        <x-client.elements.button type="submit" class="col-span-4 h-12 flex justify-center items-center gap-2  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200">
+                        <x-client.elements.button type="button" class="col-span-4 h-12 flex justify-center items-center gap-2  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg hover:shadow-xl transition-all duration-200" onclick="applyJob()">
                             {{__('job.txt_apply')}}
                         </x-client.elements.button>
                         <button type="button" class="col-span-1 h-12 btn border border-transparent text-sm font-medium rounded-lg bg-light hover:bg-gray-100  hover:text-primary hover:shadow-xl" data-bs-dismiss="modal">{{__('default.btn_close')}}</button>
@@ -584,6 +619,63 @@
             $('#selectedCvId').val(cvId);
             $('.cv-item').removeClass('cv-item-active');
             $('#cv-item-' + cvId).addClass('cv-item-active');
+        }
+
+        function applyJob() {
+            var form = $("#applyForm");
+            if (!form.length) return;
+            var formData = new FormData(form[0]);
+            $.ajax({
+                url: '{{ route("apply.job") }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        Toast.fire({
+                                icon: 'success',
+                                title: response.message
+                            });
+                        $('.invalid-note').empty().removeClass('text-danger');
+                        $('#applyModal').modal('hide');
+                    } else {
+                        Toast.fire({
+                                icon: 'error',
+                                title: response.message
+                            });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        console.log(errors)
+                        $('.invalid-note').empty().removeClass('text-danger');
+                        $.each(errors, function(key, message) {
+
+                            let input = $('[name="' + key + '"]');
+
+                            if (input.length > 0) {
+                                // Tìm .invalid-note gần nhất (tìm từ div cha gần nhất)
+                                let note = input.closest('div')
+                                            .find('.invalid-note')
+                                            .first();  // lấy cái đầu tiên nếu có nhiều
+
+                                if (note.length) {
+                                    note.html(message.join('<br>')).addClass('text-danger');
+                                } else {
+                                    console.warn('Không tìm thấy .invalid-note cho field:', key);
+                                }
+                            } else {
+                                console.warn('Không tìm thấy input cho field:', key);
+                            }
+                        });
+                        // toastr.error('Vui lòng kiểm tra lại thông tin!');
+                    } else {
+                        // toastr.error('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                },
+            })
         }
 
         document.addEventListener('DOMContentLoaded', function() {

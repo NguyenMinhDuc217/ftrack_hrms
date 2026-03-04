@@ -52,18 +52,18 @@
 
     <div class="container mx-auto px-0">
         <div class="mb-8 text-center">
-            <h2 class="text-4xl font-extrabold text-gray-900 mb-2">Chọn mẫu CV chuyên nghiệp</h2>
-            <p class="text-lg text-gray-600 dark:text-gray-400">Xem trước trực tiếp và chọn mẫu phù hợp nhất</p>
+            <h2 class="text-4xl font-extrabold text-gray-900 mb-2">{{ __('cv.choose_cv_template') }}</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400">{{ __('cv.preview_and_choose') }}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 card-all">
             @foreach($cv_templates as $key => $option)
 
-            <div class="group cursor-pointer p-2 rounded-lg border-2 border-gray-200 !h-[80%] hover:transition-all hover:scale-105 bg-[#eeeeee]" onclick="updatePreview('{{ $key }}')">
+            <div class="group cursor-pointer p-2 rounded-lg border-2 border-gray-200 !h-[80%] hover:transition-all hover:scale-105 bg-[#eeeeee]" onclick="updatePreview('{{ $key }}', 'example')">
 
                 <div class="cv-preview-box rounded-lg">
                     <iframe
-                        src="{{ route('cv.preview-pdf', ['id' => $key, 'type' => 'preview']) }}?theme=light"
+                        src="{{ route('cv.preview-pdf', ['id' => $key, 'type' => 'example']) }}?theme=light"
                         class="cv-iframe">
                     </iframe>
                 </div>
@@ -82,10 +82,17 @@
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-between">
-                    <h5 class="modal-title" id="previewModalLabel">CV Preview</h5>
+                    <h5 class="modal-title" id="previewModalLabel">{{ __('cv.cv_preview') }}</h5>
+                    <input type="hidden" id="type-cv" value="example">
                     <div class="flex flex-wrap justify-center items-center gap-3">
                         <div class="flex gap-2 items-center no-print">
-                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--blue-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="printCV()" title="Download">
+                            <x-client.elements.button type="button" class="h-10 rounded" onclick="previewCVMySelf('preview')" id="myself-button">
+                                 {{ __('cv.cv_data_of_you') }}
+                            </x-client.elements.button>
+                            <x-client.elements.button type="button" class="h-10 rounded hidden" onclick="previewCVMySelf('example')" id="example-button">
+                                 {{ __('cv.cv_example') }}
+                            </x-client.elements.button>
+                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--blue-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0 hidden" onclick="printCV()" title="Download">
                                 <i class="ti ti-download"></i>
                             </button>
                             <button class="w-10 h-10 p-2 rounded-full !bg-[var(--accent-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-white hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="toggleDarkMode()" title="Theme Mode">
@@ -143,6 +150,12 @@
 
             observer.observe(box);
         });
+
+        $('#previewModal').on('hidden.bs.modal', function () {
+            $('#type-cv').val('example');
+            $('#myself-button').removeClass('hidden');
+            $('#example-button').addClass('hidden');
+        });
     });
 </script>
 
@@ -165,12 +178,44 @@
         }
     }
 
-    function updatePreview(templateKey) {
+    function previewCVMySelf(type) {
+        $.ajax({
+            url: '{{ route("profile.check-profile") }}',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    updatePreview(currentTemplate, type);
+                    if (type == 'preview') {
+                        $('#myself-button').addClass('hidden');
+                        $('#example-button').removeClass('hidden');
+                        $('#type-cv').val('preview');
+                    } else {
+                        $('#myself-button').removeClass('hidden');
+                        $('#example-button').addClass('hidden');
+                        $('#type-cv').val('example');
+                    }
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: response.message
+                    }).then(() => {
+                        window.location.href = '{{ route("profile.edit") }}';
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+        
+    }
+
+    function updatePreview(templateKey, type="example") {
         currentTemplate = templateKey; // Cập nhật biến toàn cục
 
         // (Tùy chọn) Xóa class active cũ và thêm vào card mới
         document.querySelectorAll('.group').forEach(el => el.classList.remove('template-card-active'));
-        // Lưu ý: Nếu bạn muốn thêm class active, bạn cần truyền event hoặc dùng selector tìm card theo key
 
         const modalElement = document.getElementById('previewModal');
         const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
@@ -183,8 +228,8 @@
         loading.classList.remove('hidden');
         iframe.style.display = 'none';
 
-        let url = "{{ route('cv.preview-pdf', ['id' => '999999', 'type' => 'preview']) }}";
-        url = url.replace('999999', templateKey) + '?theme=' + isDark;
+        let url = `{{ route('cv.preview-pdf', ['id' => '999999', 'type' => 'TYPE']) }}`;
+        url = url.replace('999999', templateKey).replace('TYPE', type) + '?theme=' + isDark;
 
         iframe.src = url;
 
@@ -199,9 +244,10 @@
     }
 
     function downloadPdf() {
+        var type_cv = $('#type-cv').val();
         const isDark = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         let url = "{{ route('cv.preview-pdf', ['id' => '999999', 'type' => 'download']) }}";
-        url = url.replace('999999', currentTemplate) + '?theme=' + isDark;
+        url = url.replace('999999', currentTemplate) + '?theme=' + isDark + '&type_cv=' + type_cv;
 
         window.location.href = url;
     }

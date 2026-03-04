@@ -365,16 +365,20 @@
             contentType: false,
             success: function(response) {
                 if (response.success) {
+                    $('.invalid-note').empty().removeClass('text-danger');
                     Toast.fire({
                             icon: 'success',
                             title: response.message
+                        }).then(() => {
+                            if (response.redirect_to) {
+                                window.location.href = response.redirect_to;
+                            }
                         });
-                    $('.invalid-note').empty().removeClass('text-danger');
                 } else {
                     Toast.fire({
-                            icon: 'error',
-                            title: response.message
-                        });
+                        icon: 'error',
+                        title: response.message
+                    });
                 }
             },
             error: function(xhr, status, error) {

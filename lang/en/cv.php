@@ -18,6 +18,7 @@ return [
     'core_skills' => 'Core skills',
     'soft_skills' => 'Soft skills',
     'contact_info' => 'Information',
+    'info_more' => 'More Information',
 
     // Fields
     'full_name' => 'Full Name',
@@ -53,8 +54,10 @@ return [
     'award_name' => 'Award Name',
     'manage_skills' => 'Manage Skills',
     'group_name' => 'Group Name',
+    'old_group' => 'Old Group',
     'add_skills' => 'Add Skills',
     'skills_list' => 'Skills List',
+    'skill_name' => 'Skill Name',
     'native' => 'Native',
     'fluent' => 'Fluent',
     'intermediate' => 'Intermediate',
@@ -116,6 +119,8 @@ return [
     'validation_required' => 'This field is required',
 
     // Manage CV
+    'choose_cv_template' => 'Choose a professional CV template',
+    'preview_and_choose' => 'Preview directly and choose the most suitable template',
     'manage_cvs' => 'Manage CVs',
     'your_cv' => 'Your CV',
     'uploaded' => 'Uploaded',
@@ -129,6 +134,10 @@ return [
     'user_cv_title' => 'User CV',
     'cv_name' => 'CV Name',
     'placeholder_cv_name' => 'e.g. PHP Developer CV',
+    'cv_data_of_you' => 'CV data of you',
+    'cv_example' => 'CV example',
+    'cv_preview' => 'CV preview',
+
 
     // Validation
     'cv_file_required' => 'CV file is required',
@@ -136,6 +145,11 @@ return [
     'cv_file_max' => 'CV file must be less than 3MB',
     'cv_name_required' => 'CV name is required',
     'cv_name_max' => 'CV name must be less than 255 characters',
+    'profile_is_not_complete' => 'Profile is not complete',
+    'profile_is_complete' => 'Profile is complete',
+    'user_or_profile_does_not_exist' => 'User or Profile does not exist',
+    'profile_updated_successfully' => 'Profile updated successfully',
+    'something_went_wrong' => 'Something went wrong',
 
     // Modal create
     'txt_welcome' => 'Welcome to CPM recruiting',
@@ -150,4 +164,41 @@ return [
     // Detailed Empty State
     'no_cv_uploaded_yet' => 'No CVs Uploaded Yet.',
     'upload_cv_suggestion' => 'Use the form on the left to upload your first CV to get started.',
+
+    // DATA CV EXAMPLE
+    'cv_full_name' => 'Nguyen Van A',
+    'cv_title' => 'Infomation Technology',
+    'cv_phone_number' => '0983825924',
+    'cv_email' => 'nguyenvana@gmail.com',
+    'cv_proivince_name' => 'Thành phố Hồ Chí Minh',
+    'cv_province_name_en' => 'Ho Chi Minh City',
+    'cv_address' => '123 ABC Street, District 1, Ho Chi Minh City',
+    'cv_summary' => 'More than 5 years of experience in developing large-scale Web systems. Understanding of Microservices architecture and system performance optimization.',
+    'cv_soft_skill_1' => 'Communication',
+    'cv_soft_skill_2' => 'Teamwork',
+
+    'cv_exp_1_title' => 'Technical Team Leader',
+    'cv_exp_1_company' => 'CPM Technology Company',
+    'cv_exp_1_start_date' => '2020-01-01',
+    'cv_exp_1_end_date' => '2025-12-31',
+    'cv_exp_1_description' => '- Manage a team of 10 developers.\n- Design e-commerce system architecture.',
+    'cv_exp_2_title' => 'Core Developer',
+    'cv_exp_2_company' => 'FPT Technology Company',
+    'cv_exp_2_start_date' => '2018-01-01',
+    'cv_exp_2_end_date' => '2019-12-31',
+    'cv_exp_2_description' => '- Build API for mobile applications.\n- Optimize MySQL database.',
+   
+    'cv_edu_1_school' => 'Hanoi University of Science and Technology',
+    'cv_edu_1_degree' => 'Bachelor',
+    'cv_edu_1_major' => 'Computer Science',
+    'cv_edu_1_start_date' => '2014-09-01',
+    'cv_edu_1_end_date' => '2018-06-30',
+    'cv_edu_1_description' => 'Graduated with honors, GPA: 3.6/4.0',
+
+    'cv_proj_1_name' => 'Human Resource Management System',
+    'cv_proj_1_description' => 'Build a module to manage timekeeping and automatic payroll.',
+    'cv_proj_1_start_date' => '2022-01-01',
+    'cv_proj_1_end_date' => '2023-03-31',
+    'cv_proj_1_url' => 'https://github.com/example/project',
+    // END DATA CV EXAMPLE
 ];

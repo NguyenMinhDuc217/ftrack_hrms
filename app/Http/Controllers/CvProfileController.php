@@ -13,9 +13,11 @@ use App\Models\CvProfile;
 use App\Models\CvProject;
 use App\Models\Province;
 use App\Models\UserDocument;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
 use Storage;
 use Spatie\LaravelPdf\Facades\Pdf;
@@ -124,15 +126,11 @@ class CvProfileController extends Controller
     }
 
     public function saveAll(ProfilePostRequest $request, \App\Services\UserDocumentService $userDocumentService) {
-        // dd($request->all());
         $data = $request->validated();
-        // dd($data);
 
         DB::beginTransaction();
         try {
             $profile = $this->getUserProfile();
-            // dd($this->user);
-            // dd($profile);
 
             // SUMMARY
                 if ($request->has('province_code')) {
@@ -144,8 +142,8 @@ class CvProfileController extends Controller
                 }
 
                 $userData = array();
-                $userData['date_of_birth'] = $data['info']['date_of_birth'];
-                $avatar = $data['info']['avatar'];
+                $userData['date_of_birth'] = $data['info']['date_of_birth'] ?? null;
+                $avatar = $data['info']['avatar'] ?? null;
                 unset($data['info']['date_of_birth']);
                 unset($data['info']['avatar']);
 
@@ -171,7 +169,7 @@ class CvProfileController extends Controller
                 
                 $user = $this->user;
                 if (empty($user->phone_number)) {
-                    $userData['phone_number'] = $data['info']['phone_number'];
+                    $userData['phone_number'] = $data['info']['phone_number'] ?? null;
                 }
                 $user->update($userData);
             // END SUMMARY
@@ -186,7 +184,7 @@ class CvProfileController extends Controller
                     $profile->skills()->where('group', $targetDelete)->delete();
                     foreach ($group['skills'] as $skill) {
                         $profile->skills()->create([
-                            'name' => $skill['newSkillName'],
+                            'name' => $skill['newSkillName'] ?? null,
                             'group' => $groupName,
                             'year_of_experience' => $skill['newSkillExp'] ?? null,
                         ]);
@@ -244,16 +242,19 @@ class CvProfileController extends Controller
 
             DB::commit();
 
+            $redirect_to = session()->pull('redirect_to') ?? '';
+            
             return response()->json([
                 'success' => true,
-                'message' => 'Profile updated successfully',
+                'message' => __('cv.profile_updated_successfully'),
+                'redirect_to' => $redirect_to
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
             return response()->json([
                 'success' => false,
-                'message' => 'Something went wrong',
+                'message' => __('cv.something_went_wrong'),
             ]);
         }
     }
@@ -273,7 +274,8 @@ class CvProfileController extends Controller
             !empty($profile->gender) &&
             !empty($profile->phone_number) &&
             !empty($profile->province_code) &&
-            !empty($user->date_of_birth) // user date_of_birth is used in view
+            !empty($user->date_of_birth) &&
+            !empty($profile->address)
         ) {
              $score += $sectionScore;
         }
@@ -785,6 +787,8 @@ class CvProfileController extends Controller
 
     public function createCv()
     {
+        $profile = $this->getUserProfile();
+        $user = $this->user;
         $cv_templates = [
             '1' => [
                 'name' => 'C',
@@ -831,6 +835,11 @@ class CvProfileController extends Controller
         if ($type == 'preview') {
             return view($template, compact('profile', 'user', 'theme'));
         } else if ($type == 'download') {
+            if ($request->type_cv == 'example') {
+                $data = $this->getExampleData();
+                $profile = $data['profile'];
+                $user = $data['user'];
+            }
             return pdf()->view($template, compact('profile', 'user', 'theme'))
                 ->format('a4')
                 ->name('preview-cv.pdf')
@@ -839,6 +848,101 @@ class CvProfileController extends Controller
                         ->waitUntilNetworkIdle();  // Đợi tải xong font/ảnh các thứ các thứ
                 })
                 ->download();
+        } else if ($type == 'example') {
+            $data = $this->getExampleData();
+            $profile = $data['profile'];
+            $user = $data['user'];
+            return view($template, compact('profile', 'user', 'theme'));
         }
+    }
+
+    public function checkProfile() {
+        $profile = $this->getUserProfile();
+        $user = $this->user;
+        if ($profile && $user) {
+            if (empty($profile->full_name) || empty($profile->phone_number) || empty($profile->address) || empty($user->email)) {
+                session()->put('redirect_to', route('profile.create-cv'));
+                return response()->json([
+                    'success' => false,
+                    'message' => __('cv.profile_is_not_complete'),
+                ]);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'message' => __('cv.profile_is_complete'),
+                ]);
+            }
+        } else {
+            session()->put('redirect_to', route('profile.create-cv'));
+            return response()->json([
+                'success' => false,
+                'message' => __('cv.user_or_profile_does_not_exist'),
+            ]);
+        }
+    }
+
+    private function getExampleData()
+    {
+        // Giả lập User
+        $user = new Fluent([
+            'email' => 'nguyenvana@example.com',
+            'date_of_birth' => Carbon::parse('2001-02-21'),
+        ]);
+
+        // Giả lập Profile
+        $profile = new Fluent([
+            'full_name' => __('cv.cv_full_name'),
+            'title' => __('cv.cv_title'),
+            'phone_number' => __('cv.cv_phone_number'),
+            'province_name' => __('cv.cv_proivince_name'),
+            'province_name_en' => __('cv.cv_province_name_en'),
+            'summary' => __('cv.cv_summary'),
+            'avatar' => new Fluent(['url' => 'https://i.pravatar.cc/300']),
+            'skills' => collect([
+                new Fluent(['name' => 'PHP/Laravel', 'group' => 'Technical', 'year_of_experience' => 5]),
+                new Fluent(['name' => 'Vue.js', 'group' => 'Technical', 'year_of_experience' => 3]),
+                new Fluent(['name' => 'Docker', 'group' => 'DevOps', 'year_of_experience' => 2]),
+                new Fluent(['name' => __('cv.cv_soft_skill_1'), 'group' => 'Soft Skill']),
+                new Fluent(['name' => __('cv.cv_soft_skill_2'), 'group' => 'Soft Skill']),
+            ]),
+            'experiences' => collect([
+                new Fluent([
+                    'position' => __('cv.cv_exp_1_title'),
+                    'company_name' => __('cv.cv_exp_1_company'),
+                    'start_date' => Carbon::parse('2021-01-01'),
+                    'end_date' => null, // Hiện tại
+                    'description' => __('cv.cv_exp_1_description')
+                ]),
+                new Fluent([
+                    'position' => __('cv.cv_exp_2_title'),
+                    'company_name' => __('cv.cv_exp_2_company'),
+                    'start_date' => Carbon::parse('2018-06-01'),
+                    'end_date' => Carbon::parse('2020-12-31'),
+                    'description' => __('cv.cv_exp_2_description')
+                ])
+            ]),
+            'educations' => collect([
+                new Fluent([
+                    'school' => __('cv.cv_edu_1_school'),
+                    'degree' => __('cv.cv_edu_1_degree'),
+                    'major' => __('cv.cv_edu_1_major'),
+                    'start_date' => Carbon::parse('2014-09-01'),
+                    'end_date' => Carbon::parse('2018-06-01'),
+                    'description' => __('cv.cv_edu_1_description')
+                ])
+            ]),
+            'projects' => collect([
+                new Fluent([
+                    'name' => __('cv.cv_proj_1_name'),
+                    'description' => __('cv.cv_proj_1_description'),
+                    'url' => __('cv.cv_proj_1_url')
+                ])
+            ])
+        ]);
+
+        return [
+            'user' => $user,
+            'profile' => $profile
+        ];
     }
 }

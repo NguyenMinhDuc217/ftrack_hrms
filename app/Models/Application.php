@@ -53,6 +53,10 @@ class Application extends Model
         'job_id',
         'user_document_id',
         'applied_at',
+        'current_salary',
+        'expected_salary',
+        'expected_start_date',
+        'work_experience',
         'status',
     ];
 

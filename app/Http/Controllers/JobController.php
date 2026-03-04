@@ -53,24 +53,24 @@ class JobController extends Controller
             'job_id' => 'required:exists:job_hrms,job_id',
             'cv_id' => 'required:exists:user_documents,id',
             'province_id' => 'required:exists:provinces,id',
-            // 'phone_number' => [
-            //     function ($attribute, $value, $fail) use ($checkPhone) {
-            //         if ($checkPhone == false && empty($value)) {
-            //             $fail(__('user.phone_number_required'));
-            //         }
-            //     },
-            //     'numeric',
-            //     'digits:10',
-            //     'unique:users,phone_number',
-            // ],
+            'current_salary' => ['required', 'numeric', 'min:0'],
+            'expected_salary' => ['required', 'numeric', 'min:0'],
+            'expected_start_date' => ['required', 'date', 'after_or_equal:today'],
+            'work_experience' => 'required',
         ], [
             'job_id.required' => 'Job not exists',
             'cv_id.required' => __('job.txt_apply_cv_required'),
             'province_id.required' => __('job.txt_apply_application_area_required'),
-            // 'phone_number.required_if' => __('user.phone_number_required'),
-            // 'phone_number.numeric' => __('user.phone_number_numeric'),
-            // 'phone_number.digits' => __('user.phone_number_digits'),
-            // 'phone_number.unique' => __('user.phone_number_unique'),
+            'current_salary.required' => __('validation.required'),
+            'current_salary.numeric' => __('validation.numeric'),
+            'current_salary.min' => __('validation.min.numeric'),
+            'expected_salary.required' => __('validation.required'),
+            'expected_salary.numeric' => __('validation.numeric'),
+            'expected_salary.min' => __('validation.min.numeric'),
+            'expected_start_date.required' => __('validation.required'),
+            'expected_start_date.date' => __('validation.date'),
+            'expected_start_date.after_or_equal' => __('validation.after_or_equal', ['date' => __('default.today')]),
+            'work_experience.required' => __('validation.required'),
         ]);
 
         if (! $user) {
@@ -110,8 +110,16 @@ class JobController extends Controller
                 'job_id' => $job->job_id,
                 'user_id' => Auth::user()->user_id,
                 'user_document_id' => $cv->id,
+                'current_salary' => $request->current_salary,
+                'expected_salary' => $request->expected_salary,
+                'expected_start_date' => $request->expected_start_date,
+                'work_experience' => $request->work_experience,
             ], [
                 'applied_at' => now(), // Chỉ set khi tạo mới
+                'current_salary' => $request->current_salary,
+                'expected_salary' => $request->expected_salary,
+                'expected_start_date' => $request->expected_start_date,
+                'work_experience' => $request->work_experience,
             ]);
 
             // Nếu application không được tạo mới thì update thời gian nộp cv
@@ -123,14 +131,22 @@ class JobController extends Controller
             $application->job_area()->updateExistingPivot($jobArea->job_area_id, []); // Cập nhật timestamp
 
             DB::commit();
+            session()->put('applied_successfully', true);
+            return response()->json([
+                'success' => true,
+                'message' => __('job.apply_success'),
+            ]);
 
-            return redirect()->back()->with('success', __('job.apply_success'))->with('applied_successfully', true);
+            // return redirect()->back()->with('success', __('job.apply_success'))->with('applied_successfully', true);
 
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Apply job failed: '.$e->getMessage(), $request->all());
-
-            return redirect()->back()->with('error', __('job.apply_failed'));
+            return response()->json([
+                'success' => false,
+                'message' => __('job.apply_failed'),
+            ]);
+            // return redirect()->back()->with('error', __('job.apply_failed'));
         }
     }
 }

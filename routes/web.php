@@ -46,6 +46,12 @@ Route::get('/sync-permissions', function () {
     Artisan::call('permissions:sync-routes --assign-to-admin --middleware=check.permission');
 });
 Route::get('/clear-cache', function () {
+        // $path = 'database/migrations/2026_03_03_065427_update_applications_table.php';
+
+        // Artisan::call('migrate',[
+        //     '--path' => $path,
+        //     '--force' => true,
+        // ]);
     Artisan::call('optimize:clear');
 
     // $customTemp = storage_path('app/temp');
@@ -162,6 +168,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/create-cv', [CvProfileController::class, 'createCv'])->name('profile.create-cv');
     Route::get('/create-cv/preview-pdf/{id}/{type}', [CvProfileController::class, 'previewDownloadPdf'])->name('cv.preview-pdf');
+    Route::get('/create-cv/check-profile', [CvProfileController::class, 'checkProfile'])->name('profile.check-profile');
 
     // CV Management
     Route::get('/cv-manage', [App\Http\Controllers\CvManagementController::class, 'index'])->name('cv.manage');
