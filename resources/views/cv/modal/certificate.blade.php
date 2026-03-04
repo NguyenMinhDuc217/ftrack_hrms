@@ -8,8 +8,8 @@
                 <div class="mb-3"><label class="form-label">{{ __('cv.certificate_name') }}</label><input type="text" class="form-control" name="name" required><div class="invalid-note"></div></div>
                 <div class="mb-3"><label class="form-label">{{ __('cv.organization') }}</label><input type="text" class="form-control" name="organization"><div class="invalid-note"></div></div>
                 <div class="row">
-                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.issue_date') }}</label><input type="text" class="form-control input-datepicker-month" name="issue_date"><div class="invalid-note"></div></div>
-                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.expiration_date') }}</label><input type="text" class="form-control input-datepicker-month" name="expiration_date"><div class="invalid-note"></div></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.issue_date') }}</label><input type="text" class="form-control input-datepicker-month" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="issue_date"><div class="invalid-note"></div></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.expiration_date') }}</label><input type="text" class="form-control input-datepicker-month" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="expiration_date"><div class="invalid-note"></div></div>
                 </div>
                 <div class="mb-3"><label class="form-label">{{ __('cv.url') }}</label><input type="url" class="form-control" name="url"><div class="invalid-note"></div></div>
             </div>

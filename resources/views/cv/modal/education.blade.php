@@ -13,12 +13,12 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">{{ __('cv.start_date') }}</label>
-                        <input type="text" class="form-control input-datepicker-month" autocomplete="off" name="start_date">
+                        <input type="text" class="form-control input-datepicker-month" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="start_date">
                         <div class="invalid-note"></div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">{{ __('cv.end_date') }}</label>
-                        <input type="text" class="form-control input-datepicker-month" autocomplete="off" name="end_date">
+                        <input type="text" class="form-control input-datepicker-month" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="end_date">
                         <div class="invalid-note"></div>
                     </div>
                 </div>

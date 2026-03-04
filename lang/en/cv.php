@@ -117,6 +117,7 @@ return [
     'delete_error' => 'Error deleting item.',
     'save_error' => 'Error saving data.',
     'validation_required' => 'This field is required',
+    'validate_month_year' => 'Format must be MM-YYYY (e.g. 03-2024)',
 
     // Manage CV
     'choose_cv_template' => 'Choose a professional CV template',

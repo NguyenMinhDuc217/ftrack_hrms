@@ -29,6 +29,9 @@
 
     @push('scripts')
         <script>
+            const errorMessages = {
+                validate_month_year: '{{ __('cv.validate_month_year') }}',
+            }
             $(()=>{
                 $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
@@ -40,8 +43,16 @@
                     const $form = $(this).closest('form');
                     if ($(this).is(':checked')) {
                         $form.find('input[name="end_date"]').prop('disabled', true).val('');
+                        $form.find('input[name="end_date"]').removeClass('is-invalid');
+                        $form.find('input[name="end_date"]').parent().find('.invalid-note').text('');
                     } else {
                         $form.find('input[name="end_date"]').prop('disabled', false);
+                    }
+                });
+
+                $(document).on("keydown", ".modal form", function(event) {
+                    if (event.key == "Enter" && event.target.tagName !== "TEXTAREA") {
+                        event.preventDefault();
                     }
                 });
             });
@@ -62,13 +73,28 @@
                         autohide: true
                     });
                 });
+                // Auto-insert dash after MM for month-year inputs (MM-YYYY)
                 $form.find('.input-datepicker-month').each(function() {
-                    new Datepicker(this, {
-                        format: 'yyyy-mm',
-                        buttonClass: 'btn',
-                        maxDate: new Date(),
-                        autohide: true,
-                        pickLevel: 1,
+                    $(this).off('input.monthYear').on('input.monthYear', function() {
+                        let val = this.value.replace(/[^0-9]/g, '');
+                        if (val.length >= 2) {
+                            let mm = val.substring(0, 2);
+                            let yyyy = val.substring(2, 6);
+                            val = mm + (val.length > 2 ? '-' + yyyy : '');
+                        }
+                        this.value = val.substring(0, 7);
+                    });
+                    // Validate on blur
+                    $(this).off('blur.monthYear').on('blur.monthYear', function() {
+                        let val = this.value;
+                        if (val && !/^(0[1-9]|1[0-2])-\d{4}$/.test(val)) {
+                            $(this).addClass('is-invalid');
+                            $(this).parent().find('.invalid-note').text(errorMessages.validate_month_year);
+                            $(this).val('');
+                        } else {
+                            $(this).removeClass('is-invalid');
+                            $(this).parent().find('.invalid-note').text('');
+                        }
                     });
                 });
                 $form.find('.input-datepicker-year').each(function() {
@@ -96,7 +122,7 @@
                             if ($input.attr('type') === 'checkbox') {
                                 $input.prop('checked', value == 1);
                             } else if ($input.attr('type') === 'text' && $input.hasClass('input-datepicker-month') && value) {
-                                $input.val(value.substring(0, 7));
+                                $input.val(value.split('-')[1] + '-' + value.split('-')[0]);
                             } else if ($input.attr('type') === 'date' && value) {
                                 // Fix date format for input type=date (YYYY-MM-DD)
                                 $input.val(value.split('T')[0]);
@@ -126,11 +152,22 @@
                 $form.find('.is-invalid').removeClass('is-invalid');
                 $form.find('.invalid-note').text('');
 
+                const formData = new FormData($form[0]);
+                // Convert MM-YYYY → YYYY-MM before sending to controller
+                let savedMonthValues = [];
+                $form.find('.input-datepicker-month').each(function() {
+                    let val = $(this).val();
+                    let name = $(this).attr('name');
+
+                    formData.delete(name);
+                    formData.append(name, val.split('-')[1] + '-' + val.split('-')[0]);
+                });
+
                 if(checkFormMultiPart) {
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: new FormData($form[0]),
+                        data: formData,
                         processData: false,
                         contentType: false,
                         success: function(response) {
@@ -149,7 +186,7 @@
                         }
                     });
                 } else {
-                    $.post(url, $form.serialize(), function(response) {
+                    $.post(url, Object.fromEntries(formData), function(response) {
                         if(response.status === 'error') {
                             $.each(response.errors, function(key, value) {
                                 $form.find(`[name="${key}"]`).addClass('is-invalid');

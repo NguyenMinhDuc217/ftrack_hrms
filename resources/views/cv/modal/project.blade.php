@@ -12,8 +12,8 @@
                     <div class="invalid-note"></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.start_date') }}</label><input type="text" class="form-control input-datepicker-month" name="start_date"><div class="invalid-note"></div></div>
-                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.end_date') }}</label><input type="text" class="form-control input-datepicker-month" name="end_date"><div class="invalid-note"></div></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.start_date') }}</label><input type="text" class="form-control input-datepicker-month" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="start_date"><div class="invalid-note"></div></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">{{ __('cv.end_date') }}</label><input type="text" class="form-control input-datepicker-month" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="end_date"><div class="invalid-note"></div></div>
                 </div>
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" name="is_current" value="1" id="project_current">

@@ -117,6 +117,7 @@ return [
     'delete_error' => 'Lỗi khi xóa mục.',
     'save_error' => 'Lỗi khi lưu dữ liệu.',
     'validation_required' => 'Trường này không được bỏ trống',
+    'validate_month_year' => 'Định dạng tháng năm không hợp lệ (VD: 03-2024)',
 
     // Manage CV
     'choose_cv_template' => 'Chọn mẫu CV chuyên nghiệp',

@@ -383,7 +383,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="section-title h4 fw-bold text-dark m-0">{{ __('cv.work_experience') }}</h2>
                             <button class="btn btn-light text-success bg-success-subtle rounded-0 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('experienceModal')">
-                                <i class="ti ti-plus"></i> Add Experience
+                                <i class="ti ti-plus"></i> {{ __('cv.add') }}
                             </button>
                         </div>
                         <hr class="mb-2" />
@@ -422,7 +422,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="section-title h4 fw-bold text-dark m-0">{{ __('cv.education') }}</h2>
                             <button class="btn btn-light text-success bg-success-subtle rounded-0 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('educationModal')">
-                                <i class="ti ti-plus"></i> Add Education
+                                <i class="ti ti-plus"></i> {{ __('cv.add') }}
                             </button>
                         </div>
                         <hr class="mb-2" />
@@ -463,7 +463,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="section-title h4 fw-bold text-dark m-0">{{ __('cv.projects') }}</h2>
                             <button class="btn btn-light text-success bg-success-subtle rounded-0 btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="openModal('projectModal')">
-                                <i class="ti ti-plus"></i> Add Project
+                                <i class="ti ti-plus"></i> {{ __('cv.add') }}
                             </button>
                         </div>
                         <hr class="mb-2" />
