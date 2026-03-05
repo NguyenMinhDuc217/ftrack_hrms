@@ -82,26 +82,26 @@
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header justify-between">
+                    <h5 class="modal-title" id="previewModalLabel">{{ __('cv.cv_preview') }}</h5>
                     <input type="hidden" id="type-cv" value="example">
-                    <div class="flex gap-2 items-center no-print">
-                        <x-client.elements.button type="button" class="h-10 rounded" onclick="previewCVMySelf('preview')" id="myself-button">
-                                {{ __('cv.cv_data_of_you') }}
-                        </x-client.elements.button>
-                        <x-client.elements.button type="button" class="h-10 rounded hidden" onclick="previewCVMySelf('example')" id="example-button">
-                                {{ __('cv.cv_example') }}
-                        </x-client.elements.button>
-                        <button class="w-10 h-10 p-2 rounded-full !bg-[var(--blue-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0 hidden" onclick="printCV()" title="Download">
-                            <i class="ti ti-download"></i>
-                        </button>
-                        <button class="w-10 h-10 p-2 rounded-full !bg-[var(--accent-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-white hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="toggleDarkMode()" title="Theme Mode">
-                            <span class="material-icons" id="text-theme-mode"><i class="bi bi-moon-stars-fill"></i></span>
-                        </button>
-                        <button id="download-cv-btn" class="w-10 h-10 p-2 rounded-full !bg-[var(--red-color)] dark:bg-gray-800 shadow-lg text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0 hidden" onclick="downloadPdf()" title="Save">
-                            <i class="bi bi-floppy"></i>
-                        </button>
-                    </div>
                     <div class="flex flex-wrap justify-center items-center gap-3">
-                        
+                        <div class="flex gap-2 items-center no-print">
+                            <x-client.elements.button type="button" class="h-10 rounded" onclick="previewCVMySelf('preview')" id="myself-button">
+                                 {{ __('cv.cv_data_of_you') }}
+                            </x-client.elements.button>
+                            <x-client.elements.button type="button" class="h-10 rounded hidden" onclick="previewCVMySelf('example')" id="example-button">
+                                 {{ __('cv.cv_example') }}
+                            </x-client.elements.button>
+                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--blue-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0 hidden" onclick="printCV()" title="Download">
+                                <i class="ti ti-download"></i>
+                            </button>
+                            <button class="w-10 h-10 p-2 rounded-full !bg-[var(--accent-color)] dark:bg-gray-800 shadow-lg !text-white dark:text-white hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="toggleDarkMode()" title="Theme Mode">
+                                <span class="material-icons" id="text-theme-mode"><i class="bi bi-moon-stars-fill"></i></span>
+                            </button>
+                            <button id="download-cv-btn" class="w-10 h-10 p-2 rounded-full !bg-[var(--red-color)] dark:bg-gray-800 shadow-lg text-white dark:text-gray-300 hover:text-primary transition-colors flex justify-center items-center shrink-0" onclick="downloadPdf()" title="Save">
+                                <i class="bi bi-floppy"></i>
+                            </button>
+                        </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
@@ -111,23 +111,6 @@
                         <p class="mt-2">Đang tải preview...</p>
                     </div>
                     <iframe id="pdf-preview" src="" width="100%" height="800px" style="border: none;"></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="redirectModal" aria-labelledby="redirectModalLabeldata-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body flex flex-col align-center justify-center gap-2">
-                    <div class="rounded-circle p-2 flex align-center justify-center bg-gray-100 w-20 h-20">
-                        <i class="ti ti-file-description text-5xl"></i>
-                    </div>
-                    <h5 class="modal-title" id="staticBackdropLabel">Bạn có muốn chuyển đến trang cập nhật CV của bạn không</h5>
-                    <div class="flex align-center justify-center gap-4">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-primary" onclick="window.open('{{ route("profile.edit") }}', '_blank')">Yes</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -196,21 +179,39 @@
     }
 
     function previewCVMySelf(type) {
-        if (type == 'preview') {
-            $('#myself-button').addClass('hidden');
-            $('#example-button').removeClass('hidden');
-            $('#type-cv').val('preview');
-            $('#download-cv-btn').removeClass('hidden');
-        } else {
-            $('#myself-button').removeClass('hidden');
-            $('#example-button').addClass('hidden');
-            $('#type-cv').val('example');
-            $('#download-cv-btn').addClass('hidden');
-        }
-        previewCV(currentTemplate, type); 
+        $.ajax({
+            url: '{{ route("profile.check-profile") }}',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    updatePreview(currentTemplate, type);
+                    if (type == 'preview') {
+                        $('#myself-button').addClass('hidden');
+                        $('#example-button').removeClass('hidden');
+                        $('#type-cv').val('preview');
+                    } else {
+                        $('#myself-button').removeClass('hidden');
+                        $('#example-button').addClass('hidden');
+                        $('#type-cv').val('example');
+                    }
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: response.message
+                    }).then(() => {
+                        window.location.href = '{{ route("profile.edit") }}';
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+        
     }
 
-    function previewCV(templateKey, type="example") {
+    function updatePreview(templateKey, type="example") {
         currentTemplate = templateKey; // Cập nhật biến toàn cục
 
         // (Tùy chọn) Xóa class active cũ và thêm vào card mới
@@ -240,37 +241,6 @@
                 iframe.contentWindow.document.documentElement.classList.add('dark');
             }
         };
-    }
-
-    $(document).ready(function () {
-       $('#redirectModal').modal('show');  
-    })
-
-    function updatePreview(templateKey, type="example") {
-         $.ajax({
-            url: '{{ route("profile.check-profile") }}',
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                if (response.success) {
-                    previewCV(templateKey, type);
-                } else {
-                    Toast.fire({
-                        icon: 'error',
-                        title: response.message
-                    }).then(() => {
-                        // window.location.href = '{{ route("profile.edit") }}';
-                        $('#redirectModal').modal('show');
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-            }
-        });
-
-
-        
     }
 
     function downloadPdf() {

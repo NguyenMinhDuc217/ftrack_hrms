@@ -2,13 +2,13 @@
 
 namespace App\Filters;
 
-use App\Models\User;
+use App\Models\JobHrms;
 
-class UserFilter extends BaseFilter
+class JobFilter extends BaseFilter
 {
     public function __construct($request)
     {
-        parent::__construct($request, new User);
+        parent::__construct($request, new JobHrms);
     }
 
     protected function allowedFilters(): array
@@ -19,6 +19,7 @@ class UserFilter extends BaseFilter
         foreach ($searchable as $column) {
             $filters[$column] = $column; // key = method name
         }
+
         return $filters;
     }
 
@@ -65,11 +66,6 @@ class UserFilter extends BaseFilter
     protected function hire_date($value)
     {
         $this->builder->whereDate('hire_date', $value);
-    }
-
-    protected function document_default_id($value)
-    {
-        $this->builder->where('document_default_id', (int) $value);
     }
 
     protected function manager_id($value)
