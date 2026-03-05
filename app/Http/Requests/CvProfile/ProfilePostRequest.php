@@ -46,7 +46,7 @@ class ProfilePostRequest extends FormRequest
             'info.phone_number' => ['required', 'max:10', 'regex:/^\d{10}$/'],
             'info.address' => ['required', 'string', 'max:255'],
             'info.province_code' => ['required', 'string', 'max:255'],
-            'info.date_of_birth' => ['required', 'date'],
+            'info.date_of_birth' => ['required', 'date', 'before:today'],
             'info.avatar' => ['nullable', 'image', 'max:2048'], // 2MB Max
             'info.summary' => ['nullable', 'string'],
             'info.avatar' => ['nullable', 'image', 'max:2048'], // 2MB Max
@@ -215,6 +215,7 @@ class ProfilePostRequest extends FormRequest
             'info.address.required' => __('validation.required'),
             'info.province_code.required' => __('validation.required'),
             'info.date_of_birth.required' => __('validation.required'),
+            'info.date_of_birth.before' => __('validation.before', ['date' => __('default.today')]),
             'info.avatar.required' =>__('validation.required'),
             'info.avatar.image' => __('validation.image'),
             'info.avatar.max' => __('validation.max.file', ['max' => 2048]),
