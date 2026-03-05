@@ -24,12 +24,12 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold">{{ __('cv.start_date') }}</label>
-                    <input class="form-control text-muted" value="{{ $proj->start_date ? $proj->start_date->format('Y-m') : '' }}" type="month" name="proj[{{$projIndex}}][start_date]" />
+                    <input class="form-control text-muted input-datepicker-month" value="{{ $proj->start_date ? $proj->start_date->format('m-Y') : '' }}" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="proj[{{$projIndex}}][start_date]" />
                     <div class="invalid-note"></div>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold">{{ __('cv.end_date') }}</label>
-                    <input class="form-control text-muted" value="{{ $proj->end_date ? $proj->end_date->format('Y-m') : '' }}" type="month" name="proj[{{$projIndex}}][end_date]" />
+                    <input class="form-control text-muted input-datepicker-month" value="{{ $proj->end_date ? $proj->end_date->format('m-Y') : '' }}" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="proj[{{$projIndex}}][end_date]" />
                     <div class="form-check mb-0">
                         <input class="form-check-input" type="checkbox" name="proj[{{$projIndex}}][is_current]" {{ $proj->end_date ? '' : 'checked' }} value="1" id="project_current">
                         <label class="form-check-label" for="project_current">{{ __('cv.current_project') }}</label>

@@ -25,13 +25,13 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold">{{ __('cv.start_date') }}</label>
-                    <input class="form-control text-muted" value="{{ $exp->start_date->format('Y-m') }}" type="month" name="exp[{{$expIndex}}][start_date]" />
+                    <input class="form-control text-muted input-datepicker-month" value="{{ $exp->start_date->format('m-Y') }}" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="exp[{{$expIndex}}][start_date]" />
                     <div class="invalid-note"></div>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold">{{ __('cv.end_date') }}</label>
                     <div class="flex flex-col gap-2">
-                        <input class="form-control text-muted" value="{{ $exp->end_date ? $exp->end_date->format('Y-m') : __('cv.present') }}" type="month" name="exp[{{$expIndex}}][end_date]" />
+                        <input class="form-control text-muted input-datepicker-month" value="{{ $exp->end_date ? $exp->end_date->format('m-Y') : '' }}" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="exp[{{$expIndex}}][end_date]" />
                         <label class="inline-flex items-center mt-1">
                             <input class="rounded border-[#f4ede7] text-[var(--accent-color)] focus:ring-[var(--accent-color)]" {{ $exp->end_date ? '' : 'checked' }} type="checkbox" name="exp[{{$expIndex}}][is_current]" value="1"/>
                             <span class="ml-2 text-xs text-[#9c7349]">Currently working here</span>

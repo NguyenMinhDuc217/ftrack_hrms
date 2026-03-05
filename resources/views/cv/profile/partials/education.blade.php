@@ -29,12 +29,12 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold">Start Date</label>
-                    <input class="form-control text-muted" value="{{ $edu->start_date->format('Y-m') }}" type="month" name="edu[{{$eduIndex}}][start_date]" />
+                    <input class="form-control text-muted input-datepicker-month" value="{{ $edu->start_date->format('m-Y') }}" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="edu[{{$eduIndex}}][start_date]" />
                     <div class="invalid-note"></div>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold">End Date (or Expected)</label>
-                    <input class="form-control text-muted" value="{{ $edu->end_date ? $edu->end_date->format('Y-m') : '' }}" type="month" name="edu[{{$eduIndex}}][end_date]" />
+                    <input class="form-control text-muted input-datepicker-month" value="{{ $edu->end_date ? $edu->end_date->format('m-Y') : '' }}" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="edu[{{$eduIndex}}][end_date]" />
                     <label class="inline-flex items-center mt-1">
                         <input class="rounded border-[#f4ede7] text-[var(--accent-color)] focus:ring-[var(--accent-color)]" {{ $edu->end_date ? '' : 'checked' }} type="checkbox" name="edu[{{$eduIndex}}][is_current]" value="1"/>
                         <span class="ml-2 text-xs text-[#9c7349]">Currently working here</span>

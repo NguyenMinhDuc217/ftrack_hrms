@@ -187,13 +187,13 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold">{{ __('cv.start_date') }}</label>
-                            <input class="form-control text-muted" value="" type="month" name="exp[${$iExp}][start_date]" />
+                            <input class="form-control text-muted input-datepicker-month" value="" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="exp[${$iExp}][start_date]" />
                             <div class="invalid-note"></div>
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold">{{ __('cv.end_date') }}</label>
                             <div class="flex flex-col gap-2">
-                                <input class="form-control text-muted" value="" type="month" name="exp[${$iExp}][end_date]" />
+                                <input class="form-control text-muted input-datepicker-month" value="" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="exp[${$iExp}][end_date]" />
                                 <label class="inline-flex items-center mt-1">
                                     <input class="rounded border-[#f4ede7] text-[var(--accent-color)] focus:ring-[var(--accent-color)]" type="checkbox" value="1" name="exp[${$iExp}][is_current]" />
                                     <span class="ml-2 text-xs text-[#9c7349]">Currently working here</span>
@@ -233,12 +233,12 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold">Start Date</label>
-                            <input class="form-control text-muted" value="" type="month" name="edu[${$iEdu}][start_date]" />
+                            <input class="form-control text-muted input-datepicker-month" value="" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="edu[${$iEdu}][start_date]" />
                             <div class="invalid-note"></div>
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold">End Date (or Expected)</label>
-                            <input class="form-control text-muted" value="" type="month" name="edu[${$iEdu}][end_date]" />
+                            <input class="form-control text-muted input-datepicker-month" value="" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="edu[${$iEdu}][end_date]" />
                              <label class="inline-flex items-center mt-1">
                                 <input class="rounded border-[#f4ede7] text-[var(--accent-color)] focus:ring-[var(--accent-color)]" type="checkbox" name="edu[${$iEdu}][is_current]" value="1"/>
                                 <span class="ml-2 text-xs text-[#9c7349]">Currently working here</span>
@@ -265,12 +265,12 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold">{{ __('cv.start_date') }}</label>
-                            <input class="form-control text-muted" value="" type="month" name="proj[${$iProject}][start_date]" />
+                            <input class="form-control text-muted input-datepicker-month" value="" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="proj[${$iProject}][start_date]" />
                             <div class="invalid-note"></div>
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold">{{ __('cv.end_date') }}</label>
-                            <input class="form-control text-muted" value="" type="month" name="proj[${$iProject}][end_date]" />
+                            <input class="form-control text-muted input-datepicker-month" value="" type="text" autocomplete="off" placeholder="MM-YYYY" maxlength="7" inputmode="numeric" name="proj[${$iProject}][end_date]" />
                             <div class="form-check mb-0">
                                 <input class="form-check-input" type="checkbox" name="proj[${$iProject}][is_current]" value="1" id="project_current">
                                 <label class="form-check-label" for="project_current">{{ __('cv.current_project') }}</label>
@@ -356,6 +356,17 @@
     $('#save-profile').click(function(){
         var form = $("#profile-form");
         var formData = new FormData(form[0]);
+
+        // Convert MM-YYYY → YYYY-MM before sending to controller
+        form.find('.input-datepicker-month').each(function() {
+            let val = $(this).val();
+            let name = $(this).attr('name');
+            if (val && /^(0[1-9]|1[0-2])-\d{4}$/.test(val)) {
+                formData.delete(name);
+                formData.append(name, val.split('-')[1] + '-' + val.split('-')[0]);
+            }
+        });
+
         console.log(formData);
         $.ajax({
             url: "{{ route('profile.save.all') }}",
@@ -427,6 +438,50 @@
         }
         return result;
     }
+
+    // Auto-insert dash after MM for month-year inputs (MM-YYYY)
+    $(document).on('input.monthYear', '.input-datepicker-month', function() {
+        let val = this.value.replace(/[^0-9]/g, '');
+        if (val.length >= 2) {
+            let mm = val.substring(0, 2);
+            let yyyy = val.substring(2, 6);
+            val = mm + (val.length > 2 ? '-' + yyyy : '');
+        }
+        this.value = val.substring(0, 7);
+    });
+    // Validate on blur
+    $(document).on('blur.monthYear', '.input-datepicker-month', function() {
+        let val = this.value;
+        if (val && !/^(0[1-9]|1[0-2])-\d{4}$/.test(val)) {
+            $(this).closest('div').find('.invalid-note').text('{{ __('cv.validate_month_year') }}').addClass('text-danger');
+            $(this).val('');
+        } else {
+            $(this).closest('div').find('.invalid-note').text('').removeClass('text-danger');
+        }
+    });
+
+    // Handle is_current checkbox to disable and clear end_date
+    $(document).on('change', 'input[type="checkbox"][name$="[is_current]"]', function() {
+        let name = $(this).attr('name');
+        if (!name) return;
+        
+        let prefix = name.substring(0, name.lastIndexOf('['));
+        
+        // Find the corresponding end_date input
+        let endDateInput = $(document).find(`input[name="${prefix}[end_date]"]`);
+        
+        if ($(this).is(':checked')) {
+            endDateInput.prop('disabled', true).val('');
+            endDateInput.closest('div').find('.invalid-note').text('').removeClass('text-danger');
+        } else {
+            endDateInput.prop('disabled', false);
+        }
+    });
+
+    // Initialize the state of end_date on page load for checkboxes that are already checked
+    $(document).ready(function() {
+        $('input[type="checkbox"][name$="[is_current]"]:checked').trigger('change');
+    });
 </script>
 
 @endsection
