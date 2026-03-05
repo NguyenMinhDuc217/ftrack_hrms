@@ -134,17 +134,7 @@
                             {!! $application->job->requirements_md !!}
                         </div>
                     </p>
-                    <p class="card-text ">Job Type: {{ $application->job->type }}</p>
-                    <p class="card-text">
-                        Job Salary: {{ $application->job->min_salary . ' ' . $application->job->currency }} - {{ $application->job->max_salary . ' ' . $application->job->currency }}
-                    </p>
-                    <p class="card-text">Job experience: {{ $application->job->experience }}</p>
-    
-                    <div>
-                        @foreach($application->job_area as $job_area)
-                            <span>{{ $job_area->province->localized_name }}</span>
-                        @endforeach
-                    </div>
+                    
                 </div>
             </div>
         </div>

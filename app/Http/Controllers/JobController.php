@@ -6,6 +6,7 @@ use App\Models\Application;
 use App\Models\JobHrms;
 use App\Models\Province;
 use App\Models\UserDocument;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -112,13 +113,13 @@ class JobController extends Controller
                 'user_document_id' => $cv->id,
                 'current_salary' => $request->current_salary,
                 'expected_salary' => $request->expected_salary,
-                'expected_start_date' => $request->expected_start_date,
+                'expected_start_date' => Carbon::parse($request->expected_start_date)->format('Y-m-d'),
                 'work_experience' => $request->work_experience,
             ], [
                 'applied_at' => now(), // Chỉ set khi tạo mới
                 'current_salary' => $request->current_salary,
                 'expected_salary' => $request->expected_salary,
-                'expected_start_date' => $request->expected_start_date,
+                'expected_start_date' => Carbon::parse($request->expected_start_date)->format('Y-m-d'),
                 'work_experience' => $request->work_experience,
             ]);
 

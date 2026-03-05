@@ -118,6 +118,7 @@ return [
     'save_error' => 'Lỗi khi lưu dữ liệu.',
     'validation_required' => 'Trường này không được bỏ trống',
     'validate_month_year' => 'Định dạng tháng năm không hợp lệ (VD: 03-2024)',
+    'validate_day_month_year' => 'Định dạng ngày tháng năm không hợp lệ (VD: 08-03-2024)',
 
     // Manage CV
     'choose_cv_template' => 'Chọn mẫu CV chuyên nghiệp',
@@ -150,6 +151,7 @@ return [
     'user_or_profile_does_not_exist' => 'Người dùng hoặc hồ sơ không tồn tại',
     'profile_updated_successfully' => 'Cập nhật thông tin cá nhân thành công',
     'something_went_wrong' => 'Có lỗi xảy ra',
+    'txt_error_create_cv' => 'Vui lòng kiểm tra lại thông tin!',
 
     // Modal create
     'txt_welcome' => 'Chào mừng bạn đến với tuyển dụng CPM',

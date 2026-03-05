@@ -151,6 +151,9 @@ return [
     'user_or_profile_does_not_exist' => 'User or Profile does not exist',
     'profile_updated_successfully' => 'Profile updated successfully',
     'something_went_wrong' => 'Something went wrong',
+    'txt_error_create_cv' => 'Please check your information!',
+    'validate_day_month_year' => 'Invalid date format (e.g. 08-03-2024)',
+
 
     // Modal create
     'txt_welcome' => 'Welcome to CPM recruiting',

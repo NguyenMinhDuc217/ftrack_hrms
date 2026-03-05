@@ -188,6 +188,42 @@
                 theme: "bootstrap-5" // Tùy chỉnh theme cho Bootstrap 5
             });
         });
+
+        // Auto-insert dash after DD and MM for day-month-year inputs (DD-MM-YYYY)
+        $(document).on('input', '.input-datepicker-daymonth', function() {
+            let val = this.value.replace(/[^0-9]/g, '');
+            if (val.length >= 3) {
+                let dd = val.substring(0, 2);
+                let mm = val.substring(2, 4);
+                let yyyy = val.substring(4, 8);
+                val = dd + '-' + mm + '-' + yyyy;
+            }
+            this.value = val.substring(0, 10);
+        });
+        // Validate on blur
+        $(document).on('blur.monthYear', '.input-datepicker-daymonth', function() {
+            let val = this.value;
+            if (val && !isValidDate(val)) {
+                $(this).closest('div').find('.invalid-note').text('{{ __('cv.validate_day_month_year') }}').addClass('text-danger');
+                $(this).val('');
+            } else {
+                $(this).closest('div').find('.invalid-note').text('').removeClass('text-danger');
+            }
+        });
+    
+        function isValidDate(val) {
+            if (!/^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$/.test(val)) {
+                return false;
+            }
+
+            // Kiểm tra ngày có thực sự tồn tại không
+            const [day, month, year] = val.split('-').map(Number);
+            const date = new Date(year, month - 1, day);
+
+            return date.getFullYear() === year &&
+                date.getMonth() === month - 1 &&
+                date.getDate() === day;
+        }
     </script>
 
 

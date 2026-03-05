@@ -23,7 +23,7 @@ class RegisterController extends Controller
     {
         $request->validate([
             'username' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string','regex:/^0\d{9}$/'],
+            'phone_number' => ['required', 'string','regex:/^0\d{9}$/', 'unique:users,phone_number'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)], // Use Rule::unique
             'password' => ['required', 'string', 'min:8', 'confirmed'], // 'confirmed' checks for password_confirmation field
         ]);

@@ -52,7 +52,7 @@
             </div>
             <div class="flex flex-col gap-2">
                 <label class="text-sm font-bold">{{ Str::upper(__('cv.date_of_birth')) }} <span class="text-danger">*</span></label>
-                <input type="text" class="form-control input-datepicker text-muted" name="info[date_of_birth]" value="{{ !empty($user->date_of_birth) ? date('Y-m-d', strtotime($user->date_of_birth)) : '' }}">
+                <input type="text" class="form-control input-datepicker input-datepicker-daymonth text-muted" name="info[date_of_birth]" value="{{ !empty($user->date_of_birth) ? date('d-m-Y', strtotime($user->date_of_birth)) : '' }}" placeholder="Ex: 21-02-2001" autocomplete="off" placeholder="DD-MM-YYYY" maxlength="10" inputmode="numeric">
                 <div class="invalid-note"></div>
             </div>
             <div class="flex flex-col gap-2">

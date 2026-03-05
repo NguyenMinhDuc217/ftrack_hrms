@@ -463,7 +463,7 @@
                                     </div>
                                     <div class="mb-3 col-span-1">
                                         <label for="province_id" class="form-label fw-bold">{{__('job.txt_expected_start_date')}} <span class="text-danger">*</span></label>
-                                        <input type="date" name="expected_start_date" id="expected_start_date" class="form-control" placeholder="{{ __('job.txt_expected_start_date') }}">
+                                        <input type="text" class="form-control input-datepicker input-datepicker-daymonth text-muted" name="expected_start_date" id="expected_start_date" placeholder="Ex: 01-01-2026" autocomplete="off" placeholder="DD-MM-YYYY" maxlength="10" inputmode="numeric">
                                         <div class="invalid-note"></div>
                                     </div>
                                     <div class="mb-3 col-span-1">

@@ -395,7 +395,10 @@
             error: function(xhr, status, error) {
                 if (xhr.status === 422) {
                     let errors = xhr.responseJSON.errors;
-                    console.log(errors)
+                    Toast.fire({
+                        icon: 'error',
+                        title: "{{ __('cv.txt_error_create_cv') }}"
+                    });
                     $('.invalid-note').empty().removeClass('text-danger');
                     $.each(errors, function(key, message) {
                         const bracketName = dotToBracket(key);

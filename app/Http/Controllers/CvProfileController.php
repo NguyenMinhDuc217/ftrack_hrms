@@ -142,7 +142,7 @@ class CvProfileController extends Controller
                 }
 
                 $userData = array();
-                $userData['date_of_birth'] = $data['info']['date_of_birth'] ?? null;
+                $userData['date_of_birth'] = $data['info']['date_of_birth'] ? date('Y-m-d', strtotime($data['info']['date_of_birth'])) : null;
                 $avatar = $data['info']['avatar'] ?? null;
                 unset($data['info']['date_of_birth']);
                 unset($data['info']['avatar']);
@@ -175,7 +175,7 @@ class CvProfileController extends Controller
             // END SUMMARY
 
             // SKILLS
-                $skillData = $data["skill"];
+                $skillData = $data["skill"] ?? [];
                 foreach ($skillData as $group) {
                     $skill['cv_profile_id'] = $profile->id;
                     $groupName = $group['group'] ?? null;
@@ -193,7 +193,7 @@ class CvProfileController extends Controller
             // END SKILLS
 
             // EXPERIENCES
-                $expData = $data["exp"];
+                $expData = $data["exp"] ?? [];
                 foreach ($expData as $exp) {
                     $exp['cv_profile_id'] = $profile->id;
                     $exp['start_date'] = !empty($exp['start_date']) ? date('Y-m-d', strtotime($exp['start_date'] . '-01')) : null;
@@ -209,7 +209,7 @@ class CvProfileController extends Controller
             // END EXPERIENCES
 
             // EDUCATIONS
-                $eduData = $data["edu"];
+                $eduData = $data["edu"] ?? [];
                 foreach ($eduData as $edu) {
                     $edu['cv_profile_id'] = $profile->id;
                     $edu['start_date'] = !empty($edu['start_date']) ? date('Y-m-d', strtotime($edu['start_date'] . '-01')) : null;
@@ -225,7 +225,7 @@ class CvProfileController extends Controller
             // END EDUCATIONS
 
             // PROJECTS
-                $projData = $data["proj"];
+                $projData = $data["proj"] ?? [];
                 foreach ($projData as $proj) {
                     $proj['cv_profile_id'] = $profile->id;
                     $proj['start_date'] = !empty($proj['start_date']) ? date('Y-m-d', strtotime($proj['start_date'] . '-01')) : null;
