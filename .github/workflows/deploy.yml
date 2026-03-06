@@ -1,0 +1,56 @@
+name: Deploy Laravel to aaPanel
+
+on:
+  push:
+    branches: [ "main" ] # Nếu bạn dùng nhánh "master" thì đổi chữ main thành master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3' # Khớp với phiên bản PHP trên aaPanel của bạn
+          extensions: mbstring, bcmath, curl, openssl, xml, zip
+
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            # Di chuyển vào thư mục dự án trên aaPanel
+            cd /project/ftrack_hrms
+
+            # 1. Kéo code mới nhất về từ GitHub
+            git pull origin main
+
+            # 2. Cài đặt thư viện (Bỏ qua dev, tối ưu tốc độ)
+            # Nếu lệnh composer báo lỗi, hãy thay bằng đường dẫn tuyệt đối: /usr/bin/composer
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+            # 3. Cập nhật Database (Chạy migrate tự động)
+            php artisan migrate --force
+
+            # 4. Build Frontend (Vite) - Vì bạn đang dùng Tailwind/Vite
+            npm install
+            npm run build
+
+            # 5. Xóa và tối ưu hóa Cache của Laravel
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            # 6. Quan trọng: Phân lại quyền để không bị lỗi 500 hoặc Permission denied
+            chmod -R 775 storage bootstrap/cache
+            chown -R www:www storage bootstrap/cache
+
+            echo "🚀 Chúc mừng! Dự án ftrack_hrms đã được triển khai thành công."
