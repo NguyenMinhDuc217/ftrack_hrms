@@ -242,9 +242,9 @@
         };
     }
 
-    $(document).ready(function () {
-       $('#redirectModal').modal('show');  
-    })
+    // $(document).ready(function () {
+    //    $('#redirectModal').modal('show');  
+    // })
 
     function updatePreview(templateKey, type="example") {
          $.ajax({
