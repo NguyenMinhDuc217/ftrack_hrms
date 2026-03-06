@@ -57,7 +57,7 @@
             </div>
             <div class="flex flex-col gap-2">
                 <label class="text-sm font-bold">{{ Str::upper(__('cv.phone_number')) }} <span class="text-danger">*</span></label>
-                <input type="tel" class="form-control text-muted" name="info[phone_number]" value="{{ $profile->phone_number ?? '' }}" placeholder="{{ __('cv.placeholder_phone_number') }}">
+                <input type="tel" class="form-control text-muted" name="info[phone_number]" value="{{ $profile->phone_number ?? '' }}" placeholder="Ex: 0352128888">
                 <div class="invalid-note"></div>
             </div>
             <div class="flex flex-col gap-2">

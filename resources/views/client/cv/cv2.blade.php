@@ -309,9 +309,9 @@
                         <div class="bg-gradient-to-r from-orange-400 to-orange-300 dark:bg-yellow-900/30 px-4 py-1.5 rounded-full inline-block mb-6 absolute -top-3 left-1/2 transform -translate-x-1/2">
                             <h3 class="text-white dark:text-yellow-200 font-bold text-xs">{{ __('cv.summary') }}</h3>
                         </div>
-                        <p class="text-xs leading-relaxed text-text-main dark:text-slate-300">
+                        <span class="text-xs leading-relaxed text-text-main dark:text-slate-300">
                             {!! $profile->summary ?? __('cv.summary_default') !!}
-                        </p>
+                        </span>
                     </div>
                 </div>
 
@@ -379,7 +379,7 @@
                                 <span class="text-primary text-xs font-semibold">{{ $edu->start_date->format('Y-m') }} — {{ $edu->end_date ? $edu->end_date->format('Y-m') : 'Present' }}</span>
                             </div>
                             @if(!empty($edu->description))
-                            <p class="font-bold text-secondary dark:text-blue-400 mb-2">{!! $edu->description !!}</p>
+                            <span class="font-bold text-secondary dark:text-blue-400 mb-2">{!! $edu->description !!}</span>
                             @endif
                             <ul class="list-disc list-inside space-y-1 text-xs text-text-main dark:text-slate-300 ml-2">
                                 <li>{{$edu->degree ?? ''}} {{ $edu->major ? ': ' . $edu->major : '' }}</li>
