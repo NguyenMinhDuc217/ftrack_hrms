@@ -37,6 +37,8 @@ WORKDIR /var/www/html
 # Copy toàn bộ project
 COPY . .
 
+COPY ca.pem /etc/ssl/certs/aiven-ca.pem
+
 # Copy assets đã build từ stage 1
 COPY --from=node-builder /app/public/build ./public/build
 
