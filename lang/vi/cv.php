@@ -139,6 +139,8 @@ return [
     'cv_data_of_you' => 'CV theo dữ liệu của bạn',
     'cv_example' => 'CV mẫu',
     'cv_preview' => 'Xem trước CV',
+    'update_profile_info' => 'Cập nhật thông tin',
+    'do_you_want_to_update_profile_info' => 'Bạn có muốn di chuyển đến trang cập nhật thông tin của mình không ?',
 
     // Validation
     'cv_file_required' => 'File CV là bắt buộc',

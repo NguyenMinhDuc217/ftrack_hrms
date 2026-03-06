@@ -33,6 +33,8 @@ return [
     'button_filter' => 'Filter',
     'button_reset' => 'Reset',
     'button_add' => 'Add',
+    'button_yes' => 'Yes',
+    'button_no' => 'No',
 
     'txt_search' => 'Search',
     'txt_clear' => 'Clear',

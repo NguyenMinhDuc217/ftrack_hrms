@@ -123,15 +123,15 @@
                     <div class="rounded-circle p-2 flex items-center justify-center bg-gray-100 w-24 h-24">
                         <i class="bi bi-file-earmark-text text-5xl"></i>
                     </div>
-                    <h2 class="text-3xl font-bold text-center">Cập nhật thông tin</h2>
-                    <h5 class="modal-title text-center">Bạn có muốn di chuyển đến trang cập nhật thông tin của mình không ?</h5>
+                    <h2 class="text-3xl font-bold text-center">{{ __('cv.update_profile_info') }}</h2>
+                    <h5 class="modal-title text-center">{{ __('cv.do_you_want_to_update_profile_info') }}</h5>
                     <div class="grid grid-cols-2 gap-3 w-full">
                         <div >
-                            <button type="button" class="btn bg-gray-200 hover:border-black w-full" data-bs-dismiss="modal">No</button>
+                            <button type="button" class="btn bg-gray-200 hover:border-black w-full" data-bs-dismiss="modal">{{ __('default.button_no') }}</button>
                         </div>
                         <div>
                             <x-client.elements.button type="button" class="w-full" onclick="window.open('{{ route('profile.edit') }}', '_blank')">
-                                Yes
+                                {{ __('default.button_yes') }}
                             </x-client.elements.button>
                         </div>
                     </div>
@@ -248,10 +248,6 @@
             }
         };
     }
-
-    $(document).ready(function () {
-       $('#redirectModal').modal('show');  
-    })
 
     function updatePreview(templateKey, type="example") {
          $.ajax({

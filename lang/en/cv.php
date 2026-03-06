@@ -138,6 +138,9 @@ return [
     'cv_data_of_you' => 'CV data of you',
     'cv_example' => 'CV example',
     'cv_preview' => 'CV preview',
+    'update_profile_info' => 'Update Profile Information',
+    'do_you_want_to_update_profile_info' => 'Do you want to move to the profile update page?',
+
 
 
     // Validation

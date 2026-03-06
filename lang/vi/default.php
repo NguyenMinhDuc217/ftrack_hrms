@@ -33,6 +33,8 @@ return [
     'button_filter' => 'Lọc',
     'button_reset' => 'Làm mới',
     'button_add' => 'Thêm',
+    'button_yes' => 'Có',
+    'button_no' => 'Không',
 
     'txt_search' => 'Tìm kiếm',
     'txt_clear' => 'Làm mới',
