@@ -3,13 +3,12 @@
 namespace App\Filters;
 
 use App\Models\User;
-use Carbon\Carbon;
 
 class UserFilter extends BaseFilter
 {
     public function __construct($request)
     {
-        parent::__construct($request, new User());
+        parent::__construct($request, new User);
     }
 
     protected function allowedFilters(): array
@@ -70,12 +69,12 @@ class UserFilter extends BaseFilter
 
     protected function document_default_id($value)
     {
-        $this->builder->where('document_default_id', (int)$value);
+        $this->builder->where('document_default_id', (int) $value);
     }
 
     protected function manager_id($value)
     {
-        $this->builder->where('manager_id', (int)$value);
+        $this->builder->where('manager_id', (int) $value);
     }
 
     protected function employment_type($value)
