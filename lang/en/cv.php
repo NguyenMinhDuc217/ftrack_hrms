@@ -174,7 +174,7 @@ return [
 
     // DATA CV EXAMPLE
     'cv_full_name' => 'Nguyen Van A',
-    'cv_title' => 'Infomation Technology',
+    'cv_title' => 'Sales',
     'cv_phone_number' => '0983825924',
     'cv_email' => 'nguyenvana@gmail.com',
     'cv_proivince_name' => 'Thành phố Hồ Chí Minh',
@@ -184,28 +184,28 @@ return [
     'cv_soft_skill_1' => 'Communication',
     'cv_soft_skill_2' => 'Teamwork',
 
-    'cv_exp_1_title' => 'Technical Team Leader',
-    'cv_exp_1_company' => 'CPM Technology Company',
+    'cv_exp_1_title' => 'Sales Manager',
+    'cv_exp_1_company' => 'CPM Commodities Company Limited',
     'cv_exp_1_start_date' => '2020-01-01',
     'cv_exp_1_end_date' => '2025-12-31',
-    'cv_exp_1_description' => '- Manage a team of 10 developers.\n- Design e-commerce system architecture.',
-    'cv_exp_2_title' => 'Core Developer',
-    'cv_exp_2_company' => 'FPT Technology Company',
+    'cv_exp_1_description' => '- Manage a team of 10 employees.\n- Plan for development.',
+    'cv_exp_2_title' => 'Sales',
+    'cv_exp_2_company' => 'Vinamilk Dairy Food Company',
     'cv_exp_2_start_date' => '2018-01-01',
     'cv_exp_2_end_date' => '2019-12-31',
-    'cv_exp_2_description' => '- Build API for mobile applications.\n- Optimize MySQL database.',
+    'cv_exp_2_description' => '- Find and develop customers.\n- Customer care and product consulting.',
    
-    'cv_edu_1_school' => 'Hanoi University of Science and Technology',
+    'cv_edu_1_school' => 'Hanoi University of Commerce',
     'cv_edu_1_degree' => 'Bachelor',
-    'cv_edu_1_major' => 'Computer Science',
+    'cv_edu_1_major' => 'Business administration',
     'cv_edu_1_start_date' => '2014-09-01',
     'cv_edu_1_end_date' => '2018-06-30',
     'cv_edu_1_description' => 'Graduated with honors, GPA: 3.6/4.0',
 
-    'cv_proj_1_name' => 'Human Resource Management System',
-    'cv_proj_1_description' => 'Build a module to manage timekeeping and automatic payroll.',
+    'cv_proj_1_name' => 'Consumer goods sales campaign for Tet 2026',
+    'cv_proj_1_description' => 'Develop plans and deploy campaigns.',
     'cv_proj_1_start_date' => '2022-01-01',
     'cv_proj_1_end_date' => '2023-03-31',
-    'cv_proj_1_url' => 'https://github.com/example/project',
+    'cv_proj_1_url' => 'https://www.brandsvietnam.com/congdong/topic/tong-hop-cac-chien-dich-bao-cao-va-xu-huong-noi-bat-tet-2026',
     // END DATA CV EXAMPLE
 ];

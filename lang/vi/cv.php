@@ -172,7 +172,7 @@ return [
     
     // DATA CV EXAMPLE
     'cv_full_name' => 'Nguyễn Văn A',
-    'cv_title' => 'Infomation Technology',
+    'cv_title' => 'Nhân viên kinh doanh',
     'cv_phone_number' => '0983825924',
     'cv_email' => 'nguyenvana@gmail.com',
     'cv_proivince_name' => 'Thành phố Hồ Chí Minh',
@@ -182,28 +182,28 @@ return [
     'cv_soft_skill_1' => 'Giao tiếp',
     'cv_soft_skill_2' => 'Làm việc nhóm',
 
-    'cv_exp_1_title' => 'Trưởng nhóm kỹ thuật',
-    'cv_exp_1_company' => 'Công ty Công nghệ CPM',
+    'cv_exp_1_title' => 'Trưởng bộ phận kinh doanh',
+    'cv_exp_1_company' => 'Công ty TNHH Hàng Hóa CPM',
     'cv_exp_1_start_date' => '2020-01-01',
     'cv_exp_1_end_date' => '2025-12-31',
-    'cv_exp_1_description' => '- Quản lý đội ngũ 10 developers.\n- Thiết kế kiến trúc hệ thống thương mại điện tử.',
-    'cv_exp_2_title' => 'Lập trình viên phần cốt lõi',
-    'cv_exp_2_company' => 'Công ty Công nghệ FPT',
+    'cv_exp_1_description' => '- Quản lý đội ngũ 10 nhân sự.\n- Lên kế hoạch phát triển.',
+    'cv_exp_2_title' => 'Nhân viên bán hàng',
+    'cv_exp_2_company' => 'Công ty thực phẩm sữa Vinamilk',
     'cv_exp_2_start_date' => '2018-01-01',
     'cv_exp_2_end_date' => '2019-12-31',
-    'cv_exp_2_description' => '- Xây dựng API cho ứng dụng di động.\n- Tối ưu hóa database MySQL.',
+    'cv_exp_2_description' => '- Tìm kiếm và phát triển khách hàng.\n- Chăm sóc khách hàng và tư vấn sản phẩm.',
    
-    'cv_edu_1_school' => 'Đại học Bách Khoa Hà Nội',
+    'cv_edu_1_school' => 'Đại học thương mại Hà Nội',
     'cv_edu_1_degree' => 'Cử nhân',
-    'cv_edu_1_major' => 'Khoa học Máy tính',
+    'cv_edu_1_major' => 'Quản trị kinh doanh',
     'cv_edu_1_start_date' => '2014-09-01',
     'cv_edu_1_end_date' => '2018-06-30',
     'cv_edu_1_description' => 'Tốt nghiệp loại Giỏi, GPA: 3.6/4.0',
 
-    'cv_proj_1_name' => 'Hệ thống quản lý nhân sự',
-    'cv_proj_1_description' => 'Xây dựng module quản lý chấm công và tính lương tự động.',
+    'cv_proj_1_name' => 'Chiến dịch kinh doanh hàng tiêu dùng dịp tết 2026',
+    'cv_proj_1_description' => 'Xây dựng kế hoạch, triển khai chiến dịch.',
     'cv_proj_1_start_date' => '2022-01-01',
     'cv_proj_1_end_date' => '2023-03-31',
-    'cv_proj_1_url' => 'https://github.com/example/project',
+    'cv_proj_1_url' => 'https://www.brandsvietnam.com/congdong/topic/tong-hop-cac-chien-dich-bao-cao-va-xu-huong-noi-bat-tet-2026',
     // END DATA CV EXAMPLE
 ];

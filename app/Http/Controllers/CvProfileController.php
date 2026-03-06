@@ -899,9 +899,9 @@ class CvProfileController extends Controller
             'summary' => __('cv.cv_summary'),
             'avatar' => new Fluent(['url' => 'https://i.pravatar.cc/300']),
             'skills' => collect([
-                new Fluent(['name' => 'PHP/Laravel', 'group' => 'Technical', 'year_of_experience' => 5]),
-                new Fluent(['name' => 'Vue.js', 'group' => 'Technical', 'year_of_experience' => 3]),
-                new Fluent(['name' => 'Docker', 'group' => 'DevOps', 'year_of_experience' => 2]),
+                new Fluent(['name' => 'Office informatics', 'group' => 'Technical', 'year_of_experience' => 5]),
+                new Fluent(['name' => 'English', 'group' => 'Technical', 'year_of_experience' => 3]),
+                new Fluent(['name' => 'Japanese', 'group' => 'Technical', 'year_of_experience' => 2]),
                 new Fluent(['name' => __('cv.cv_soft_skill_1'), 'group' => 'Soft Skill']),
                 new Fluent(['name' => __('cv.cv_soft_skill_2'), 'group' => 'Soft Skill']),
             ]),
