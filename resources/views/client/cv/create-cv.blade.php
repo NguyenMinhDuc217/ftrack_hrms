@@ -119,12 +119,12 @@
     <div class="modal fade" id="redirectModal" aria-labelledby="redirectModalLabeldata-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body flex flex-col align-center justify-center gap-2">
-                    <div class="rounded-circle p-2 flex align-center justify-center bg-gray-100 w-20 h-20">
+                <div class="modal-body flex flex-col items-center justify-center gap-2">
+                    <div class="rounded-circle p-2 flex items-center justify-center bg-gray-100 w-20 h-20">
                         <i class="ti ti-file-description text-5xl"></i>
                     </div>
                     <h5 class="modal-title" id="staticBackdropLabel">Bạn có muốn chuyển đến trang cập nhật CV của bạn không</h5>
-                    <div class="flex align-center justify-center gap-4">
+                    <div class="flex items-center justify-center gap-4">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                         <button type="button" class="btn btn-primary" onclick="window.open('{{ route("profile.edit") }}', '_blank')">Yes</button>
                     </div>
